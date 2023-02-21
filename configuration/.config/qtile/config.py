@@ -25,19 +25,118 @@
 # SOFTWARE.
 
 # calculate screen specific vertical unit (vunit) according to which all widgets are scaled
-import tkinter
+import math
+import os
+import collections
+import subprocess
+from logging import getLogger
 
-root = tkinter.Tk()
-dpi = root.winfo_fpixels("1i")
-VUNIT = int(round(dpi * 0.5))
-
-FONT_SIZE = int(round(VUNIT * 0.5))
-
-
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal, logger
+
+import screeninfo
+
+
+logger = getLogger(__name__)
+
+monitors = screeninfo.get_monitors()
+
+layouts = {}
+
+def divide_chunks(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
+group_names = '12345678'
+chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
+groups_by_screen = collections.defaultdict(list)
+for i, chunk in enumerate(chunks):
+    for name in chunk:
+        groups_by_screen[i].append(name)
+
+screens = []
+for i, monitor in enumerate(monitors):
+    diagonal_mm = (monitor.width_mm ** 2 + monitor.height_mm ** 2) ** 0.5
+    diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
+    diagonal_in = diagonal_mm / 25.4
+    dpi_diagonal = diagonal / diagonal_in
+
+    width_in = monitor.width_mm / 25.4
+    height_in = monitor.height_mm / 25.4
+    dpi_width = monitor.width / width_in
+    dpi_height = monitor.height / height_in
+
+    layouts[i] = [
+        layout.Columns(
+            border_normal="#171717FF",
+            border_focus="#171717FF",
+            border_focus_stack="#171717FF",
+            border_width=1,
+            margin=[0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
+            margin_on_single = [0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
+        ),
+        layout.Max(
+            margin=[0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
+        ),
+    ]
+
+    widget_defaults = dict(
+        font="Cousine Nerd Font",
+        fontsize=int(round(dpi_height / 2.54 * 0.5)),
+        # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
+        background='#171717FF',
+    )
+    extension_defaults = widget_defaults.copy()
+
+    b = bar.Bar(
+        [
+            #widget.Spacer(length=int(round(dpi_width / 2.54)), background='#FFFFFF00'),
+            # widget.CurrentLayout(),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.GroupBox(
+                active="#FFFFFFFF",
+                block_highlight_text_color="#FFFFFFFF",
+                this_current_screen_border="#171717FF",
+                highlight_method="block",
+                rounded=True,
+                hide_unused=False,
+                visible_groups=groups_by_screen[i],
+                this_screen_border='#343434FF',
+                background="#343434FF",
+            ),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right.svg'), background='#FFFFFF00'),
+            widget.Spacer(background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.Prompt(background="#343434FF", cursor_color='#FFFFFFFF', prompt=' ', cursor=False, rounded=True),
+            widget.WindowName(background="#343434FF"),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right.svg'), background='#FFFFFF00'),
+            widget.Spacer(background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background="#343434FF"),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right.svg'), background='#FFFFFF00'),
+            #widget.Spacer(length=int(round(dpi_width/ 2.54)), background='#FFFFFF00'),
+        ],
+        size=int(round(dpi_height / 2.54)),
+        margin=[int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
+        background='#00000000',
+    )
+    # b.window.window.set_property('QTILE_BAR', 1, 'CARDINAL', 32)
+    screens.append(Screen(top=b))
+
+groups = []
+chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
+for i, chunk in enumerate(chunks):
+    for name in chunk:
+        groups.append(Group(name=name, layouts=layouts[i]))
+        groups[-1]
+
+@hook.subscribe.startup
+def _():
+    subprocess.Popen(args=['picom'])
+    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_dark.png')])
+
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -92,16 +191,20 @@ keys = [
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
-groups = [Group(i) for i in "123456789"]
+
 
 for i in groups:
+    for screen in groups_by_screen:
+        if i.name in groups_by_screen[screen]:
+            break
+    lazy.group[i.name].toscreen(screen)
     keys.extend(
         [
             # mod1 + letter of group = switch to group
             Key(
                 [mod],
                 i.name,
-                lazy.group[i.name].toscreen(),
+                lazy.group[i.name].toscreen(screen),
                 desc="Switch to group {}".format(i.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
@@ -117,89 +220,6 @@ for i in groups:
             #     desc="move focused window to group {}".format(i.name)),
         ]
     )
-
-layouts = [
-    layout.Columns(
-        border_normal="#171717",
-        border_focus="#171717",
-        border_focus_stack="#171717",
-        border_width=1,
-    ),
-    # layout.Max(),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
-]
-
-widget_defaults = dict(
-    font="Cousine Nerd Font",
-    fontsize=int(round(FONT_SIZE * 0.75)),
-    padding=VUNIT * 0.125,
-    background="#34343400",
-    opacity=0,
-)
-extension_defaults = widget_defaults.copy()
-
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.Spacer(length=int(round(VUNIT * 0.25))),
-                # widget.CurrentLayout(),
-                widget.GroupBox(
-                    active="#ffffff",
-                    block_highlight_text_color="#ffffff",
-                    highlight_color=["#171717", "#171717"],
-                    this_current_screen_border="#171717",
-                    highlight_method="block",
-                    rounded=False,
-                    hide_unused=True,
-                ),
-                widget.Prompt(),
-                widget.Spacer(),
-                widget.Bluetooth(),
-                widget.Clock(format=" %Y-%m-%d %a %H:%M:%S"),
-                widget.Spacer(length=int(round(VUNIT * 0.25))),
-            ],
-            size=int(round(VUNIT * 0.75)),
-            border_width=[0, 0, 1, 0],  # Draw top and bottom borders
-            border_color="#171717",  # Borders are magenta
-        ),
-    ),
-    Screen(
-        top=bar.Bar(
-            [
-                widget.Spacer(length=int(round(VUNIT * 0.25))),
-                # widget.CurrentLayout(),
-                widget.GroupBox(
-                    active="#ffffff",
-                    block_highlight_text_color="#ffffff",
-                    highlight_color=["#171717", "#171717"],
-                    this_current_screen_border="#171717",
-                    highlight_method="block",
-                    rounded=False,
-                    hide_unused=True,
-                ),
-                widget.Prompt(),
-                widget.Spacer(),
-                widget.Bluetooth(),
-                widget.Clock(format=" %Y-%m-%d %a %H:%M:%S"),
-                widget.Spacer(length=int(round(VUNIT * 0.25))),
-            ],
-            size=int(round(VUNIT * 0.75)),
-            border_width=[0, 0, 1, 0],  # Draw top and bottom borders
-            border_color="#171717",  # Borders are magenta
-        ),
-    ),
-]
 
 # Drag floating layouts.
 mouse = [

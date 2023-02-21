@@ -7,3 +7,7 @@ This directory represents your home directory with respect to configuration file
 cd ~
 ln -sn ~/repositories/nuunamnir.dot-files/configuration/.config-file .config-file
 ```
+
+## Dependencies
+### qtile
+```yay -S tk python-dbus-next picom-git```
