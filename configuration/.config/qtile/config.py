@@ -135,7 +135,7 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_dark.png')])
+    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_light.png')])
 
 
 mod = "mod4"
