@@ -29,9 +29,9 @@ import math
 import os
 import collections
 import subprocess
-from logging import getLogger
+import logging
 
-from libqtile import bar, layout, widget, hook
+from libqtile import qtile, bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal, logger
@@ -39,7 +39,7 @@ from libqtile.utils import guess_terminal, logger
 import screeninfo
 
 
-logger = getLogger(__name__)
+logger.setLevel(logging.WARNING)
 
 monitors = screeninfo.get_monitors()
 
@@ -130,12 +130,20 @@ chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
 for i, chunk in enumerate(chunks):
     for name in chunk:
         groups.append(Group(name=name, layouts=layouts[i]))
-        groups[-1]
 
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
     subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_light.png')])
+
+@hook.subscribe.startup_complete
+def send_to_second_screen():
+    chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
+    for i, chunk in enumerate(chunks):
+        #qtile.groups_map[chunk[0]].cmd_toscreen(i, toggle=False)
+        qtile.groups_map[chunk[0]].cmd_toscreen(i)
+        logger.warning(f'{chunk[0]}, {i}')
+    logger.warning('test')
 
 
 mod = "mod4"
