@@ -41,6 +41,33 @@ import screeninfo
 
 logger = getLogger(__name__)
 
+COLOR_SCHEME = 'light'
+color_schemes = {
+    'dark': {
+        'border_normal': '#171717FF',
+        'border_focus': '#171717FF',
+        'border_focus_stack': '#171717FF',
+        'background': '#343434FF',
+        'transparent': '#FFFFFF00',
+        'active': '#FFFFFFFF',
+        'block_highlight_text_color': '#FFFFFFFF',
+        'this_current_screen_border': '#171717FF',
+        'this_screen_border': '#343434FF'
+    },
+    'light': {
+        'border_normal': '#171717FF',
+        'border_focus': '#171717FF',
+        'border_focus_stack': '#171717FF',
+        'background': '#091f22FF',
+        'transparent': '#FFFFFF00',
+        'active': '#FFFFFFFF',
+        'block_highlight_text_color': '#FFFFFFFF',
+        'this_current_screen_border': '#171717FF',
+        'this_screen_border': '#343434FF'
+    }
+}
+
+
 monitors = screeninfo.get_monitors()
 
 layouts = {}
@@ -70,9 +97,9 @@ for i, monitor in enumerate(monitors):
 
     layouts[i] = [
         layout.Columns(
-            border_normal="#171717FF",
-            border_focus="#171717FF",
-            border_focus_stack="#171717FF",
+            border_normal=color_schemes[COLOR_SCHEME]['border_normal'],
+            border_focus=color_schemes[COLOR_SCHEME]['border_focus'],
+            border_focus_stack=color_schemes[COLOR_SCHEME]['border_focus_stack'],
             border_width=1,
             margin=[0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
             margin_on_single = [0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
@@ -86,37 +113,34 @@ for i, monitor in enumerate(monitors):
         font="Cousine Nerd Font",
         fontsize=int(round(dpi_height / 2.54 * 0.5)),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
-        background='#171717FF',
+        background=color_schemes[COLOR_SCHEME]['background'],
     )
     extension_defaults = widget_defaults.copy()
 
     b = bar.Bar(
         [
-            #widget.Spacer(length=int(round(dpi_width / 2.54)), background='#FFFFFF00'),
-            # widget.CurrentLayout(),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
             widget.GroupBox(
-                active="#FFFFFFFF",
-                block_highlight_text_color="#FFFFFFFF",
-                this_current_screen_border="#171717FF",
-                highlight_method="block",
+                active=color_schemes[COLOR_SCHEME]['active'],
+                block_highlight_text_color=color_schemes[COLOR_SCHEME]['block_highlight_text_color'],
+                this_current_screen_border=color_schemes[COLOR_SCHEME]['this_current_screen_border'],
+                highlight_method='block',
                 rounded=True,
                 hide_unused=False,
                 visible_groups=groups_by_screen[i],
-                this_screen_border='#343434FF',
-                background="#343434FF",
+                this_screen_border=color_schemes[COLOR_SCHEME]['this_screen_border'],
+                background=color_schemes[COLOR_SCHEME]['background'],
             ),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right.svg'), background='#FFFFFF00'),
-            widget.Spacer(background='#FFFFFF00'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left.svg'), background='#FFFFFF00'),
-            widget.Prompt(background="#343434FF", cursor_color='#FFFFFFFF', prompt=' ', cursor=False, rounded=True),
-            widget.WindowName(background="#343434FF"),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right.svg'), background='#FFFFFF00'),
-            widget.Spacer(background='#FFFFFF00'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left.svg'), background='#FFFFFF00'),
-            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background="#343434FF"),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right.svg'), background='#FFFFFF00'),
-            #widget.Spacer(length=int(round(dpi_width/ 2.54)), background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Spacer(background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Prompt(background=color_schemes[COLOR_SCHEME]['background'], cursor_color='#FFFFFFFF', prompt=' ', cursor=False, rounded=True),
+            widget.WindowName(background=color_schemes[COLOR_SCHEME]['background']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Spacer(background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=color_schemes[COLOR_SCHEME]['background']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
         ],
         size=int(round(dpi_height / 2.54)),
         margin=[int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
