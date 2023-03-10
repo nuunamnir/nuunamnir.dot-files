@@ -134,7 +134,8 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_light.png')])
+    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
+    #subprocess.Popen(args=['feh', '--bg-tile', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_dark_tile.png')])
 
 @hook.subscribe.startup_complete
 def send_to_second_screen():
