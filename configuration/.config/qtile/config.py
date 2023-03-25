@@ -38,37 +38,22 @@ from libqtile.utils import guess_terminal, logger
 
 import screeninfo
 
-
-logger.setLevel(logging.WARNING)
-
-COLOR_SCHEME = 'light'
-color_schemes = {
-    'dark': {
-        'border_normal': '#171717FF',
-        'border_focus': '#171717FF',
-        'border_focus_stack': '#171717FF',
-        'background': '#343434FF',
-        'transparent': '#FFFFFF00',
-        'active': '#FFFFFFFF',
-        'block_highlight_text_color': '#FFFFFFFF',
-        'this_current_screen_border': '#171717FF',
-        'this_screen_border': '#343434FF'
+THEME = 'yths-dark'
+themes = {
+    'yths-dark': {
+        'colors': {
+            'background': '#402C25FF',
+            'this-current-screen-border': '#FFD8A0FF',
+            'active': '#1a161aFF',
+            'block-highlight-text-color': '#1a161aFF',
+        },
     },
-    'light': {
-        'border_normal': '#171717FF',
-        'border_focus': '#171717FF',
-        'border_focus_stack': '#171717FF',
-        'background': '#091f22FF',
-        'transparent': '#FFFFFF00',
-        'active': '#FFFFFFFF',
-        'block_highlight_text_color': '#FFFFFFFF',
-        'this_current_screen_border': '#171717FF',
-        'this_screen_border': '#343434FF'
-    }
 }
 
 
-monitors = screeninfo.get_monitors()
+logger.setLevel(logging.WARNING)
+
+monitors = screeninfo.get_monitors()[::-1]
 
 layouts = {}
 
@@ -97,9 +82,9 @@ for i, monitor in enumerate(monitors):
 
     layouts[i] = [
         layout.Columns(
-            border_normal=color_schemes[COLOR_SCHEME]['border_normal'],
-            border_focus=color_schemes[COLOR_SCHEME]['border_focus'],
-            border_focus_stack=color_schemes[COLOR_SCHEME]['border_focus_stack'],
+            border_normal="#402C25FF",
+            border_focus="#FFD8A0FF",
+            border_focus_stack="#FF0000FF",
             border_width=1,
             margin=[0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
             margin_on_single = [0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
@@ -119,28 +104,35 @@ for i, monitor in enumerate(monitors):
 
     b = bar.Bar(
         [
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
+            #widget.Spacer(length=int(round(dpi_width / 2.54)), background='#FFFFFF00'),
+            # widget.CurrentLayout(),
+            #widget.TextBox(f'{str(i)} {monitor.width_mm} {monitor.height_mm} {monitor.width} {monitor.height}'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background='#FFFFFF00'),
             widget.GroupBox(
-                active=color_schemes[COLOR_SCHEME]['active'],
-                block_highlight_text_color=color_schemes[COLOR_SCHEME]['block_highlight_text_color'],
-                this_current_screen_border=color_schemes[COLOR_SCHEME]['this_current_screen_border'],
-                highlight_method='block',
+                active=themes[THEME]['colors']['this-current-screen-border'],
+                block_highlight_text_color=themes[THEME]['colors']['block-highlight-text-color'],
+                this_current_screen_border=themes[THEME]['colors']['this-current-screen-border'],
+                highlight_method="block",
                 rounded=True,
                 hide_unused=False,
                 visible_groups=groups_by_screen[i],
-                this_screen_border=color_schemes[COLOR_SCHEME]['this_screen_border'],
-                background=color_schemes[COLOR_SCHEME]['background'],
+                this_screen_border=themes[THEME]['colors']['background'],
+                other_current_screen_border='#FF0000',
+                other_screen_border='#FF0000',
+                background=themes[THEME]['colors']['background'],
+                inactive='#806c50',
             ),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
-            widget.Spacer(background=color_schemes[COLOR_SCHEME]['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
-            widget.Prompt(background=color_schemes[COLOR_SCHEME]['background'], cursor_color='#FFFFFFFF', prompt=' ', cursor=False, rounded=True),
-            widget.WindowName(background=color_schemes[COLOR_SCHEME]['background']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
-            widget.Spacer(background=color_schemes[COLOR_SCHEME]['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_left_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
-            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=color_schemes[COLOR_SCHEME]['background']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'end_cap_right_light.svg'), background=color_schemes[COLOR_SCHEME]['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background='#FFFFFF00'),
+            widget.Spacer(background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color='#FFFFFFFF', prompt=' ', cursor=False, rounded=True),
+            widget.WindowName(background=themes[THEME]['colors']['background']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background='#FFFFFF00'),
+            widget.Spacer(background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=themes[THEME]['colors']['background']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background='#FFFFFF00'),
+            #widget.Spacer(length=int(round(dpi_width/ 2.54)), background='#FFFFFF00'),
         ],
         size=int(round(dpi_height / 2.54)),
         margin=[int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
@@ -205,6 +197,8 @@ keys = [
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle window floating"),
+    
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
