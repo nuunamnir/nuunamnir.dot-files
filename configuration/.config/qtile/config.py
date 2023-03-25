@@ -98,7 +98,7 @@ for i, monitor in enumerate(monitors):
         font="Cousine Nerd Font",
         fontsize=int(round(dpi_height / 2.54 * 0.5)),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
-        background='#171717FF',
+        background=color_schemes[COLOR_SCHEME]['background'],
     )
     extension_defaults = widget_defaults.copy()
 
