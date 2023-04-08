@@ -27,9 +27,11 @@
 # calculate screen specific vertical unit (vunit) according to which all widgets are scaled
 import math
 import os
+import io
 import collections
 import subprocess
 import logging
+import json
 
 from libqtile import qtile, bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -38,20 +40,68 @@ from libqtile.utils import guess_terminal, logger
 
 import screeninfo
 
+logger.setLevel(logging.WARNING)
+
 THEME = 'yths-dark'
 themes = {
     'yths-dark': {
         'colors': {
             'background': '#402C25FF',
             'this-current-screen-border': '#FFD8A0FF',
-            'active': '#1a161aFF',
-            'block-highlight-text-color': '#1a161aFF',
+            'other-current-screen-border': '#FF0000FF',
+            'active': '#1A161AFF',
+            'inactive': '#806C50FF',
+            'border-focus-stack': '#FF0000FF',
+            'transparent': '#FFFFFF00',
+            'foreground': '#FFFFFFFF',
         },
+        'fonts': {
+            'standard': 'Cousine Nerd Font',
+        }
     },
 }
 
+theme_path = '/home/nuunamnir/Pictures/theme.json'
+auto_assets_path = os.path.join('/', 'home', 'nuunamnir', '.config', 'qtile', 'assets', 'auto')
+auto_template_assets_path = os.path.join('/', 'home', 'nuunamnir', '.config', 'qtile', 'assets', 'auto_template')
+logger.warn('searching for theme file ...')
+if os.path.isfile(theme_path):
+    logger.warn('theme file found')
+    with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
+        colors = json.load(input_handle)
+        themes['auto'] = {
+            'colors': {
+                'background': colors['background-accent'],
+                'this-current-screen-border': colors['foreground'],
+                'other-current-screen-border': '#FF0000FF',
+                'active': colors['highlight'],
+                'inactive': colors['foreground-accent'],
+                'border-focus-stack': '#FF0000FF',
+                'transparent': '#FFFFFF00',
+                'foreground': '#FFFFFFFF',
+            },
+            'fonts': {
+                'standard': 'Cousine Nerd Font',
+            },
+        }
+        for asset in os.listdir(auto_template_assets_path):
+            with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
+                data = input_handle.read()
+            data = data.replace('#100001', colors['background-accent'])
+            with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
+                output_handle.write(data)
+        THEME ='auto'
 
-logger.setLevel(logging.WARNING)
+kitty_config = {}
+kitty_path = os.path.join('/', 'home', 'nuunamnir', '.config', 'kitty', 'kitty.conf')
+with io.open(kitty_path, 'r', encoding='utf-8') as input_handle:
+    for line in input_handle:
+        line_pieces = line.rstrip().split(' ')
+        kitty_config[line_pieces[0]] = ' '.join(line_pieces[1:])
+
+kitty_config['background'] = themes[THEME]['colors']['background']
+kitty_config['foreground'] = themes[THEME]['colors']['inactive']
+
 
 monitors = screeninfo.get_monitors()[::-1]
 
@@ -82,64 +132,66 @@ for i, monitor in enumerate(monitors):
 
     layouts[i] = [
         layout.Columns(
-            border_normal="#402C25FF",
-            border_focus="#FFD8A0FF",
-            border_focus_stack="#FF0000FF",
+            border_normal=themes[THEME]['colors']['background'],
+            border_focus=themes[THEME]['colors']['this-current-screen-border'],
+            border_focus_stack=themes[THEME]['colors']['border-focus-stack'],
             border_width=1,
-            margin=[0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
-            margin_on_single = [0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
+            margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
+            margin_on_single=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         ),
         layout.Max(
-            margin=[0, int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
+            margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         ),
     ]
 
     widget_defaults = dict(
-        font="Cousine Nerd Font",
-        fontsize=int(round(dpi_height / 2.54 * 0.5)),
+        font=themes[THEME]['fonts']['standard'],
+        fontsize=int(round(dpi_height / 2.54 * 0.33)),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=themes[THEME]['colors']['background'],
     )
     extension_defaults = widget_defaults.copy()
+    kitty_config['font_family'] = themes[THEME]['fonts']['standard']
+    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * 0.33 / 4)))
 
     b = bar.Bar(
         [
-            #widget.Spacer(length=int(round(dpi_width / 2.54)), background='#FFFFFF00'),
-            # widget.CurrentLayout(),
-            #widget.TextBox(f'{str(i)} {monitor.width_mm} {monitor.height_mm} {monitor.width} {monitor.height}'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.GroupBox(
                 active=themes[THEME]['colors']['this-current-screen-border'],
-                block_highlight_text_color=themes[THEME]['colors']['block-highlight-text-color'],
+                block_highlight_text_color=themes[THEME]['colors']['active'],
                 this_current_screen_border=themes[THEME]['colors']['this-current-screen-border'],
-                highlight_method="block",
+                highlight_method='block',
                 rounded=True,
                 hide_unused=False,
                 visible_groups=groups_by_screen[i],
                 this_screen_border=themes[THEME]['colors']['background'],
-                other_current_screen_border='#FF0000',
-                other_screen_border='#FF0000',
+                other_current_screen_border=themes[THEME]['colors']['other-current-screen-border'],
+                other_screen_border=themes[THEME]['colors']['other-current-screen-border'],
                 background=themes[THEME]['colors']['background'],
-                inactive='#806c50',
+                inactive=themes[THEME]['colors']['inactive'],
             ),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background='#FFFFFF00'),
-            widget.Spacer(background='#FFFFFF00'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background='#FFFFFF00'),
-            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color='#FFFFFFFF', prompt=' ', cursor=False, rounded=True),
-            widget.WindowName(background=themes[THEME]['colors']['background']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background='#FFFFFF00'),
-            widget.Spacer(background='#FFFFFF00'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background='#FFFFFF00'),
-            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=themes[THEME]['colors']['background']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background='#FFFFFF00'),
-            #widget.Spacer(length=int(round(dpi_width/ 2.54)), background='#FFFFFF00'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Spacer(background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', cursor=False, rounded=True),
+            widget.WindowName(background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Spacer(background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
-        size=int(round(dpi_height / 2.54)),
-        margin=[int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54)), int(round(dpi_height / 2.54)), int(round(dpi_width / 2.54))],
-        background='#00000000',
+        size=int(round(dpi_height / 2.54 * 0.67)),
+        margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
+        background=themes[THEME]['colors']['transparent'],
     )
     # b.window.window.set_property('QTILE_BAR', 1, 'CARDINAL', 32)
     screens.append(Screen(top=b))
+
+with io.open(kitty_path, 'w', encoding='utf-8') as output_handle:
+    for key in kitty_config.keys():
+        output_handle.write(' '.join([key, kitty_config[key]]) + '\n')
 
 groups = []
 chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
