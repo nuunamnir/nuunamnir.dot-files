@@ -39,6 +39,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal, logger
 
 import screeninfo
+import numpy
 
 logger.setLevel(logging.WARNING)
 
@@ -56,14 +57,14 @@ themes = {
             'foreground': '#FFFFFFFF',
         },
         'fonts': {
-            'standard': 'Cousine Nerd Font',
+            'standard': 'FiraCode Nerd Font',
         }
     },
 }
 
-theme_path = '/home/nuunamnir/Pictures/theme.json'
-auto_assets_path = os.path.join('/', 'home', 'nuunamnir', '.config', 'qtile', 'assets', 'auto')
-auto_template_assets_path = os.path.join('/', 'home', 'nuunamnir', '.config', 'qtile', 'assets', 'auto_template')
+theme_path = os.path.expanduser(os.path.join('~', 'Pictures', 'theme.json'))
+auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto'))
+auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
 logger.warn('searching for theme file ...')
 if os.path.isfile(theme_path):
     logger.warn('theme file found')
@@ -81,7 +82,7 @@ if os.path.isfile(theme_path):
                 'foreground': '#FFFFFFFF',
             },
             'fonts': {
-                'standard': 'Cousine Nerd Font',
+                'standard': 'FiraCode Nerd Font',
             },
         }
         for asset in os.listdir(auto_template_assets_path):
@@ -93,7 +94,7 @@ if os.path.isfile(theme_path):
         THEME ='auto'
 
 kitty_config = {}
-kitty_path = os.path.join('/', 'home', 'nuunamnir', '.config', 'kitty', 'kitty.conf')
+kitty_path = os.path.expanduser(os.path.join('~', '.config', 'kitty', 'kitty.conf'))
 with io.open(kitty_path, 'r', encoding='utf-8') as input_handle:
     for line in input_handle:
         line_pieces = line.rstrip().split(' ')
@@ -119,11 +120,13 @@ for i, chunk in enumerate(chunks):
         groups_by_screen[i].append(name)
 
 screens = []
+dpi_diagonal_collector = []
 for i, monitor in enumerate(monitors):
     diagonal_mm = (monitor.width_mm ** 2 + monitor.height_mm ** 2) ** 0.5
     diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
     diagonal_in = diagonal_mm / 25.4
     dpi_diagonal = diagonal / diagonal_in
+    dpi_diagonal_collector.append(dpi_diagonal)
 
     width_in = monitor.width_mm / 25.4
     height_in = monitor.height_mm / 25.4
@@ -146,13 +149,13 @@ for i, monitor in enumerate(monitors):
 
     widget_defaults = dict(
         font=themes[THEME]['fonts']['standard'],
-        fontsize=int(round(dpi_height / 2.54 * 0.33)),
+        fontsize=int(round(dpi_height / 2.54 * 0.5)),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=themes[THEME]['colors']['background'],
     )
     extension_defaults = widget_defaults.copy()
     kitty_config['font_family'] = themes[THEME]['fonts']['standard']
-    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * 0.33 / 4)))
+    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * 0.5)))
 
     b = bar.Bar(
         [
@@ -182,7 +185,7 @@ for i, monitor in enumerate(monitors):
             widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
-        size=int(round(dpi_height / 2.54 * 0.67)),
+        size=int(round(dpi_height / 2.54 * 0.8)),
         margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         background=themes[THEME]['colors']['transparent'],
     )
@@ -193,6 +196,21 @@ with io.open(kitty_path, 'w', encoding='utf-8') as output_handle:
     for key in kitty_config.keys():
         output_handle.write(' '.join([key, kitty_config[key]]) + '\n')
 
+xresources_config = {}
+xresources_path = os.path.expanduser(os.path.join('~', '.Xresources'))
+with io.open(xresources_path, 'r', encoding='utf-8') as input_handle:
+    for line in input_handle:
+        k, v = line.rstrip().split()
+        xresources_config[k] = v
+
+xresources_config['Xft.dpi:'] = str(int(round(numpy.mean(dpi_diagonal_collector))))
+xresources_config['Xcursor.size:'] = str(int(round(numpy.mean(dpi_diagonal_collector) / 12)))
+with io.open(xresources_path, 'w', encoding='utf-8') as output_handle:
+    for key in xresources_config.keys():
+        output_handle.write(' '.join([key, xresources_config[key]]) + '\n')
+
+
+
 groups = []
 chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
 for i, chunk in enumerate(chunks):
@@ -202,8 +220,8 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
-    #subprocess.Popen(args=['feh', '--bg-tile', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_dark_tile.png')])
+    #subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
+    subprocess.Popen(args=['feh', '--bg-tile', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_tile.png')])
 
 @hook.subscribe.startup_complete
 def send_to_second_screen():
