@@ -41,6 +41,8 @@ from libqtile.utils import guess_terminal, logger
 import screeninfo
 import numpy
 
+import parse_sensors
+
 logger.setLevel(logging.WARNING)
 
 THEME = 'yths-dark'
@@ -82,7 +84,9 @@ if os.path.isfile(theme_path):
                 'foreground': '#FFFFFFFF',
             },
             'fonts': {
-                'standard': 'FiraCode Nerd Font',
+                'standard': 'Cantarell',
+                'console': 'Fira Code Regular',
+                'font-features': 'FiraCode-Regular +cv16 +ss02',
             },
         }
         for asset in os.listdir(auto_template_assets_path):
@@ -103,10 +107,9 @@ with io.open(kitty_path, 'r', encoding='utf-8') as input_handle:
 kitty_config['background'] = themes[THEME]['colors']['background']
 kitty_config['foreground'] = themes[THEME]['colors']['inactive']
 
-
 monitors = screeninfo.get_monitors()[::-1]
 
-layouts = {}
+layouts = {} 
 
 def divide_chunks(l, n):
     for i in range(0, len(l), n):
@@ -149,13 +152,14 @@ for i, monitor in enumerate(monitors):
 
     widget_defaults = dict(
         font=themes[THEME]['fonts']['standard'],
-        fontsize=int(round(dpi_height / 2.54 * 0.5)),
+        fontsize=int(round(dpi_height / 2.54 * 0.75)),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=themes[THEME]['colors']['background'],
     )
     extension_defaults = widget_defaults.copy()
-    kitty_config['font_family'] = themes[THEME]['fonts']['standard']
-    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * 0.5)))
+    kitty_config['font_family'] = themes[THEME]['fonts']['console']
+    kitty_config['font_family'] = themes[THEME]['fonts']['console']
+    kitty_config['font_features'] = themes[THEME]['fonts']['font-features']
 
     b = bar.Bar(
         [
@@ -182,10 +186,14 @@ for i, monitor in enumerate(monitors):
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
+            parse_sensors.Sensors(fmt='<span font-size="x-small">🌡</span> {}° C', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Spacer(background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
-        size=int(round(dpi_height / 2.54 * 0.8)),
+        size=int(round(dpi_height / 2.54 * 1.25)),
         margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         background=themes[THEME]['colors']['transparent'],
     )
@@ -220,8 +228,8 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    #subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
-    subprocess.Popen(args=['feh', '--bg-tile', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_tile.png')])
+    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
+    #subprocess.Popen(args=['feh', '--bg-tile', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_tile.png')])
 
 @hook.subscribe.startup_complete
 def send_to_second_screen():
