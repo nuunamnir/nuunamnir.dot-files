@@ -45,40 +45,28 @@ import parse_sensors
 
 logger.setLevel(logging.WARNING)
 
-THEME = 'yths-dark'
-themes = {
-    'yths-dark': {
-        'colors': {
-            'background': '#402C25FF',
-            'this-current-screen-border': '#FFD8A0FF',
-            'other-current-screen-border': '#FF0000FF',
-            'active': '#1A161AFF',
-            'inactive': '#806C50FF',
-            'border-focus-stack': '#FF0000FF',
-            'transparent': '#FFFFFF00',
-            'foreground': '#FFFFFFFF',
-        },
-        'fonts': {
-            'standard': 'FiraCode Nerd Font',
-        }
-    },
-}
+THEME = 'dark_forest'
 
-theme_path = os.path.expanduser(os.path.join('~', 'Pictures', 'theme.json'))
-auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto'))
+theme_path = os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'theme.json'))
+auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', THEME))
+try:
+    os.makedirs(auto_assets_path)
+except FileExistsError:
+    pass
+
 auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
 logger.warn('searching for theme file ...')
 if os.path.isfile(theme_path):
     logger.warn('theme file found')
     with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
-        colors = json.load(input_handle)
-        themes['auto'] = {
+        theme_data = json.load(input_handle)
+        themes[THEME] = {
             'colors': {
-                'background': colors['background-accent'],
-                'this-current-screen-border': colors['foreground'],
+                'background': theme_data['colors']['background-accent'],
+                'this-current-screen-border': theme_data['colors']['foreground'],
                 'other-current-screen-border': '#FF0000FF',
-                'active': colors['highlight'],
-                'inactive': colors['foreground-accent'],
+                'active':  theme_data['colors']['foreground-accent-complimentary'],
+                'inactive': theme_data['colors']['foreground-accent'],
                 'border-focus-stack': '#FF0000FF',
                 'transparent': '#FFFFFF00',
                 'foreground': '#FFFFFFFF',
@@ -88,14 +76,35 @@ if os.path.isfile(theme_path):
                 'console': 'Fira Code Regular',
                 'font-features': 'FiraCode-Regular +cv16 +ss02',
             },
+            'wallpaper': theme_data['wallpaper']
         }
         for asset in os.listdir(auto_template_assets_path):
             with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
                 data = input_handle.read()
-            data = data.replace('#100001', colors['background-accent'])
+            data = data.replace('#100001', theme_data['colors']['background-accent'])
             with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
                 output_handle.write(data)
-        THEME ='auto'
+else:
+    THEME = 'default'
+    themes = {
+        'default': {
+            'colors': {
+                'background': '#402C25FF',
+                'this-current-screen-border': '#FFD8A0FF',
+                'other-current-screen-border': '#FF0000FF',
+                'active': '#1A161AFF',
+                'inactive': '#806C50FF',
+                'border-focus-stack': '#FF0000FF',
+                'transparent': '#FFFFFF00',
+                'foreground': '#FFFFFFFF',
+            },
+            'fonts': {
+                'standard': 'Cantarell',
+                'console': 'Fira Code Regular',
+                'font-features': 'FiraCode-Regular +cv16 +ss02',
+            }
+        },
+    }
 
 kitty_config = {}
 kitty_path = os.path.expanduser(os.path.join('~', '.config', 'kitty', 'kitty.conf'))
@@ -182,15 +191,15 @@ for i, monitor in enumerate(monitors):
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', cursor=False, rounded=True),
-            widget.WindowName(background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
+            widget.WindowName(fmt='<span rise="10pt">{}</span>', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sensors.Sensors(fmt='<span font-size="x-small">🌡</span> {}° C', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            parse_sensors.Sensors(fmt='<span font-size="x-small">🌡</span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Clock(format="%Y-%m-%d %a %H:%M:%S", background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
+            widget.Clock(fmt='<span rise="10pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
         size=int(round(dpi_height / 2.54 * 1.25)),
@@ -228,8 +237,14 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    subprocess.Popen(args=['feh', '--bg-fill', os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
-    #subprocess.Popen(args=['feh', '--bg-tile', os.path.join(os.getcwd(), 'Pictures', 'wallpaper_tile.png')])
+    if themes[THEME]['wallpaper'] == 'stretched' or themes[THEME]['centered'] == 'stretched':
+        wallpaper_mode = '--bg-fill'
+    elif themes[THEME]['wallpaper'] == 'tiled':
+        wallpaper_mode = '--bg-tile'
+    else:
+        raise ValueError
+
+    subprocess.Popen(args=['feh', wallpaper_mode, os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
 
 @hook.subscribe.startup_complete
 def send_to_second_screen():
