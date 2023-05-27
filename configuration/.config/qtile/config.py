@@ -54,39 +54,7 @@ try:
 except FileExistsError:
     pass
 
-auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
-logger.warn('searching for theme file ...')
-if os.path.isfile(theme_path):
-    logger.warn('theme file found')
-    with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
-        theme_data = json.load(input_handle)
-        themes[THEME] = {
-            'colors': {
-                'background': theme_data['colors']['background-accent'],
-                'this-current-screen-border': theme_data['colors']['foreground'],
-                'other-current-screen-border': '#FF0000FF',
-                'active':  theme_data['colors']['foreground-accent-complimentary'],
-                'inactive': theme_data['colors']['foreground-accent'],
-                'border-focus-stack': '#FF0000FF',
-                'transparent': '#FFFFFF00',
-                'foreground': '#FFFFFFFF',
-            },
-            'fonts': {
-                'standard': 'Cantarell',
-                'console': 'Fira Code Regular',
-                'font-features': 'FiraCode-Regular +cv16 +ss02',
-            },
-            'wallpaper': theme_data['wallpaper']
-        }
-        for asset in os.listdir(auto_template_assets_path):
-            with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
-                data = input_handle.read()
-            data = data.replace('#100001', theme_data['colors']['background-accent'])
-            with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
-                output_handle.write(data)
-else:
-    THEME = 'default'
-    themes = {
+themes = {
         'default': {
             'colors': {
                 'background': '#402C25FF',
@@ -105,6 +73,39 @@ else:
             }
         },
     }
+
+auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
+logger.warn('searching for theme file ...')
+if os.path.isfile(theme_path):
+    logger.warn('theme file found')
+    with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
+        theme_data = json.load(input_handle)
+        themes[THEME] = {
+            'colors': {
+                'background': theme_data['colors']['background-accent'],
+                'this-current-screen-border': theme_data['colors']['foreground'],
+                'other-current-screen-border': '#FF0000FF',
+                'active':  theme_data['colors']['foreground-accent-complimentary'],
+                'inactive': theme_data['colors']['foreground-accent'],
+                'border-focus-stack': '#FF0000FF',
+                'transparent': '#FFFFFF00',
+                'foreground': '#FFFFFFFF',
+            },
+            'fonts': {
+                'standard': 'Fira Code Regular',
+                'console': 'Fira Code Regular',
+                'font-features': 'FiraCode-Regular +cv16 +ss02',
+            },
+            'wallpaper': theme_data['wallpaper']
+        }
+        for asset in os.listdir(auto_template_assets_path):
+            with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
+                data = input_handle.read()
+            data = data.replace('#100001', theme_data['colors']['background-accent'])
+            with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
+                output_handle.write(data)
+else:
+    THEME = 'default'
 
 kitty_config = {}
 kitty_path = os.path.expanduser(os.path.join('~', '.config', 'kitty', 'kitty.conf'))
@@ -191,15 +192,15 @@ for i, monitor in enumerate(monitors):
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', cursor=False, rounded=True),
-            widget.WindowName(fmt='<span rise="10pt">{}</span>', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
+            widget.WindowName(fmt='<span rise="8pt">{}</span>', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sensors.Sensors(fmt='<span font-size="x-small">🌡</span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            parse_sensors.Sensors(fmt='<span font-size="x-small">🌡</span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Clock(fmt='<span rise="10pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
+            widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
         size=int(round(dpi_height / 2.54 * 1.25)),
