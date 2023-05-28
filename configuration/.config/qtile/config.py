@@ -92,7 +92,7 @@ if os.path.isfile(theme_path):
                 'foreground': '#FFFFFFFF',
             },
             'fonts': {
-                'standard': 'Fira Code Regular',
+                'standard': 'FiraCode Nerd Font',
                 'console': 'Fira Code Regular',
                 'font-features': 'FiraCode-Regular +cv16 +ss02',
             },
@@ -162,13 +162,13 @@ for i, monitor in enumerate(monitors):
 
     widget_defaults = dict(
         font=themes[THEME]['fonts']['standard'],
-        fontsize=int(round(dpi_height / 2.54 * 0.75)),
+        fontsize=int(round(dpi_height / 2.54 * 0.35)),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=themes[THEME]['colors']['background'],
     )
     extension_defaults = widget_defaults.copy()
     kitty_config['font_family'] = themes[THEME]['fonts']['console']
-    kitty_config['font_family'] = themes[THEME]['fonts']['console']
+    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * 0.35 * 0.25)))
     kitty_config['font_features'] = themes[THEME]['fonts']['font-features']
 
     b = bar.Bar(
@@ -191,19 +191,19 @@ for i, monitor in enumerate(monitors):
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', cursor=False, rounded=True),
+            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', fmt='<span color="' + themes[THEME]['colors']['active'] + '"></span> {}', cursor=False, rounded=True),
             widget.WindowName(fmt='<span rise="8pt">{}</span>', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sensors.Sensors(fmt='<span font-size="x-small">🌡</span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            parse_sensors.Sensors(fmt='<span color="' + themes[THEME]['colors']['active'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
-        size=int(round(dpi_height / 2.54 * 1.25)),
+        size=int(round(dpi_height / 2.54 * 0.8)),
         margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         background=themes[THEME]['colors']['transparent'],
     )
@@ -238,14 +238,14 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    if themes[THEME]['wallpaper'] == 'stretched' or themes[THEME]['centered'] == 'stretched':
+    if themes[THEME]['wallpaper'] == 'stretched' or themes[THEME]['wallpaper'] == 'centered':
         wallpaper_mode = '--bg-fill'
     elif themes[THEME]['wallpaper'] == 'tiled':
         wallpaper_mode = '--bg-tile'
     else:
         raise ValueError
 
-    subprocess.Popen(args=['feh', wallpaper_mode, os.path.join(os.getcwd(), 'Pictures', 'wallpaper.png')])
+    subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'wallpaper.png'))])
 
 @hook.subscribe.startup_complete
 def send_to_second_screen():

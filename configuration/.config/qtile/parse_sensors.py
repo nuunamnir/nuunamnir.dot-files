@@ -24,9 +24,9 @@ class Sensors(libqtile.widget.base.ThreadPoolText):
 
         data = json.loads(result.stdout)
         for k in data:
-            if k.startswith('asusec-isa-'):
+            if k.startswith('acpitz-acpi-'):
                 output_data = {
-                    'system-temperature': float(data[k]['T_Sensor'][list(data[k]['T_Sensor'])[0]]),
+                    'system-temperature': float(data[k]['temp1'][list(data[k]['temp1'])[0]]),
                 }
         return output_data
 
