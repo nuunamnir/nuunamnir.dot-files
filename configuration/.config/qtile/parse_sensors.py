@@ -12,9 +12,11 @@ class Sensors(libqtile.widget.base.ThreadPoolText):
         ("sensor", 'system-temperature', "the systems average temperature"),
     ]
 
-    def __init__(self, **config):
+    def __init__(self, interface, sensor, **config):
         libqtile.widget.base.ThreadPoolText.__init__(self, "", **config)
         self.add_defaults(Sensors.defaults)
+        self.interface = interface
+        self.sensor = sensor
 
 
     def sensors_data(self):
@@ -24,9 +26,9 @@ class Sensors(libqtile.widget.base.ThreadPoolText):
 
         data = json.loads(result.stdout)
         for k in data:
-            if k.startswith('acpitz-acpi-'):
+            if k.startswith(self.interface):
                 output_data = {
-                    'system-temperature': float(data[k]['temp1'][list(data[k]['temp1'])[0]]),
+                    'system-temperature': float(data[k][self.sensor][list(data[k][self.sensor])[0]]),
                 }
         return output_data
 

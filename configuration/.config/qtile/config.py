@@ -32,6 +32,7 @@ import collections
 import subprocess
 import logging
 import json
+import uuid
 
 from libqtile import qtile, bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -44,6 +45,25 @@ import numpy
 import parse_sensors
 
 logger.setLevel(logging.WARNING)
+
+SYS_ID = uuid.getnode()
+SYS_VARIABLES = {
+    'font_scaling': 0.75,
+    'font_scaling_kitty': 0.75, 
+    'bar_scaling': 1.25,
+    'system_temperature': ['asusec-isa-', 'T_Sensor']
+}
+if SYS_ID == 9190538989478: # stationary computer
+    pass
+elif SYS_ID == 74780420245850: # mobile computer
+    SYS_VARIABLES['font_scaling'] = 0.35
+    SYS_VARIABLES['font_scaling_kitty'] = 0.25
+    SYS_VARIABLES['bar_scaling'] = 0.8
+    SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']
+else:
+    pass
+
+
 
 THEME = 'dark_forest'
 
@@ -86,6 +106,7 @@ if os.path.isfile(theme_path):
                 'this-current-screen-border': theme_data['colors']['foreground'],
                 'other-current-screen-border': '#FF0000FF',
                 'active':  theme_data['colors']['foreground-accent-complimentary'],
+                'info': theme_data['colors']['foreground-accent-alt2'],
                 'inactive': theme_data['colors']['foreground-accent'],
                 'border-focus-stack': '#FF0000FF',
                 'transparent': '#FFFFFF00',
@@ -162,13 +183,13 @@ for i, monitor in enumerate(monitors):
 
     widget_defaults = dict(
         font=themes[THEME]['fonts']['standard'],
-        fontsize=int(round(dpi_height / 2.54 * 0.35)),
+        fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'])),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=themes[THEME]['colors']['background'],
     )
     extension_defaults = widget_defaults.copy()
     kitty_config['font_family'] = themes[THEME]['fonts']['console']
-    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * 0.35 * 0.25)))
+    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
     kitty_config['font_features'] = themes[THEME]['fonts']['font-features']
 
     b = bar.Bar(
@@ -191,19 +212,19 @@ for i, monitor in enumerate(monitors):
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', fmt='<span color="' + themes[THEME]['colors']['active'] + '"></span> {}', cursor=False, rounded=True),
+            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> {}', cursor=False, rounded=True),
             widget.WindowName(fmt='<span rise="8pt">{}</span>', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sensors.Sensors(fmt='<span color="' + themes[THEME]['colors']['active'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
-        size=int(round(dpi_height / 2.54 * 0.8)),
+        size=int(round(dpi_height / 2.54 * SYS_VARIABLES['bar_scaling'])),
         margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         background=themes[THEME]['colors']['transparent'],
     )
