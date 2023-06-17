@@ -43,6 +43,7 @@ import screeninfo
 import numpy
 
 import parse_sensors
+import parse_xset
 
 logger.setLevel(logging.WARNING)
 
@@ -108,6 +109,7 @@ if os.path.isfile(theme_path):
                 'active':  theme_data['colors']['foreground-accent-complimentary'],
                 'info': theme_data['colors']['foreground-accent-alt2'],
                 'inactive': theme_data['colors']['foreground-accent'],
+                'urgent-background': theme_data['colors']['foreground-accent-complimentary'],
                 'border-focus-stack': '#FF0000FF',
                 'transparent': '#FFFFFF00',
                 'foreground': '#FFFFFFFF',
@@ -155,6 +157,8 @@ for i, chunk in enumerate(chunks):
 
 screens = []
 dpi_diagonal_collector = []
+
+
 for i, monitor in enumerate(monitors):
     diagonal_mm = (monitor.width_mm ** 2 + monitor.height_mm ** 2) ** 0.5
     diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
@@ -208,6 +212,8 @@ for i, monitor in enumerate(monitors):
                 other_screen_border=themes[THEME]['colors']['other-current-screen-border'],
                 background=themes[THEME]['colors']['background'],
                 inactive=themes[THEME]['colors']['inactive'],
+                urgent_border=themes[THEME]['colors']['urgent-background'],
+                urgent_text=themes[THEME]['colors']['this-current-screen-border'],
             ),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
@@ -218,8 +224,9 @@ for i, monitor in enumerate(monitors):
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            parse_xset.InputState(fmt='<span color="' + themes[THEME]['colors']['info'] + '">{}</span>', update_inverval=0.5),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Spacer(background=themes[THEME]['colors']['transparent']),
+            widget.Spacer(length=int(round(dpi_height / 2.54) * 0.5), background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
@@ -392,7 +399,9 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
-    ]
+    ],
+    border_normal=themes[THEME]['colors']['background'],
+    border_focus=themes[THEME]['colors']['this-current-screen-border'],
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"

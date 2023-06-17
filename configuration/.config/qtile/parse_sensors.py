@@ -9,7 +9,8 @@ class Sensors(libqtile.widget.base.ThreadPoolText):
     """A text widgets that displays sensor values taken from the lm-sensors library."""
 
     defaults: list[tuple[str, typing.Any, str]] = [
-        ("sensor", 'system-temperature', "the systems average temperature"),
+        ('sensor', 'system-temperature', 'the systems average temperature'),
+        ('update_interval', 10, 'time between updates in seconds'), 
     ]
 
     def __init__(self, interface, sensor, **config):

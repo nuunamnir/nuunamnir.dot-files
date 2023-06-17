@@ -41,4 +41,5 @@ else
     dispwin -d 2 -i .local/share/DisplayCAL/storage/S27B550\ #2\ 2023-05-26\ 17-49\ 0.3127x\ 0.329y\ Rec.\ 1886\ M-S\ XYZLUT+MTX/S27B550\ #2\ 2023-05-26\ 17-49\ 0.3127x\ 0.329y\ Rec.\ 1886\ M-S\ XYZLUT+MTX.icc
 fi
 
+numlockx on &
 qtile start
