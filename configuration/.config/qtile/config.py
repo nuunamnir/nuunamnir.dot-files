@@ -44,6 +44,7 @@ import numpy
 
 import parse_sensors
 import parse_xset
+import parse_sun
 
 logger.setLevel(logging.WARNING)
 
@@ -65,8 +66,11 @@ else:
     pass
 
 
+THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
+os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
-THEME = 'dark_forest'
+THEME = f'{THEME_MODE}_forest'
+logger.warn(THEME)
 
 theme_path = os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'theme.json'))
 auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', THEME))
@@ -223,11 +227,6 @@ for i, monitor in enumerate(monitors):
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Spacer(background=themes[THEME]['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
-            parse_xset.InputState(fmt='<span color="' + themes[THEME]['colors']['info'] + '">{}</span>', update_inverval=0.5),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Spacer(length=int(round(dpi_height / 2.54) * 0.5), background=themes[THEME]['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
             widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
         ],
@@ -236,7 +235,23 @@ for i, monitor in enumerate(monitors):
         background=themes[THEME]['colors']['transparent'],
     )
     # b.window.window.set_property('QTILE_BAR', 1, 'CARDINAL', 32)
-    screens.append(Screen(top=b))
+    status_bar = bar.Bar(
+        [
+            widget.Spacer(background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
+            parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
+            parse_xset.InputState(fmt='<span color="' + themes[THEME]['colors']['info'] + '">{}</span>', update_inverval=0.5),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Spacer(background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
+            parse_sun.SunState(fmt='<span color="' + themes[THEME]['colors']['info'] + '">{}</span>'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+        ],
+        size=int(round(dpi_height / 2.54 * SYS_VARIABLES['bar_scaling'])),
+        margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
+        background=themes[THEME]['colors']['transparent'],
+    )
+    screens.append(Screen(top=b, bottom=status_bar))
 
 with io.open(kitty_path, 'w', encoding='utf-8') as output_handle:
     for key in kitty_config.keys():
@@ -288,6 +303,11 @@ def send_to_second_screen():
 mod = "mod4"
 terminal = guess_terminal()
 
+
+@lazy.function
+def spawn_prompt_on_active_screen(qtile):
+    qtile.current_screen.cmd_spawn()
+
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -334,10 +354,12 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod, 'shift'], "Tab", lazy.hide_show_bar('bottom'), desc="Toggle bottom bar visibility"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod, 'shift'], "r", spawn_prompt_on_active_screen(), desc="Spawn a command using a prompt widget"),
 ]
 
 

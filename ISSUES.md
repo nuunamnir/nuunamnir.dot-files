@@ -5,6 +5,9 @@ A list of issues and ideas.
 * show which bluetooth devices are connected (and if available their remaining battery charge)
 * ~~show hidden files in file manager~~ (resolved by editing the gtk config)
 * allow for light and dark theme
+    - automatically update kitty (explore themes)
+    - automatically update gtk
+    - fix long loading delay due to querying the requests
 * ~~numlock as default state~~ (resolved by adding numlockx - it was working, but qtile/xorg turns numlock off - in terminal it was on)
 * configure dunst (notification service)
 * some keyboard shortcut switches keyboard layout - needs to fixed
