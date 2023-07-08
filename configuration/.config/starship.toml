@@ -1,7 +1,30 @@
 "$schema" = 'https://starship.rs/config-schema.json'
+format = '''[│](bold foreground_accent_complementary)$all
+[└─>](bold foreground_accent_complementary) '''
+
+add_newline = false
+palette = 'nuunamnir'
+
+[palettes.nuunamnir]
+foreground_accent_complementary = '#1b1b1b'
+foreground_accent_alt1 = '#c0d2c1'
+foreground_accent_alt2 = '#b3cedb'
+background_accent = '#5d7b8d'
+background = '#2e4050'
+
+[cmd_duration]
+show_milliseconds = true
+format = '[$duration](background)'
 
 [package]
 symbol = " "
 
 [python]
 symbol = " "
+
+[directory]
+style = 'bold background'
+
+[character]
+success_symbol = '[|](bold foreground_accent_complementary)[➜](bold foreground_accent_alt1) '
+error_symbol = "[✖](bold foreground_accent_alt2) "

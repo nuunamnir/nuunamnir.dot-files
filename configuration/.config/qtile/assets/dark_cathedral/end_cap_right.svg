@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="end_cap_left.svg"
+   sodipodi:docname="end_cap_right.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@
      transform="translate(-72.614143,-42.444379)">
     <path
        id="rect111"
-       style="fill:#cddacb;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-opacity:1"
-       d="m 77.455708,42.444379 c -2.695769,0.08349 -4.841565,2.279339 -4.841565,4.996078 v 22.000207 c 0,2.716739 2.145796,4.912086 4.841565,4.995561 z" />
+       style="fill:#1c303d;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-opacity:1"
+       d="m 72.614143,74.436225 c 2.695769,-0.08349 4.841565,-2.279339 4.841565,-4.996078 V 47.43994 c 0,-2.716739 -2.145796,-4.912086 -4.841565,-4.995561 z" />
   </g>
 </svg>

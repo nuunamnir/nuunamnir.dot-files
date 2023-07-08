@@ -69,7 +69,7 @@ else:
 THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
 os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
-THEME = f'{THEME_MODE}_forest'
+THEME = f'{THEME_MODE}_standard'
 logger.warn(THEME)
 
 theme_path = os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'theme.json'))
@@ -108,15 +108,15 @@ if os.path.isfile(theme_path):
         themes[THEME] = {
             'colors': {
                 'background': theme_data['colors']['background-accent'],
-                'this-current-screen-border': theme_data['colors']['foreground'],
+                'this-current-screen-border': theme_data['colors']['foreground-accent-alt1'],
                 'other-current-screen-border': '#FF0000FF',
-                'active':  theme_data['colors']['foreground-accent-complimentary'],
+                'active':  theme_data['colors']['foreground-accent-complementary'],
                 'info': theme_data['colors']['foreground-accent-alt2'],
                 'inactive': theme_data['colors']['foreground-accent'],
-                'urgent-background': theme_data['colors']['foreground-accent-complimentary'],
+                'urgent-background': theme_data['colors']['foreground-accent-complementary'],
                 'border-focus-stack': '#FF0000FF',
                 'transparent': '#FFFFFF00',
-                'foreground': '#FFFFFFFF',
+                'foreground': theme_data['colors']['foreground'],
             },
             'fonts': {
                 'standard': 'FiraCode Nerd Font',
@@ -141,9 +141,13 @@ with io.open(kitty_path, 'r', encoding='utf-8') as input_handle:
         line_pieces = line.rstrip().split(' ')
         kitty_config[line_pieces[0]] = ' '.join(line_pieces[1:])
 
-kitty_config['background'] = themes[THEME]['colors']['background']
-kitty_config['foreground'] = themes[THEME]['colors']['inactive']
-
+kitty_theme = {}
+kitty_theme['background'] = themes[THEME]['colors']['background']
+kitty_theme['foreground'] = themes[THEME]['colors']['inactive']
+kitty_theme['cursor'] = themes[THEME]['colors']['inactive']
+kitty_theme['selection_background'] = themes[THEME]['colors']['this-current-screen-border']
+kitty_theme['selection_foreground'] = themes[THEME]['colors']['urgent-background']
+kitty_theme['color3'] = themes[THEME]['colors']['info']
 monitors = screeninfo.get_monitors()[::-1]
 
 layouts = {} 
@@ -256,6 +260,10 @@ for i, monitor in enumerate(monitors):
 with io.open(kitty_path, 'w', encoding='utf-8') as output_handle:
     for key in kitty_config.keys():
         output_handle.write(' '.join([key, kitty_config[key]]) + '\n')
+kitty_theme_path = os.path.expanduser(os.path.join('~', '.config', 'kitty', 'themes', 'nuunamnir.conf'))
+with io.open(kitty_theme_path, 'w', encoding='utf-8') as output_handle:
+    for key in kitty_theme.keys():
+        output_handle.write(' '.join([key, kitty_theme[key]]) + '\n')
 
 xresources_config = {}
 xresources_path = os.path.expanduser(os.path.join('~', '.Xresources'))
@@ -289,6 +297,8 @@ def _():
         raise ValueError
 
     subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'wallpaper.png'))])
+    subprocess.Popen(args=['kitty', '+kitten', 'themes', '--reload-in=all', 'nuunamnir'])
+
 
 @hook.subscribe.startup_complete
 def send_to_second_screen():
@@ -297,12 +307,10 @@ def send_to_second_screen():
         #qtile.groups_map[chunk[0]].cmd_toscreen(i, toggle=False)
         qtile.groups_map[chunk[0]].cmd_toscreen(i)
         logger.warning(f'{chunk[0]}, {i}')
-    logger.warning('test')
-
-
+ 
 mod = "mod4"
-terminal = guess_terminal()
 
+terminal = guess_terminal()
 
 @lazy.function
 def spawn_prompt_on_active_screen(qtile):

@@ -1,6 +1,0 @@
-enable_audio_bell no
-font_family Fira Code Regular
-background #ffff97
-foreground #1d48c5
-font_size 18
-font_features FiraCode-Regular +cv16 +ss02

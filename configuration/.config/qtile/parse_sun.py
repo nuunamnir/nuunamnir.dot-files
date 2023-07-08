@@ -63,7 +63,6 @@ class SunState(libqtile.widget.base.ThreadPoolText):
 
 
     def toggle_mode(self):
-        send_notification('test', 'test')
         if os.environ.get('QTILE_THEME_MODE', 'light') == 'light':
             os.environ['QTILE_THEME_MODE'] = 'dark'
             self.state = 'light'
