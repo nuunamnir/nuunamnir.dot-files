@@ -244,7 +244,7 @@ def _():
     else:
         raise ValueError
 
-    subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'wallpaper.png'))])
+    subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'wallpaper.png'))])
     kitty.update()
 
 
