@@ -24,7 +24,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# calculate screen specific vertical unit (vunit) according to which all widgets are scaled
 import math
 import os
 import io
@@ -69,77 +68,42 @@ else:
     pass
 
 
+# window manager theming
+THEME_NAME = 'default'
 THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
 os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
-THEME = f'{THEME_MODE}_default'
-logger.warn(THEME)
+THEME = f'{THEME_MODE}_{THEME_NAME}'
+logger.info(f'trying to apply {THEME}')
 
-theme_path = os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'theme.json'))
-auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', THEME))
+theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
+if not os.path.exists(theme_path):
+    logger.warning(f'{THEME} not available, applying default')
+    THEME_NAME = 'default'
+    THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
+    os.environ['QTILE_THEME_MODE'] = THEME_MODE
+    THEME = f'{THEME_MODE}_{THEME_NAME}'
+    theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
+
+with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
+    theme_data = json.load(input_handle)
+theme_data['colors']['transparent'] = '#FFFFFF00'
+
+auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
+auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance'))
 try:
     os.makedirs(auto_assets_path)
 except FileExistsError:
     pass
+for asset in os.listdir(auto_template_assets_path):
+    with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
+        data = input_handle.read()
+    data = data.replace('#100001', theme_data['colors']['background-accent'])
+    with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
+        output_handle.write(data)
 
-themes = {
-        'default': {
-            'colors': {
-                'background': '#402C25FF',
-                'this-current-screen-border': '#FFD8A0FF',
-                'other-current-screen-border': '#FF0000FF',
-                'active': '#1A161AFF',
-                'inactive': '#806C50FF',
-                'border-focus-stack': '#FF0000FF',
-                'transparent': '#FFFFFF00',
-                'foreground': '#FFFFFFFF',
-            },
-            'fonts': {
-                'standard': 'Cantarell',
-                'console': 'Fira Code Regular',
-                'features': 'FiraCode-Regular +cv16 +ss02',
-            }
-        },
-    }
-
-auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
-logger.warn('searching for theme file ...')
-if os.path.isfile(theme_path):
-    logger.warn('theme file found')
-    with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
-        theme_data = json.load(input_handle)
-        themes[THEME] = {
-            'colors': {
-                'background': theme_data['colors']['background-accent'],
-                'this-current-screen-border': theme_data['colors']['foreground-accent-alt1'],
-                'other-current-screen-border': '#FF0000FF',
-                'active':  theme_data['colors']['foreground-accent-complementary'],
-                'info': theme_data['colors']['foreground-accent-alt2'],
-                'inactive': theme_data['colors']['foreground-accent'],
-                'urgent-background': theme_data['colors']['foreground-accent-complementary'],
-                'border-focus-stack': '#FF0000FF',
-                'transparent': '#FFFFFF00',
-                'foreground': theme_data['colors']['foreground'],
-            },
-            'fonts': {
-                'standard': theme_data['fonts']['standard'],
-                'console': theme_data['fonts']['console'],
-                'features': theme_data['fonts']['features'],
-            },
-            'wallpaper': theme_data['wallpaper']
-        }
-        for asset in os.listdir(auto_template_assets_path):
-            with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
-                data = input_handle.read()
-            data = data.replace('#100001', theme_data['colors']['background-accent'])
-            with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
-                output_handle.write(data)
-else:
-    THEME = 'default'
 
 monitors = screeninfo.get_monitors()[::-1]
-
-layouts = {} 
 
 def divide_chunks(l, n):
     for i in range(0, len(l), n):
@@ -155,7 +119,7 @@ for i, chunk in enumerate(chunks):
 screens = []
 dpi_diagonal_collector = []
 
-
+layouts = {} 
 for i, monitor in enumerate(monitors):
     diagonal_mm = (monitor.width_mm ** 2 + monitor.height_mm ** 2) ** 0.5
     diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
@@ -170,9 +134,9 @@ for i, monitor in enumerate(monitors):
 
     layouts[i] = [
         layout.Columns(
-            border_normal=themes[THEME]['colors']['background'],
-            border_focus=themes[THEME]['colors']['this-current-screen-border'],
-            border_focus_stack=themes[THEME]['colors']['border-focus-stack'],
+            border_normal=theme_data['colors']['background-accent'],
+            border_focus=theme_data['colors']['foreground-accent-alt1'],
+            border_focus_stack=theme_data['colors']['color3'],
             border_width=1,
             margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
             margin_on_single=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
@@ -186,7 +150,7 @@ for i, monitor in enumerate(monitors):
         font=themes[THEME]['fonts']['standard'],
         fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'])),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
-        background=themes[THEME]['colors']['background'],
+        background=theme_data['colors']['background-accent'],
     )
     extension_defaults = widget_defaults.copy()
 
@@ -194,54 +158,54 @@ for i, monitor in enumerate(monitors):
 
     b = bar.Bar(
         [
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
             widget.GroupBox(
-                active=themes[THEME]['colors']['this-current-screen-border'],
-                block_highlight_text_color=themes[THEME]['colors']['active'],
-                this_current_screen_border=themes[THEME]['colors']['this-current-screen-border'],
+                active=theme_data['colors']['foreground-accent-alt1'],
+                block_highlight_text_color=theme_data['colors']['foreground-accent-complementary'],
+                this_current_screen_border=theme_data['colors']['foreground-accent-alt1'],
                 highlight_method='block',
                 rounded=True,
                 hide_unused=False,
                 visible_groups=groups_by_screen[i],
-                this_screen_border=themes[THEME]['colors']['background'],
-                other_current_screen_border=themes[THEME]['colors']['other-current-screen-border'],
-                other_screen_border=themes[THEME]['colors']['other-current-screen-border'],
-                background=themes[THEME]['colors']['background'],
-                inactive=themes[THEME]['colors']['inactive'],
-                urgent_border=themes[THEME]['colors']['urgent-background'],
-                urgent_text=themes[THEME]['colors']['this-current-screen-border'],
+                this_screen_border=theme_data['colors']['background-accent'],
+                other_current_screen_border=theme_data['colors']['color3'],
+                other_screen_border=theme_data['colors']['color3'],
+                background=theme_data['colors']['background-accent'],
+                inactive=theme_data['colors']['foreground-accent'],
+                urgent_border=theme_data['colors']['foreground-accent-complementary'],
+                urgent_text=theme_data['colors']['foreground-accent-alt1'],
             ),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Spacer(background=themes[THEME]['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Prompt(background=themes[THEME]['colors']['background'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> {}', cursor=False, rounded=True),
-            widget.WindowName(fmt='<span rise="8pt">{}</span>', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Spacer(background=themes[THEME]['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=themes[THEME]['colors']['background'], foreground=themes[THEME]['colors']['inactive']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
+            widget.Spacer(background=theme_data['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
+            widget.Prompt(background=theme_data['colors']['background-accent'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '"></span> {}', cursor=False, rounded=True),
+            widget.WindowName(fmt='<span rise="8pt">{}</span>', background=theme_data['colors']['background-accent'], foreground=theme_data['colors']['foreground-accent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
+            widget.Spacer(background=theme_data['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
+            widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=theme_data['colors']['background-accent'], foreground=theme_data['colors']['foreground-accent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
         ],
         size=int(round(dpi_height / 2.54 * SYS_VARIABLES['bar_scaling'])),
         margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
-        background=themes[THEME]['colors']['transparent'],
+        background=theme_data['colors']['transparent'],
     )
     # b.window.window.set_property('QTILE_BAR', 1, 'CARDINAL', 32)
     status_bar = bar.Bar(
         [
-            widget.Spacer(background=themes[THEME]['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + themes[THEME]['colors']['info'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=themes[THEME]['colors']['inactive']),
-            parse_xset.InputState(fmt='<span color="' + themes[THEME]['colors']['info'] + '">{}</span>', update_inverval=0.5),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
-            widget.Spacer(background=themes[THEME]['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_left.svg'), background=themes[THEME]['colors']['transparent']),
-            parse_sun.SunState(fmt='<span color="' + themes[THEME]['colors']['info'] + '">{}</span>'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', THEME, 'end_cap_right.svg'), background=themes[THEME]['colors']['transparent']),
+            widget.Spacer(background=theme_data['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
+            parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=theme_data['colors']['foreground-accent']),
+            parse_xset.InputState(fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '">{}</span>', update_inverval=0.5),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
+            widget.Spacer(background=theme_data['colors']['transparent']),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
+            parse_sun.SunState(fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '">{}</span>'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
         ],
         size=int(round(dpi_height / 2.54 * SYS_VARIABLES['bar_scaling'])),
         margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
-        background=themes[THEME]['colors']['transparent'],
+        background=theme_data['colors']['transparent'],
     )
     screens.append(Screen(top=b, bottom=status_bar))
 
@@ -263,12 +227,12 @@ with io.open(xresources_path, 'w', encoding='utf-8') as output_handle:
         output_handle.write(' '.join([key, xresources_config[key]]) + '\n')
 
 
-
 groups = []
 chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
 for i, chunk in enumerate(chunks):
     for name in chunk:
         groups.append(Group(name=name, layouts=layouts[i]))
+
 
 @hook.subscribe.startup
 def _():
@@ -354,8 +318,6 @@ keys = [
     Key([mod, 'shift'], "r", spawn_prompt_on_active_screen(), desc="Spawn a command using a prompt widget"),
 ]
 
-
-
 for i in groups:
     for screen in groups_by_screen:
         if i.name in groups_by_screen[screen]:
@@ -414,8 +376,8 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
     ],
-    border_normal=themes[THEME]['colors']['background'],
-    border_focus=themes[THEME]['colors']['this-current-screen-border'],
+    border_normal=theme_data['colors']['background-accent'],
+    border_focus=theme_data['colors']['foreground-accent-alt1'],
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"

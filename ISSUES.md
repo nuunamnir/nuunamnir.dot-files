@@ -13,7 +13,6 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
-* refactor theme handling
 * show which output device is used for audio (define a default)
 * show which bluetooth devices are connected (and if available their remaining battery charge)
 * configure dunst (notification service)
@@ -27,7 +26,8 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
-* ~~refactor kitty theme handling~~ (resolve by creating a kitty class)
+* ~~refactor theme handling~~ (resolved by making use of the default theme)
+* ~~refactor kitty theme handling~~ (resolved by creating a kitty class)
 * ~~show hidden files in file manager~~ (resolved by editing the gtk config)
 * ~~numlock as default state~~ (resolved by adding numlockx - it was working, but qtile/xorg turns numlock off - in terminal it was on)
 * ~~floating window border~~ (resolved by adding the border arguments to the floating_layout that was already present in the qtile config)
