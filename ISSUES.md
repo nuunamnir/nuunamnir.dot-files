@@ -1,11 +1,9 @@
 # Issues and Ideas
 A list of issues and ideas.
 
-## Theme
-* allow for light and dark theme
-    * ~~automatically update kitty (explore themes)~~ (resolved by adding a theme file)
-    * automatically update gtk
-    * fix long loading delay due to querying the requests
+## GTK
+* automatically update gtk
+* gtk color theme - dark/bright ( partially resolved, added the setting - but is not dynamically set)
 * gtk add font size (might not be necessary, could be a bug of [VSC](https://github.com/microsoft/vscode/issues/151803))
 
 ## Keyboard
@@ -13,6 +11,7 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
+* integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
 * show which bluetooth devices are connected (and if available their remaining battery charge)
 * configure dunst (notification service)
@@ -20,12 +19,14 @@ A list of issues and ideas.
 * share edid / document how to generate
 * share icc / document how to generate
 * install script
-* gtk color theme - dark/bright ( partially resolved, added the setting - but is not dynamically set)
 * handle monitors being plugged in or plugged out while qtile is running
 * show prompt on focused screen
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~allow for light and dark theme~~
+    * ~~automatically update kitty (explore themes)~~ (resolved by adding a theme file)
+    * ~~fix long loading delay due to querying the requests~~ (resolved by adding a service to get sun stats in a subprocess)
 * ~~refactor theme handling~~ (resolved by making use of the default theme)
 * ~~refactor kitty theme handling~~ (resolved by creating a kitty class)
 * ~~show hidden files in file manager~~ (resolved by editing the gtk config)

@@ -7,11 +7,11 @@ import io
 import requests
 import datetime
 import zoneinfo
-from libqtile.utils import send_notification
-from libqtile.command.client import CommandClient
-from libqtile import qtile
+import pickle
 
+from libqtile import qtile
 import libqtile.widget.base
+from libqtile.utils import logger
 
 
 class SunState(libqtile.widget.base.ThreadPoolText):
@@ -24,14 +24,7 @@ class SunState(libqtile.widget.base.ThreadPoolText):
     def __init__(self, token_path=os.path.expanduser(os.path.join('~', '.credentials', 'ipinfo')), **config):
         libqtile.widget.base.ThreadPoolText.__init__(self, "", **config)
         self.add_defaults(SunState.defaults)
-
-        self.c = CommandClient()
-
-        with io.open(token_path, 'r', encoding='utf-8') as input_handle:
-            for line in input_handle:
-                self.token = line.strip()
-        
-        self.loc = None
+     
         self.tzinfo = None
         self.sunset = None
         if os.environ.get('QTILE_THEME_MODE_LOCK', 'False') == 'False':
@@ -41,6 +34,7 @@ class SunState(libqtile.widget.base.ThreadPoolText):
 
         self.counter = 0
         self.state = os.environ.get('QTILE_THEME_MODE', 'dark')
+        self.service_process = subprocess.Popen(args=['python', os.path.expanduser(os.path.join('~', '.config', 'qtile', 'parse_sun_service.py')), token_path])
         self._update_location()
 
 
@@ -75,19 +69,8 @@ class SunState(libqtile.widget.base.ThreadPoolText):
 
     
     def _update_location(self):
-        self.ip = requests.get('https://ident.me').content.decode('utf-8')
-        self.url = f'https://ipinfo.io/{self.ip}?token={self.token}'
-        r = requests.get(self.url, timeout=None)
-        try:
-            self.loc = r.json()['loc']
-            self.tzinfo = zoneinfo.ZoneInfo(r.json()['timezone'])
-        except KeyError:
-            pass
-        if self.loc is not None:
-            lat, lng = self.loc.split(',')
-            sun_data = requests.get(f'https://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0').json()['results']
-            self.sunset = datetime.datetime.fromisoformat(sun_data['sunset'])
-            self.sunrise = datetime.datetime.fromisoformat(sun_data['sunrise'])
+        self.tzinfo, self.sunset, self.sunrise = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sun.pickle')), 'rb'))
+        logger.error(self.sunset)
         self.counter += 1
 
 
@@ -128,6 +111,10 @@ class SunState(libqtile.widget.base.ThreadPoolText):
             return f'' + lock_str
         else:
             return f'󱎖' + lock_str
+
+
+    def __del__(self):
+        self.service_process.kill()
 
 
 if __name__ == '__main__':

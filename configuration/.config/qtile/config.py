@@ -147,7 +147,7 @@ for i, monitor in enumerate(monitors):
     ]
 
     widget_defaults = dict(
-        font=themes[THEME]['fonts']['standard'],
+        font=theme_data['fonts']['standard'],
         fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'])),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=theme_data['colors']['background-accent'],
@@ -178,7 +178,7 @@ for i, monitor in enumerate(monitors):
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
             widget.Spacer(background=theme_data['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
-            widget.Prompt(background=theme_data['colors']['background-accent'], cursor_color=themes[THEME]['colors']['foreground'], prompt=' ', fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '"></span> {}', cursor=False, rounded=True),
+            widget.Prompt(background=theme_data['colors']['background-accent'], cursor_color=theme_data['colors']['foreground'], prompt=' ', fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '"></span> {}', cursor=False, rounded=True),
             widget.WindowName(fmt='<span rise="8pt">{}</span>', background=theme_data['colors']['background-accent'], foreground=theme_data['colors']['foreground-accent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
             widget.Spacer(background=theme_data['colors']['transparent']),
@@ -237,9 +237,9 @@ for i, chunk in enumerate(chunks):
 @hook.subscribe.startup
 def _():
     subprocess.Popen(args=['picom'])
-    if themes[THEME]['wallpaper'] == 'stretched' or themes[THEME]['wallpaper'] == 'centered':
+    if theme_data['wallpaper'] == 'stretched' or theme_data['wallpaper'] == 'centered':
         wallpaper_mode = '--bg-fill'
-    elif themes[THEME]['wallpaper'] == 'tiled':
+    elif theme_data['wallpaper'] == 'tiled':
         wallpaper_mode = '--bg-tile'
     else:
         raise ValueError

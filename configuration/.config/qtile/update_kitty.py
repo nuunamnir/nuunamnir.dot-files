@@ -13,6 +13,8 @@ class Kitty:
                     continue
                 line_pieces = line.rstrip().split()
                 if len(line_pieces) > 1:
+                    if line_pieces[0] == 'include':
+                        continue
                     self.kitty_configuration[line_pieces[0]] = ' '.join(line_pieces[1:])
         
         self.kitty_configuration['font_family'] = wm_theme['fonts']['console']
