@@ -6,7 +6,7 @@ A list of issues and ideas.
     * ~~automatically update kitty (explore themes)~~
     * automatically update gtk
     * fix long loading delay due to querying the requests
-* gtk add font size
+* gtk add font size (might not be necessary, could be a bug of [VSC](https://github.com/microsoft/vscode/issues/151803))
 
 ## Keyboard
 * show of function keys are enabled
