@@ -46,6 +46,9 @@ import parse_sensors
 import parse_xset
 import parse_sun
 
+import update_kitty
+
+
 logger.setLevel(logging.WARNING)
 
 SYS_ID = uuid.getnode()
@@ -134,20 +137,6 @@ if os.path.isfile(theme_path):
 else:
     THEME = 'default'
 
-kitty_config = {}
-kitty_path = os.path.expanduser(os.path.join('~', '.config', 'kitty', 'kitty.conf'))
-with io.open(kitty_path, 'r', encoding='utf-8') as input_handle:
-    for line in input_handle:
-        line_pieces = line.rstrip().split(' ')
-        kitty_config[line_pieces[0]] = ' '.join(line_pieces[1:])
-
-kitty_theme = {}
-kitty_theme['background'] = themes[THEME]['colors']['background']
-kitty_theme['foreground'] = themes[THEME]['colors']['inactive']
-kitty_theme['cursor'] = themes[THEME]['colors']['inactive']
-kitty_theme['selection_background'] = themes[THEME]['colors']['this-current-screen-border']
-kitty_theme['selection_foreground'] = themes[THEME]['colors']['urgent-background']
-kitty_theme['color3'] = themes[THEME]['colors']['info']
 monitors = screeninfo.get_monitors()[::-1]
 
 layouts = {} 
@@ -200,9 +189,8 @@ for i, monitor in enumerate(monitors):
         background=themes[THEME]['colors']['background'],
     )
     extension_defaults = widget_defaults.copy()
-    kitty_config['font_family'] = themes[THEME]['fonts']['console']
-    kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
-    kitty_config['font_features'] = themes[THEME]['fonts']['features']
+
+    theme_data['fonts']['console_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
 
     b = bar.Bar(
         [
@@ -257,13 +245,9 @@ for i, monitor in enumerate(monitors):
     )
     screens.append(Screen(top=b, bottom=status_bar))
 
-with io.open(kitty_path, 'w', encoding='utf-8') as output_handle:
-    for key in kitty_config.keys():
-        output_handle.write(' '.join([key, kitty_config[key]]) + '\n')
-kitty_theme_path = os.path.expanduser(os.path.join('~', '.config', 'kitty', 'themes', 'nuunamnir.conf'))
-with io.open(kitty_theme_path, 'w', encoding='utf-8') as output_handle:
-    for key in kitty_theme.keys():
-        output_handle.write(' '.join([key, kitty_theme[key]]) + '\n')
+
+kitty = update_kitty.Kitty(input_path=os.path.join('~', '.config', 'kitty'), wm_theme=theme_data)
+kitty.save(output_path=os.path.join('~', '.config', 'kitty'))
 
 xresources_config = {}
 xresources_path = os.path.expanduser(os.path.join('~', '.Xresources'))
@@ -297,7 +281,7 @@ def _():
         raise ValueError
 
     subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'wallpaper.png'))])
-    subprocess.Popen(args=['kitty', '+kitten', 'themes', '--reload-in=all', 'nuunamnir'])
+    kitty.update()
 
 
 @hook.subscribe.startup_complete
