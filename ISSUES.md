@@ -2,9 +2,6 @@
 A list of issues and ideas.
 
 ## Theme
-* add default theme
-* update theme generator
-    * add additional colors
 * allow for light and dark theme
     * ~~automatically update kitty (explore themes)~~
     * automatically update gtk
@@ -35,3 +32,6 @@ A list of issues and ideas.
 * ~~numlock as default state~~ (resolved by adding numlockx - it was working, but qtile/xorg turns numlock off - in terminal it was on)
 * ~~floating window border~~ (resolved by adding the border arguments to the floating_layout that was already present in the qtile config)
 * ~~qtile groupbox urgent text(?) follow color theme~~ (resolved by adding the urgent* arguments to the groupbox widget)
+* ~~add default theme~~ (resolved by adding spaceinvaders-inspired wallpapers)
+* ~~update theme generator~~ (resolved by adding own wallpaper to documentation)
+    * ~~add additional colors~~ (resolved by adding 16 foreground-accent/background-accent derived colors)

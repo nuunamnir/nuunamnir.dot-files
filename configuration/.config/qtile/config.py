@@ -69,7 +69,7 @@ else:
 THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
 os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
-THEME = f'{THEME_MODE}_standard'
+THEME = f'{THEME_MODE}_default'
 logger.warn(THEME)
 
 theme_path = os.path.expanduser(os.path.join('~', 'Pictures', THEME, 'theme.json'))
@@ -94,7 +94,7 @@ themes = {
             'fonts': {
                 'standard': 'Cantarell',
                 'console': 'Fira Code Regular',
-                'font-features': 'FiraCode-Regular +cv16 +ss02',
+                'features': 'FiraCode-Regular +cv16 +ss02',
             }
         },
     }
@@ -119,9 +119,9 @@ if os.path.isfile(theme_path):
                 'foreground': theme_data['colors']['foreground'],
             },
             'fonts': {
-                'standard': 'FiraCode Nerd Font',
-                'console': 'Fira Code Regular',
-                'font-features': 'FiraCode-Regular +cv16 +ss02',
+                'standard': theme_data['fonts']['standard'],
+                'console': theme_data['fonts']['console'],
+                'features': theme_data['fonts']['features'],
             },
             'wallpaper': theme_data['wallpaper']
         }
@@ -202,7 +202,7 @@ for i, monitor in enumerate(monitors):
     extension_defaults = widget_defaults.copy()
     kitty_config['font_family'] = themes[THEME]['fonts']['console']
     kitty_config['font_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
-    kitty_config['font_features'] = themes[THEME]['fonts']['font-features']
+    kitty_config['font_features'] = themes[THEME]['fonts']['features']
 
     b = bar.Bar(
         [

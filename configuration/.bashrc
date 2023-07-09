@@ -3,7 +3,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-alias code='code --enable-proposed-api ms-python.python --enable-proposed-api ms-toolsai.jupyter'
+alias code='code --enable-proposed-api ms-python.python --enable-proposed-api ms-toolsai.jupyter --enable-proposed-api GitHub.copilot'
 
 alias yay-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
 alias yay-update-all='export TMPFILE="$(mktemp)"; \
