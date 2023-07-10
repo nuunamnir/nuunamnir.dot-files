@@ -3,9 +3,3 @@ enable_audio_bell no
 font_family Fira Code Regular
 font_size 18
 font_features FiraCode-Regular +cv16 +ss02
-
-
-# BEGIN_KITTY_THEME
-# Nuunamnir
-include current-theme.conf
-# END_KITTY_THEME
