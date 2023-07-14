@@ -34,7 +34,7 @@ class SunState(libqtile.widget.base.ThreadPoolText):
 
         self.counter = 0
         self.state = os.environ.get('QTILE_THEME_MODE', 'dark')
-        self.service_process = subprocess.Popen(args=['python', os.path.expanduser(os.path.join('~', '.config', 'qtile', 'parse_sun_service.py')), token_path])
+        subprocess.Popen(args=['python', os.path.expanduser(os.path.join('~', '.config', 'qtile', 'parse_sun_service.py')), token_path])
         self._update_location()
 
 
@@ -70,7 +70,6 @@ class SunState(libqtile.widget.base.ThreadPoolText):
     
     def _update_location(self):
         self.tzinfo, self.sunset, self.sunrise = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sun.pickle')), 'rb'))
-        logger.error(self.sunset)
         self.counter += 1
 
 

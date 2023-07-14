@@ -1,3 +1,9 @@
+# Project
+configuration/.config/kitty/current-theme.conf
+configuration/.config/kitty/kitty.conf.bak
+configuration/.config/qtile/sun.pickle
+
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
