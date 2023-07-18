@@ -32,7 +32,6 @@ class SunState(libqtile.widget.base.ThreadPoolText):
         else:
             self.lock = True
 
-        self.counter = 0
         self.state = os.environ.get('QTILE_THEME_MODE', 'dark')
         subprocess.Popen(args=['python', os.path.expanduser(os.path.join('~', '.config', 'qtile', 'parse_sun_service.py')), token_path])
         self._update_location()
@@ -69,9 +68,13 @@ class SunState(libqtile.widget.base.ThreadPoolText):
 
     
     def _update_location(self):
-        self.tzinfo, self.sunset, self.sunrise = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sun.pickle')), 'rb'))
-        self.counter += 1
-
+        try:
+            self.tzinfo, self.sunset, self.sunrise = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sun.pickle')), 'rb'))
+        except FileNotFoundError:
+            self.tzinfo = zoneinfo.ZoneInfo('UTC')
+            self.sunset = datetime.datetime.now(tz=self.tzinfo)
+            self.sunrise = datetime.datetime.now(tz=self.tzinfo)
+            logger.debug(f'correct sunset/sunrise not found, using current time: {self.sunset}')
 
     def poll(self):
         if os.environ.get('QTILE_THEME_MODE_LOCK', 'False') == 'False':
