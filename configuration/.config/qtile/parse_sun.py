@@ -34,8 +34,6 @@ class SunState(libqtile.widget.base.ThreadPoolText):
 
         self.state = os.environ.get('QTILE_THEME_MODE', 'dark')
         subprocess.Popen(args=['python', os.path.expanduser(os.path.join('~', '.config', 'qtile', 'parse_sun_service.py')), token_path])
-        self._update_location()
-
 
     def _configure(self, qtile, bar):
         libqtile.widget.base.ThreadPoolText._configure(self, qtile, bar)
@@ -113,10 +111,6 @@ class SunState(libqtile.widget.base.ThreadPoolText):
             return f'' + lock_str
         else:
             return f'󱎖' + lock_str
-
-
-    def __del__(self):
-        self.service_process.kill()
 
 
 if __name__ == '__main__':
