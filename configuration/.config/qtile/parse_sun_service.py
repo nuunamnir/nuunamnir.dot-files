@@ -18,17 +18,19 @@ if __name__ == '__main__':
             token = line.strip()
     try:
         print('sun light service starting ...')
+        print(os.getpid())
         running = True
         while running:
+            running_processes = []
             for p in psutil.process_iter():
                 if p.name() == 'python':
                     d = p.as_dict(attrs=['pid', 'cmdline'])
-                    if d['pid'] <= os.getpid():
-                        continue
                     for c in d['cmdline']:
                         if c.endswith('parse_sun_service.py'):
-                            print('sun light service already running ...')
-                            running = False
+                            running_processes.append(d['pid'])
+            if len(running_processes) > 1:
+                if os.getpid() != sorted(running_processes)[0]:
+                    running = False
             if running:
                 ip = requests.get('https://ident.me').content.decode('utf-8')
                 url = f'https://ipinfo.io/{ip}?token={token}'

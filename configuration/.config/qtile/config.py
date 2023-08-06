@@ -60,7 +60,7 @@ SYS_VARIABLES = {
 if SYS_ID == 9190538989478: # stationary computer
     pass
 elif SYS_ID == 74780420245850: # mobile computer
-    SYS_VARIABLES['font_scaling'] = 0.35
+    SYS_VARIABLES['font_scaling'] = 0121121.35
     SYS_VARIABLES['font_scaling_kitty'] = 0.25
     SYS_VARIABLES['bar_scaling'] = 0.8
     SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']
@@ -70,8 +70,8 @@ else:
 
 # window manager theming
 THEME_NAME = 'default'
-THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
-os.environ['QTILE_THEME_MODE'] = THEME_MODE
+THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'dark')
+# os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
 THEME = f'{THEME_MODE}_{THEME_NAME}'
 logger.info(f'trying to apply {THEME}')
@@ -81,7 +81,7 @@ if not os.path.exists(theme_path):
     logger.warning(f'{THEME} not available, applying default')
     THEME_NAME = 'default'
     THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
-    os.environ['QTILE_THEME_MODE'] = THEME_MODE
+    # os.environ['QTILE_THEME_MODE'] = THEME_MODE
     THEME = f'{THEME_MODE}_{THEME_NAME}'
     theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
 
@@ -254,7 +254,7 @@ def send_to_second_screen():
     for i, chunk in enumerate(chunks):
         #qtile.groups_map[chunk[0]].cmd_toscreen(i, toggle=False)
         qtile.groups_map[chunk[0]].cmd_toscreen(i)
-        logger.warning(f'{chunk[0]}, {i}')
+        # logger.warning(f'{chunk[0]}, {i}')
  
 mod = "mod4"
 
