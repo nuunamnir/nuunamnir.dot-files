@@ -24,12 +24,8 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
 
     def __init__(self, token_path=os.path.expanduser(os.path.join('~', '.credentials', 'ipinfo')), **config):
         libqtile.widget.base.ThreadPoolText.__init__(self, "", **config)
-        # libqtile.widget.base.InLoopPollText.__init__(self, "", **config)
         self.add_defaults(SunState.defaults)
      
-        # self.tzinfo = zoneinfo.ZoneInfo('UTC')
-        # self.sunrise = datetime.datetime.now(tz=self.tzinfo)
-        # self.sunset = datetime.datetime.now(tz=self.tzinfo)
         self._update_location()
         
         if os.environ.get('QTILE_THEME_MODE_LOCK', 'False') == 'False':
@@ -40,11 +36,6 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
         self.state = os.environ.get('QTILE_THEME_MODE', 'unknown')
         self.token_path = token_path
         self.service_started = False
-
-        # self.progress_bar = ['\uEE06', '\uEE07', '\uEE08', '\uEE09', '\uEE0A', '\uEE0B']
-        # self.progress_bar = ['\u25CE', '\u25D4', '\u25D1', '\u25D5', '\u25C9']
-        self.progress_bar = ['\u25F4', '\u25F5', '\u25F6', '\u25F7']
-        self.progress = 0
         self.trigger_reload = False
 
 
@@ -78,34 +69,32 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
             self.state = 'dark'
         os.environ['QTILE_THEME_MODE_LOCK'] = str(True)
         self.lock = True
-        qtile.cmd_reload_config()
+        subprocess.run(['pkill', '-SIGUSR1', 'qtile'])
 
     
     def _update_location(self):
         try:
             self.tzinfo, self.sunset, self.sunrise = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sun.pickle')), 'rb'))
             now = datetime.datetime.now(tz=self.tzinfo)
-            subprocess.run(['notify-send', 'Sunset/Sunrise', f'\nSunrise: {self.sunrise.strftime("%H:%M")}\nNow: {now.strftime("%H:%M")}\nSunset: {self.sunset.strftime("%H:%M")}'])
+            # subprocess.run(['notify-send', 'Sunset/Sunrise', f'Sunrise: {self.sunrise.astimezone(self.tzinfo).isoformat()}\nNow: {now.astimezone(self.tzinfo).isoformat()}\nSunset: {self.sunset.astimezone(self.tzinfo).isoformat()}'])
         except FileNotFoundError:
             self.tzinfo = zoneinfo.ZoneInfo('UTC')
-            self.sunset = datetime.datetime.now(tz=self.tzinfo)
-            self.sunrise = datetime.datetime.now(tz=self.tzinfo)
+            self.sunset = datetime.datetime.now(tz=self.tzinfo).replace(hour=18, minute=0)
+            self.sunrise = datetime.datetime.now(tz=self.tzinfo).replace(hour=6, minute=0)
             logger.debug(f'correct sunset/sunrise not found, using current time: {self.sunset}')
-            subprocess.run(['notify-send', '--urgency=critical', 'Sunset/Sunrise', f'Sunset: {self.sunset.strftime("%H:%M")}\nSunrise: {self.sunrise.strftime("%H:%M")}'])
+            subprocess.run(['notify-send', '--urgency=critical', 'Sunset/Sunrise', f'Sunrise: {self.sunrise.astimezone(self.tzinfo).isoformat()}\nNow: {now.astimezone(self.tzinfo).isoformat()}\nSunset: {self.sunset.astimezone(self.tzinfo).isoformat()}'])
 
 
     def update(self, text):
         if self.text == text:
             return
-        if text is None:
-            text = ""
+        if text is None or text == '':
+            text = f'󱎖<sub> </sub>'
 
         try:
             old_width = self.layout.width
             self.text = text
 
-            # If our width hasn't changed, we just draw ourselves. Otherwise,
-            # we draw the whole bar.
             if self.layout.width == old_width:
                 self.draw()
             else:
@@ -125,6 +114,11 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
             self.lock = True
 
         if not self.lock:
+            lock_str = '<sub> </sub>'
+        else:
+            lock_str = '<sub> 󰌾</sub>'
+
+        if not self.lock:
             now = datetime.datetime.now(tz=self.tzinfo)
             try:
                 if now > self.sunrise and now < self.sunset:
@@ -141,31 +135,22 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
                 self.state = 'unknown'
 
             if self.trigger_reload:
-                if self.progress % len(self.progress_bar) == len(self.progress_bar) - 1:
-                    self.trigger_reload = False
-                    qtile.cmd_reload_config()
+                self.trigger_reload = False
+                # qtile.cmd_reload_config()
+                subprocess.run(['pkill', '-SIGUSR1', 'qtile'])
+                return f'󱎖{lock_str}'
 
         if self.lock and self.state == 'unknown':
             self._update_location()
 
-        if not self.lock:
-            lock_str = '<sub> </sub>'
-        else:
-            lock_str = '<sub> 󰌾</sub>'
 
-        self.progress += 1
+
         if self.state == 'light':
-            if self.progress < len(self.progress_bar):
-                return f'󰖨' + lock_str + ' ' + self.progress_bar[self.progress % len(self.progress_bar)]
-            else:
-                return f'󰖨' + lock_str
+            return f'󰖨{lock_str}'
         elif self.state == 'dark':
-            if self.progress < len(self.progress_bar):
-                return f'' + lock_str + ' ' + self.progress_bar[self.progress % len(self.progress_bar)]
-            else:
-                return f'' + lock_str
+            return f'{lock_str}'
         else:
-            return f'󱎖' + lock_str + ' ' + self.progress_bar[self.progress % len(self.progress_bar)]
+            return f'󱎖{lock_str}'
 
 
 if __name__ == '__main__':

@@ -42,4 +42,5 @@ else
 fi
 
 numlockx on &
+# ~/repositories/nuunamnir.environment-services/venv/bin/python -m uvicorn serve:app --host 0.0.0.0 --port 2107 --app-dir ~/repositories/nuunamnir.environment-services/src/ &
 qtile start

@@ -10,4 +10,4 @@ ln -sn ~/repositories/nuunamnir.dot-files/configuration/.config-file .config-fil
 
 ## Dependencies
 ### qtile
-```yay -S nerd-fonts-meta feh tk python-screeninfo python-dbus-next picom-git```
+```yay -S nerd-fonts-meta feh tk python-screeninfo python-dbus-next picom-git python-gql```
