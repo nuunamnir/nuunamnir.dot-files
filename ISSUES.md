@@ -22,8 +22,10 @@ A list of issues and ideas.
 * handle monitors being plugged in or plugged out while qtile is running
 * show prompt on focused screen
 * open app on screen from which the command was issued
+* OS keyring for VSC
 
 ## Resolved
+* ~~qtile issue when reloading config (failed to reschedule)~~ (resolved by rewriting the sunlight service)
 * ~~allow for light and dark theme~~
     * ~~automatically update kitty (explore themes)~~ (resolved by adding a theme file)
     * ~~fix long loading delay due to querying the requests~~ (resolved by adding a service to get sun stats in a subprocess)

@@ -32,6 +32,7 @@ import subprocess
 import logging
 import json
 import uuid
+import pickle
 
 from libqtile import qtile, bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -68,9 +69,20 @@ else:
     pass
 
 
+try:
+    QTILE_THEME_MODE, QTILE_THEME_MODE_LOCK, sunrise, now, sunset, tzinfo = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sunlight.pickle')), 'rb'))
+except:
+    tzinfo = zoneinfo.ZoneInfo('UTC')
+    QTILE_THEME_MODE = 'dark'
+    QTILE_THEME_MODE_LOCK = False
+    now = datetime.datetime.now(tz=tzinfo)
+    sunrise = datetime.datetime.now(tz=tzinfo).replace(hour=6, minute=0)
+    sunset = datetime.datetime.now(tz=tzinfo).replace(hour=18, minute=0)
+
+
 # window manager theming
 THEME_NAME = 'default'
-THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'dark')
+THEME_MODE = QTILE_THEME_MODE
 # os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
 THEME = f'{THEME_MODE}_{THEME_NAME}'
@@ -80,7 +92,7 @@ theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 
 if not os.path.exists(theme_path):
     logger.warning(f'{THEME} not available, applying default')
     THEME_NAME = 'default'
-    THEME_MODE = os.environ.get('QTILE_THEME_MODE', 'light')
+    THEME_MODE = QTILE_THEME_MODE
     # os.environ['QTILE_THEME_MODE'] = THEME_MODE
     THEME = f'{THEME_MODE}_{THEME_NAME}'
     theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
