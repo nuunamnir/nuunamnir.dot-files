@@ -25,6 +25,7 @@ A list of issues and ideas.
 * OS keyring for VSC
 
 ## Resolved
+* ~~OS keyring for VSC~~ (resolved by adding "password-store":"gnome" to VSC runtime arguments)
 * ~~qtile issue when reloading config (failed to reschedule)~~ (resolved by rewriting the sunlight service)
 * ~~allow for light and dark theme~~
     * ~~automatically update kitty (explore themes)~~ (resolved by adding a theme file)
