@@ -22,7 +22,6 @@ A list of issues and ideas.
 * handle monitors being plugged in or plugged out while qtile is running
 * show prompt on focused screen
 * open app on screen from which the command was issued
-* OS keyring for VSC
 
 ## Resolved
 * ~~OS keyring for VSC~~ (resolved by adding "password-store":"gnome" to VSC runtime arguments)

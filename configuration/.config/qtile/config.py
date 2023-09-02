@@ -135,6 +135,7 @@ layouts = {}
 for i, monitor in enumerate(monitors):
     diagonal_mm = (monitor.width_mm ** 2 + monitor.height_mm ** 2) ** 0.5
     diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
+
     diagonal_in = diagonal_mm / 25.4
     dpi_diagonal = diagonal / diagonal_in
     dpi_diagonal_collector.append(dpi_diagonal)

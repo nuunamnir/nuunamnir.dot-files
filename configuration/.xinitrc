@@ -41,6 +41,10 @@ else
     dispwin -d 2 -i ~/.config/icc_profiles/Samsung.icc 
 fi
 
+# xrandr --newmode "3840x2160_60.00"  712.75  3840 4160 4576 5312  2160 2163 2168 2237 -hsync +vsync
+# xrandr --addmode HDMI-0 "3840x2160_60.00"
+# xrandr --output HDMI-0 --mode "3840x2160_60.00"
+
 numlockx on &
 # ~/repositories/nuunamnir.environment-services/venv/bin/python -m uvicorn serve:app --host 0.0.0.0 --port 2107 --app-dir ~/repositories/nuunamnir.environment-services/src/ &
 python ~/repositories/nuunamnir.dot-files/configuration/.config/qtile/sunlight.py &
