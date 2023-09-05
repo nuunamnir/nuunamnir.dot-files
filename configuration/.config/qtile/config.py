@@ -33,6 +33,8 @@ import logging
 import json
 import uuid
 import pickle
+import zoneinfo
+import datetime
 
 from libqtile import qtile, bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -61,7 +63,7 @@ SYS_VARIABLES = {
 if SYS_ID == 9190538989478: # stationary computer
     pass
 elif SYS_ID == 74780420245850: # mobile computer
-    SYS_VARIABLES['font_scaling'] = 0121121.35
+    SYS_VARIABLES['font_scaling'] = 0.35
     SYS_VARIABLES['font_scaling_kitty'] = 0.25
     SYS_VARIABLES['bar_scaling'] = 0.8
     SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']

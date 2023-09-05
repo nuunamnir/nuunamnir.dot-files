@@ -32,9 +32,9 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
             self.tzinfo = zoneinfo.ZoneInfo('UTC')
             self.QTILE_THEME_MODE = 'dark'
             self.QTILE_THEME_MODE_LOCK = False
-            self.now = datetime.datetime.now(tz=tzinfo)
-            self.sunrise = datetime.datetime.now(tz=tzinfo).replace(hour=6, minute=0)
-            self.sunset = datetime.datetime.now(tz=tzinfo).replace(hour=18, minute=0)
+            self.now = datetime.datetime.now(tz=self.tzinfo)
+            self.sunrise = datetime.datetime.now(tz=self.tzinfo).replace(hour=6, minute=0)
+            self.sunset = datetime.datetime.now(tz=self.tzinfo).replace(hour=18, minute=0)
 
 
     def _configure(self, qtile, bar):
