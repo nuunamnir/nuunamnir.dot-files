@@ -11,6 +11,8 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
+* mouse cursor scaling not working on qtile
+* show battery state on mobile computers
 * integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
 * show which bluetooth devices are connected (and if available their remaining battery charge)

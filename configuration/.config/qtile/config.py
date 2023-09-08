@@ -279,7 +279,28 @@ terminal = guess_terminal()
 def spawn_prompt_on_active_screen(qtile):
     qtile.current_screen.cmd_spawn()
 
+@lazy.function
+def backlight(qtile, direction, steps=20):
+    with open('/sys/class/backlight/intel_backlight/max_brightness', 'r') as input_handle:
+        max_brightness = int(input_handle.read().strip())
+
+    with open('/sys/class/backlight/intel_backlight/brightness', 'r') as input_handle:
+        current_brightness = int(input_handle.read().strip())
+    
+    if direction == 'inc':    
+        current_brightness = min(max_brightness, current_brightness + max_brightness / steps)
+    elif direction == 'dec':
+        current_brightness = max(0, current_brightness - max_brightness / steps)
+    else:
+        raise ValueError(f'direction: {direction}')
+
+    new_brightness = str(int(round(current_brightness)))
+    with open('/sys/class/backlight/intel_backlight/brightness', 'w') as output_handle:
+        output_handle.write(new_brightness)
+
 keys = [
+    Key([], 'XF86MonBrightnessUp', backlight('inc')),
+    Key([], 'XF86MonBrightnessDown', backlight('dec')),
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
