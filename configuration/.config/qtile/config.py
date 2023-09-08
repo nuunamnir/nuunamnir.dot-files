@@ -47,6 +47,13 @@ import numpy
 import parse_sensors
 import parse_xset
 import parse_sun
+import parse_battery
+import parse_bluetooth
+# list bluetooth devices that should be monitored
+devices = {
+        'DD:F8:A4:C5:FE:55': '󰍽',
+        'F8:4E:17:4C:D8:D2': '󰋎',
+    }
 
 import update_kitty
 
@@ -208,6 +215,10 @@ for i, monitor in enumerate(monitors):
     # b.window.window.set_property('QTILE_BAR', 1, 'CARDINAL', 32)
     status_bar = bar.Bar(
         [
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
+            parse_bluetooth.BluetoothState(devices=devices, fmt='<span color="' + theme_data['colors']['foreground-accent'] + '">{}</span>'),
+            parse_battery.BatteryState(fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '">⚡</span> <span color="' + theme_data['colors']['foreground-accent'] + '">{}</span>'),
+            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
             widget.Spacer(background=theme_data['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
             parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=theme_data['colors']['foreground-accent']),
