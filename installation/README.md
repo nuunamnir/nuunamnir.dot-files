@@ -46,6 +46,13 @@ chmod +x script.sh
 ./script.sh
 ```
 
+### Enable Automated Time Synchronization
+As root, run the following commands:
+```
+systemctl enable systemd-timesyncd.service
+systemctl start systemd-timesyncd.service
+```
+
 ## Acknowledgements
 
 The initial version of this script is heavily inspired by [eflinux](https://gitlab.com/eflinux/arch-basic).
