@@ -36,11 +36,14 @@ class BatteryState(libqtile.widget.base.ThreadPoolText):
                 status_icon = ' ▲'
             else:
                 status_icon = ''
-
-            return f'{charge_now / charge_full * 100:.2f} %{status_icon}' 
+            
+            if status != 'Full':
+                return f'{charge_now / charge_full * 100:.2f} %{status_icon}' 
+            else:
+                return f' '
         except Exception as e:
             logger.warning(f'no battery found')
-        return f'∞'
+        return f'󱐥 '
 
 
     def poll(self):
