@@ -53,6 +53,8 @@ import parse_bluetooth
 devices = {
         'DD:F8:A4:C5:FE:55': '󰍽',
         'F8:4E:17:4C:D8:D2': '󰋎',
+        'CC:98:8B:99:F4:E5': '󰋎',
+        '08:3A:88:D8:BE:86': ' 󰓃',
     }
 
 import update_kitty
@@ -217,7 +219,7 @@ for i, monitor in enumerate(monitors):
         [
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
             parse_bluetooth.BluetoothState(devices=devices, fmt='<span color="' + theme_data['colors']['foreground-accent'] + '">{}</span>'),
-            parse_battery.BatteryState(fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '">⚡</span> <span color="' + theme_data['colors']['foreground-accent'] + '">{}</span>'),
+            parse_battery.BatteryState(fmt='<span color="' + theme_data['colors']['foreground-accent-alt2'] + '">󱐋</span> <span color="' + theme_data['colors']['foreground-accent'] + '">{}</span>'),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
             widget.Spacer(background=theme_data['colors']['transparent']),
             widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),

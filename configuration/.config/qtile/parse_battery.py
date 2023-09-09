@@ -42,8 +42,8 @@ class BatteryState(libqtile.widget.base.ThreadPoolText):
             else:
                 return f' '
         except Exception as e:
-            logger.warning(f'no battery found')
-        return f'󱐥 '
+            logger.debug(f'no battery found')
+        return f'󱐥'
 
 
     def poll(self):
