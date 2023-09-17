@@ -80,7 +80,28 @@ It needs to be understood that this repository is primarily meant for me, i.e., 
     umount -R /mnt
     reboot
     ```
+1. Login as `root` and edit the sudoers file.
+    ```
+    EDITOR=vim visudo
+    ```
+1. Update the pacman keyring:
+    ```
+    pacman-key --init
+    pacman-key --populate
+    ```
+1. Logout and login as a user; download and run the user installation script.
+    ```
+    wget https://raw.githubusercontent.com/nuunamnir/nuunamnir.dot-files/main/installation/user.sh
+    ```
+    The installation script performs the following actions:
+    1. Installs these dot files.
+    1. Installs yay.
 
+    Adjust `user.sh` to change this behavior; then run:
+    ```
+    chmod +x user.sh
+    ./user.sh
+    ```
 ## Conventions
 * Arch linux is installed
 * numlock is active

@@ -26,3 +26,5 @@ useradd -m nuunamnir -p password -G wheel -s /usr/bin/zsh
 # Installs the bootloader.
 bootctl install
 systemctl enable systemd-boot-update.service
+
+systemctl enable dhcpcd.service
