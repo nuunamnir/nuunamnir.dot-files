@@ -13,11 +13,14 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
 
+# Install rate-mirrors.
+yay -S pacman-contrib rate-mirrors
+
 # Install starship.
 cd
 yay -S otf-firamono-nerd ttf-firacode-nerd starship
 rm .zshrc
 ln -s ~/repositories/nuunamnir.dot-files/configuration/.zshrc .zshrc
 
-# Install rate-mirrors.
-yay -S rate-mirrors
+# Install qtile.
+yay -S xorg-server xorg-xinit numlockx kitty python-screeninfo python-dbus-next qtile

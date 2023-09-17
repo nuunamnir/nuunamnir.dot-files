@@ -42,7 +42,6 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal, logger
 
 import screeninfo
-import numpy
 
 import parse_sensors
 import parse_xset
@@ -248,8 +247,12 @@ with io.open(xresources_path, 'r', encoding='utf-8') as input_handle:
         k, v = line.rstrip().split()
         xresources_config[k] = v
 
-xresources_config['Xft.dpi:'] = str(int(round(numpy.mean(dpi_diagonal_collector))))
-xresources_config['Xcursor.size:'] = str(int(round(numpy.mean(dpi_diagonal_collector) / 12)))
+
+def mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
+
+xresources_config['Xft.dpi:'] = str(int(round(mean(dpi_diagonal_collector))))
+xresources_config['Xcursor.size:'] = str(int(round(mean(dpi_diagonal_collector) / 12)))
 with io.open(xresources_path, 'w', encoding='utf-8') as output_handle:
     for key in xresources_config.keys():
         output_handle.write(' '.join([key, xresources_config[key]]) + '\n')

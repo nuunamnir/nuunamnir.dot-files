@@ -17,3 +17,15 @@ btrfs-progs
 otf-firamono-nerd
 ttf-firacode-nerd
 starship
+
+pacman-contrib
+rate-mirrors
+
+xorg-server
+xorg-xinit
+qtile
+
+numlockx
+kitty
+python-screeninfo
+python-dbus-next
