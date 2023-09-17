@@ -6,6 +6,8 @@ cd repositories
 git clone https://github.com/nuunamnir/nuunamnir.dot-files.git
 cd
 ln -s ~/repositories/nuunamnir.dot-files/configuration/.config .config
+ln -s ~/repositories/nuunamnir.dot-files/configuration/.Xresources .Xresources
+ln -s ~/repositories/nuunamnir.dot-files/configuration/.xinitrc .xinitrc
 
 # Installs yay.
 cd repositories
@@ -24,3 +26,9 @@ ln -s ~/repositories/nuunamnir.dot-files/configuration/.zshrc .zshrc
 
 # Install qtile.
 yay -S xorg-server xorg-xinit numlockx kitty python-screeninfo python-dbus-next python-pydbus qtile
+
+# Install credentials.
+cd
+mkdir .credentials
+cd .credentials
+echo "password" > .credentials/ipinfo

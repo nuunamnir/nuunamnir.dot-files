@@ -97,6 +97,7 @@ It needs to be understood that this repository is primarily meant for me, i.e., 
     1. Installs these dot files.
     1. Installs yay.
     1. Installs rate-mirrors.
+    1. Install qtile (including credentials).
 
     Adjust `user.sh` to change this behavior; then run:
     ```

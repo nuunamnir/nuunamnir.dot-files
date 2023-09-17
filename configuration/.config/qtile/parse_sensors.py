@@ -36,6 +36,8 @@ class Sensors(libqtile.widget.base.ThreadPoolText):
 
     def poll(self):
         output_data = self.sensors_data()
+        if "system-temperature" not in output_data:
+            return f"N/A"
         return f'{output_data["system-temperature"]:.0f}'
 
 

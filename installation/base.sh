@@ -29,3 +29,4 @@ systemctl enable systemd-boot-update.service
 
 systemctl enable dhcpcd.service
 systemctl enable bluetooth.service
+systemctl enable systemd-timesyncd.service
