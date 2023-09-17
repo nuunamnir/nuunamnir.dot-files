@@ -21,21 +21,26 @@ class BluetoothState(libqtile.widget.base.ThreadPoolText):
         self.devices = devices
         bus = pydbus.SystemBus()
 
-        self.adapter = bus.get('org.bluez', '/org/bluez/hci0')
-        self.mngr = bus.get('org.bluez', '/')
+        try:
+            self.adapter = bus.get('org.bluez', '/org/bluez/hci0')
+            self.mngr = bus.get('org.bluez', '/')
+        except:
+            self.adapter = None
+            self.mngr = None
 
 
     def get_connected_devices(self):
         connected_devices_icons = []
-        mngd_objs = self.mngr.GetManagedObjects()
-        for path in mngd_objs:
-            con_state = mngd_objs[path].get('org.bluez.Device1', {}).get('Connected', False)
-            if con_state:
-                addr = mngd_objs[path].get('org.bluez.Device1', {}).get('Address')
-                
-                if addr in self.devices:
-                    print(addr, mngd_objs[path].get('org.bluez.Battery1', {}))
-                    connected_devices_icons.append(self.devices[addr])
+        if self.adapter is not None and self.mngr is not None:
+            mngd_objs = self.mngr.GetManagedObjects()
+            for path in mngd_objs:
+                con_state = mngd_objs[path].get('org.bluez.Device1', {}).get('Connected', False)
+                if con_state:
+                    addr = mngd_objs[path].get('org.bluez.Device1', {}).get('Address')
+                    
+                    if addr in self.devices:
+                        print(addr, mngd_objs[path].get('org.bluez.Battery1', {}))
+                        connected_devices_icons.append(self.devices[addr])
         return ' '.join(connected_devices_icons)
 
 

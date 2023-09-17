@@ -27,6 +27,10 @@ qtile
 
 numlockx
 kitty
+dunst
 python-screeninfo
 python-dbus-next
 python-pydbus
+
+bluez
+bluez-utils

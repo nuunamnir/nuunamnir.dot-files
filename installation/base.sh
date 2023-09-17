@@ -28,3 +28,4 @@ bootctl install
 systemctl enable systemd-boot-update.service
 
 systemctl enable dhcpcd.service
+systemctl enable bluetooth.service
