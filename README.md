@@ -37,6 +37,10 @@ It needs to be understood that this repository is primarily meant for me, i.e., 
     mount --mkdir /dev/sda1 /mnt/boot
     swapon /dev/sda2
     ```
+1. Assign a label to the root parition.
+    ```
+    btrfs filesystem label /dev/sda3 "Arch Linux"
+    ```
 1. Install essential packages:
     ```
     pacstrap -K /mnt base linux linux-firmware
@@ -66,6 +70,15 @@ It needs to be understood that this repository is primarily meant for me, i.e., 
     ```
     chmod +x base.sh
     ./base.sh
+    ```
+1. Leave the root environment.
+    ```
+    exit
+    ```
+1. Unmount partitions and reboot.
+    ```
+    umount -R /mnt
+    reboot
     ```
 
 ## Conventions

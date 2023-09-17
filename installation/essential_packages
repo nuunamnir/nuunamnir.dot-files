@@ -1,3 +1,6 @@
+base
+linux
+linux-firmware
 wget
 vim
 base-devel
@@ -9,3 +12,4 @@ dhcpcd
 intel-ucode
 amd-ucode
 zsh
+btrfs-progs
