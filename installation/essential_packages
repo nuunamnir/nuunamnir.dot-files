@@ -1,0 +1,11 @@
+wget
+vim
+base-devel
+git
+openssh
+sudo
+iwd
+dhcpcd
+intel-ucode
+amd-ucode
+zsh

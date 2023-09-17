@@ -47,5 +47,5 @@ fi
 
 numlockx on &
 # ~/repositories/nuunamnir.environment-services/venv/bin/python -m uvicorn serve:app --host 0.0.0.0 --port 2107 --app-dir ~/repositories/nuunamnir.environment-services/src/ &
-python ~/repositories/nuunamnir.dot-files/configuration/.config/qtile/sunlight.py &
+python ~/.config/qtile/sunlight.py &
 qtile start

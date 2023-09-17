@@ -78,7 +78,7 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
             self.sunset = datetime.datetime.now(tz=tzinfo).replace(hour=18, minute=0)
 
         if not self.QTILE_THEME_MODE_LOCK:
-            lock_str = '<sub></sub>'
+            lock_str = '<sub> </sub>'
         else:
             lock_str = '<sub> 󰌾</sub>'
 
