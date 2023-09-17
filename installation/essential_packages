@@ -29,6 +29,7 @@ qtile
 numlockx
 kitty
 dunst
+feh
 python-screeninfo
 python-dbus-next
 python-pydbus
