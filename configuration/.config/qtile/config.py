@@ -147,13 +147,23 @@ for i, monitor in enumerate(monitors):
     diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
 
     diagonal_in = diagonal_mm / 25.4
-    dpi_diagonal = diagonal / diagonal_in
+    try:
+        dpi_diagonal = diagonal / diagonal_in
+    except ZeroDivisionError:
+        dpi_diagonal = 96
     dpi_diagonal_collector.append(dpi_diagonal)
 
     width_in = monitor.width_mm / 25.4
     height_in = monitor.height_mm / 25.4
-    dpi_width = monitor.width / width_in
-    dpi_height = monitor.height / height_in
+    
+    try:
+        dpi_width = monitor.width / width_in
+    except ZeroDivisionError:
+        dpi_width = 96
+    try:
+        dpi_height = monitor.height / height_in
+    except ZeroDivisionError:
+        dpi_height = 96
 
     layouts[i] = [
         layout.Columns(

@@ -29,3 +29,4 @@ numlockx
 kitty
 python-screeninfo
 python-dbus-next
+python-pydbus

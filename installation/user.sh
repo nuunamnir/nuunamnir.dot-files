@@ -23,4 +23,4 @@ rm .zshrc
 ln -s ~/repositories/nuunamnir.dot-files/configuration/.zshrc .zshrc
 
 # Install qtile.
-yay -S xorg-server xorg-xinit numlockx kitty python-screeninfo python-dbus-next qtile
+yay -S xorg-server xorg-xinit numlockx kitty python-screeninfo python-dbus-next python-pydbus qtile
