@@ -26,5 +26,5 @@ symbol = " "
 style = 'bold background'
 
 [character]
-success_symbol = '[|](bold foreground_accent_complementary)[➜](bold foreground_accent_alt1) '
-error_symbol = "[✖](bold foreground_accent_alt2) "
+success_symbol = '[│](bold foreground_accent_complementary)[➜](bold foreground_accent_alt1) '
+error_symbol = '[│](bold foreground_accent_complementary)[✖](bold foreground_accent_alt2) '

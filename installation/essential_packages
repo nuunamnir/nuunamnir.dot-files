@@ -14,8 +14,7 @@ amd-ucode
 zsh
 btrfs-progs
 
-otf-firamono-nerd
-ttf-firacode-nerd
+nerd-fonts
 starship
 
 pacman-contrib
