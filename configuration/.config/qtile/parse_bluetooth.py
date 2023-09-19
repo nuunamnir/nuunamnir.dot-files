@@ -5,7 +5,7 @@ import re
 
 import libqtile.widget.base
 from libqtile.utils import logger
-from gi.repository import Gio
+from gi.repository import Gio, GLib
 
 
 class BluetoothState(libqtile.widget.base.ThreadPoolText):
@@ -20,17 +20,23 @@ class BluetoothState(libqtile.widget.base.ThreadPoolText):
         self.add_defaults(BluetoothState.defaults)
         self.devices = devices
 
-        self.mngr_proxy = Gio.DBusProxy.new_for_bus_sync(
-            bus_type=Gio.BusType.SYSTEM,
-            flags=Gio.DBusProxyFlags.NONE,
-            info=None,
-            name='org.bluez',
-            object_path='/',
-            interface_name='org.freedesktop.DBus.ObjectManager',
-            cancellable=None)
-
+        try:
+            self.mngr_proxy = Gio.DBusProxy.new_for_bus_sync(
+                bus_type=Gio.BusType.SYSTEM,
+                flags=Gio.DBusProxyFlags.NONE,
+                info=None,
+                name='org.bluez',
+                object_path='/',
+                interface_name='org.freedesktop.DBus.ObjectManager',
+                cancellable=None,
+                timeout=1000,)
+        except Glib.GError:
+            self.mngr_proxy = None
 
     def get_connected_devices(self):
+        if self.mngr_proxy is None:
+            return ''
+
         connected_devices_icons = []
 
         mngd_objs = self.mngr_proxy.GetManagedObjects()
