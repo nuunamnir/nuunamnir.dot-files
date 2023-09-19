@@ -5,7 +5,7 @@ import re
 
 import libqtile.widget.base
 from libqtile.utils import logger
-import pydbus
+from gi.repository import Gio
 
 
 class BluetoothState(libqtile.widget.base.ThreadPoolText):
@@ -19,28 +19,27 @@ class BluetoothState(libqtile.widget.base.ThreadPoolText):
         libqtile.widget.base.ThreadPoolText.__init__(self, "", **config)
         self.add_defaults(BluetoothState.defaults)
         self.devices = devices
-        bus = pydbus.SystemBus()
 
-        try:
-            self.adapter = bus.get('org.bluez', '/org/bluez/hci0')
-            self.mngr = bus.get('org.bluez', '/')
-        except:
-            self.adapter = None
-            self.mngr = None
+        self.mngr_proxy = Gio.DBusProxy.new_for_bus_sync(
+            bus_type=Gio.BusType.SYSTEM,
+            flags=Gio.DBusProxyFlags.NONE,
+            info=None,
+            name='org.bluez',
+            object_path='/',
+            interface_name='org.freedesktop.DBus.ObjectManager',
+            cancellable=None)
 
 
     def get_connected_devices(self):
         connected_devices_icons = []
-        if self.adapter is not None and self.mngr is not None:
-            mngd_objs = self.mngr.GetManagedObjects()
-            for path in mngd_objs:
-                con_state = mngd_objs[path].get('org.bluez.Device1', {}).get('Connected', False)
-                if con_state:
-                    addr = mngd_objs[path].get('org.bluez.Device1', {}).get('Address')
-                    
-                    if addr in self.devices:
-                        print(addr, mngd_objs[path].get('org.bluez.Battery1', {}))
-                        connected_devices_icons.append(self.devices[addr])
+
+        mngd_objs = self.mngr_proxy.GetManagedObjects()
+        for obj_path, obj_data in mngd_objs.items():
+            status = obj_data.get('org.bluez.Device1', {}).get('Connected')    
+            if status:
+                address = obj_data.get('org.bluez.Device1', {}).get('Address')                
+                if address in self.devices:
+                    connected_devices_icons.append(self.devices[address])
         return ' '.join(connected_devices_icons)
 
 
