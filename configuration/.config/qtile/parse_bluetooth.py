@@ -8,6 +8,28 @@ from libqtile.utils import logger
 from gi.repository import Gio, GLib
 
 
+def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
+    import signal
+
+    class TimeoutError(Exception):
+        pass
+
+    def handler(signum, frame):
+        raise TimeoutError()
+
+    # set the timeout handler
+    signal.signal(signal.SIGALRM, handler) 
+    signal.alarm(timeout_duration)
+    try:
+        result = func(*args, **kwargs)
+    except TimeoutError as exc:
+        result = default
+    finally:
+        signal.alarm(0)
+
+    return result
+
+
 class BluetoothState(libqtile.widget.base.ThreadPoolText):
     """A text widgets that displays connected bluetooth devices."""
 
@@ -20,18 +42,14 @@ class BluetoothState(libqtile.widget.base.ThreadPoolText):
         self.add_defaults(BluetoothState.defaults)
         self.devices = devices
 
-        try:
-            self.mngr_proxy = Gio.DBusProxy.new_for_bus_sync(
-                bus_type=Gio.BusType.SYSTEM,
-                flags=Gio.DBusProxyFlags.NONE,
-                info=None,
-                name='org.bluez',
-                object_path='/',
-                interface_name='org.freedesktop.DBus.ObjectManager',
-                cancellable=None,
-                timeout=1000,)
-        except GLib.GError:
-            self.mngr_proxy = None
+        self.mngr_proxy = timeout(Gio.DBusProxy().new_for_bus_sync, kwargs={
+            'bus_type':Gio.BusType.SYSTEM,
+            'flags':Gio.DBusProxyFlags.NONE,
+            'info':None,
+            'name':'org.bluez',
+            'object_path':'/',
+            'interface_name':'org.freedesktop.DBus.ObjectManager',
+            'cancellable':None})
 
     def get_connected_devices(self):
         if self.mngr_proxy is None:
