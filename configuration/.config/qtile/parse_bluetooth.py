@@ -30,7 +30,7 @@ class BluetoothState(libqtile.widget.base.ThreadPoolText):
                 interface_name='org.freedesktop.DBus.ObjectManager',
                 cancellable=None,
                 timeout=1000,)
-        except Glib.GError:
+        except GLib.GError:
             self.mngr_proxy = None
 
     def get_connected_devices(self):
