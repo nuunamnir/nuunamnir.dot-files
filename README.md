@@ -104,9 +104,4 @@ It needs to be understood that this repository is primarily meant for me, i.e., 
     chmod +x user.sh
     ./user.sh
     ```
-## Conventions
-* Arch linux is installed
-* numlock is active
-    * install this by running `yay -S mkinitcpio-numlock`  
-    * enable this by adding `numlock` to `HOOKS` in `/etc/mkinitcpio.conf`
 
