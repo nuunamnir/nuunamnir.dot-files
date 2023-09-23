@@ -22,43 +22,27 @@ class Kitty:
         self.kitty_configuration['font_size'] = wm_theme['fonts']['console_size']
 
         self.kitty_theme = {
-            'background': wm_theme['colors']['background-accent'], 
-            'foreground': wm_theme['colors']['foreground-accent'],
-            'cursor': wm_theme['colors']['foreground-accent'],
-            'selection_background': wm_theme['colors']['foreground-accent-alt1'],
-            'selection_foreground': wm_theme['colors']['foreground-accent-complementary'],
-            'color8': wm_theme['colors']['color1'],
-            'color9': wm_theme['colors']['color2'],
-            'color10': wm_theme['colors']['color3'],
-            'color11': wm_theme['colors']['color4'],
-            'color12': wm_theme['colors']['color5'],
-            'color13': wm_theme['colors']['color6'],
-            'color14': wm_theme['colors']['color7'],
-            'color15': wm_theme['colors']['color8'],
-            'color0': wm_theme['colors']['color9'],
-            'color1': wm_theme['colors']['color10'],
-            'color2': wm_theme['colors']['color11'],
-            'color3': wm_theme['colors']['color12'],
-            'color4': wm_theme['colors']['color13'],
-            'color5': wm_theme['colors']['color14'],
-            'color6': wm_theme['colors']['color15'],
-            'color7': wm_theme['colors']['color16'],
-            # 'color0': wm_theme['colors']['color1'],
-            # 'color1': wm_theme['colors']['color2'],
-            # 'color2': wm_theme['colors']['color3'],
-            # 'color3': wm_theme['colors']['color4'],
-            # 'color4': wm_theme['colors']['color5'],
-            # 'color5': wm_theme['colors']['color6'],
-            # 'color6': wm_theme['colors']['color7'],
-            # 'color7': wm_theme['colors']['color8'],
-            # 'color8': wm_theme['colors']['color9'],
-            # 'color9': wm_theme['colors']['color10'],
-            # 'color10': wm_theme['colors']['color11'],
-            # 'color11': wm_theme['colors']['color12'],
-            # 'color12': wm_theme['colors']['color13'],
-            # 'color13': wm_theme['colors']['color14'],
-            # 'color14': wm_theme['colors']['color15'],
-            # 'color15': wm_theme['colors']['color16'],
+            'background': wm_theme['colors']['black'], 
+            'foreground': wm_theme['colors']['white'],
+            'cursor': wm_theme['colors']['white'],
+            'selection_background': wm_theme['colors']['grey1'],
+            'selection_foreground': wm_theme['colors']['bright-black'],
+            'color8': wm_theme['colors']['bright-black'],
+            'color9': wm_theme['colors']['bright-red'],
+            'color10': wm_theme['colors']['bright-green'],
+            'color11': wm_theme['colors']['bright-yellow'],
+            'color12': wm_theme['colors']['bright-blue'],
+            'color13': wm_theme['colors']['bright-purple'],
+            'color14': wm_theme['colors']['bright-cyan'],
+            'color15': wm_theme['colors']['bright-white'],
+            'color0': wm_theme['colors']['black'],
+            'color1': wm_theme['colors']['red'],
+            'color2': wm_theme['colors']['green'],
+            'color3': wm_theme['colors']['yellow'],
+            'color4': wm_theme['colors']['blue'],
+            'color5': wm_theme['colors']['purple'],
+            'color6': wm_theme['colors']['cyan'],
+            'color7': wm_theme['colors']['white'],
         }
 
     def save(self, output_path):
@@ -79,3 +63,27 @@ if __name__ == '__main__':
     with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
         theme_data = json.load(input_handle)
     kitty = Kitty(input_path=os.path.join('~', '.config', 'kitty'), wm_theme=theme_data)
+
+'''
+background            #dfdbc3   # most frequent color
+foreground            #3b2322
+selection_background  #a4a390
+selection_foreground #dfdbc3
+cursor                #73635a
+color0                #000000   # black
+color8                #7f7f7f   # bright black
+color1                #cc0000   # red
+color9                #cc0000   # bright red
+color2                #009600   # green
+color10               #009600   # bright green
+color3                #d06b00   # yellow
+color11               #d06b00   # bright yellow
+color4                #0000cc   # blue
+color12               #0000cc   # bright blue
+color5                #cc00cc   # purple
+color13               #cc00cc   # bright purple
+color6                #0087cc   # cyan
+color14               #0086cb   # bright cyan
+color7                #cccccc   # white
+color15               #ffffff   # bright white
+'''

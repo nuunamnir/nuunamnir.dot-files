@@ -1,23 +1,24 @@
 "$schema" = 'https://starship.rs/config-schema.json'
-format = '''[│](bold foreground_accent_complementary)$all
-[└─>](bold foreground_accent_complementary) '''
+format = '''[│](bold grey1)$all
+[└─](bold grey1) '''
 
-add_newline = false
+add_newline = true
 palette = 'nuunamnir'
 
 [palettes.nuunamnir]
-foreground_accent_complementary = '#1b1b1b'
-foreground_accent_alt1 = '#c0d2c1'
-foreground_accent_alt2 = '#b3cedb'
-background_accent = '#5d7b8d'
-background = '#2e4050'
+alert1 = '#002aa7'
+alert2 = '#3d006e'
+alert3 = '#003260'
+grey1 = '#68788e'
+grey2 = '#837186'
+grey3 = '#577d83'
 
 [cmd_duration]
 show_milliseconds = true
-format = '[$duration](background)'
+format = '[$duration](grey1)'
 
 [package]
-symbol = " "
+symbol = " "
 
 [python]
 symbol = " "
@@ -25,6 +26,9 @@ symbol = " "
 [directory]
 style = 'bold background'
 
+[status]
+format = '[│](bold grey1)[$symbol$status]($style) '
+
 [character]
-success_symbol = '[│](bold foreground_accent_complementary)[➜](bold foreground_accent_alt1) '
-error_symbol = '[│](bold foreground_accent_complementary)[✖](bold foreground_accent_alt2) '
+success_symbol = '[│](bold grey1)[](bold white) '
+error_symbol = '[│](bold grey1)[](bold bright-white) '
