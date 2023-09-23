@@ -57,6 +57,7 @@ devices = {
     }
 
 import update_kitty
+import patch
 
 
 logger.setLevel(logging.WARNING)
@@ -64,7 +65,7 @@ logger.setLevel(logging.WARNING)
 SYS_ID = uuid.getnode()
 SYS_VARIABLES = {
     'font_scaling': 0.75,
-    'font_scaling_kitty': 0.75, 
+    'font_scaling_kitty': 0.55, 
     'bar_scaling': 1.25,
     'system_temperature': ['asusec-isa-', 'T_Sensor']
 }
@@ -191,7 +192,11 @@ for i, monitor in enumerate(monitors):
     )
     extension_defaults = widget_defaults.copy()
 
-    theme_data['fonts']['console_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
+    if i == 0:
+        theme_data['fonts']['console_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
+        theme_data["dpi_width"] = dpi_width
+        theme_data["dpi_height"] = dpi_height
+        theme_data["bar_scaling"] = SYS_VARIABLES['bar_scaling']
 
     b = bar.Bar(
         [
@@ -250,7 +255,6 @@ for i, monitor in enumerate(monitors):
     )
     screens.append(Screen(top=b, bottom=status_bar))
 
-
 kitty = update_kitty.Kitty(input_path=os.path.join('~', '.config', 'kitty'), wm_theme=theme_data)
 kitty.save(output_path=os.path.join('~', '.config', 'kitty'))
 
@@ -291,6 +295,7 @@ def _():
 
     subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'wallpaper.png'))])
     kitty.update()
+    patch._patch_dunst(theme_data)
 
 
 @hook.subscribe.startup_complete

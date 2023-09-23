@@ -43,7 +43,7 @@ class SunState(libqtile.widget.base.ThreadPoolText): # libqtile.widget.base.InLo
 
 
     def show(self):
-        subprocess.run(['notify-send', 'Sunset/Sunrise', f'Sunrise: {self.sunrise.astimezone(self.tzinfo).isoformat()}\nNow: {self.now.astimezone(self.tzinfo).isoformat()}\nSunset: {self.sunset.astimezone(self.tzinfo).isoformat()}'])
+        subprocess.run(['notify-send', 'Sunset/Sunrise', f'Sunrise: {self.sunrise.astimezone(self.tzinfo).isoformat()}\nNow:\t {self.now.astimezone(self.tzinfo).isoformat()}\nSunset:\t {self.sunset.astimezone(self.tzinfo).isoformat()}'])
 
 
     def toggle_lock(self):

@@ -22,7 +22,7 @@ class Kitty:
         self.kitty_configuration['font_size'] = wm_theme['fonts']['console_size']
 
         self.kitty_theme = {
-            'background': wm_theme['colors']['black'], 
+            'background': wm_theme['colors']['base-color'], 
             'foreground': wm_theme['colors']['white'],
             'cursor': wm_theme['colors']['white'],
             'selection_background': wm_theme['colors']['grey1'],
