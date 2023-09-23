@@ -296,6 +296,7 @@ def _():
     subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'wallpaper.png'))])
     kitty.update()
     patch._patch_dunst(theme_data)
+    patch._patch_starship(theme_data)
 
 
 @hook.subscribe.startup_complete

@@ -1,9 +1,23 @@
 import os
 import io
 import json
+import tomlkit
 import logging
 import configparser
 import subprocess
+
+
+def _patch_starship(theme_data, target_directory_path=os.path.expanduser(os.path.join("~", ".config"))):
+    with io.open(os.path.join(target_directory_path, "starship.toml"), "r", encoding='utf-8') as input_handle:
+        config = tomlkit.parse(input_handle.read())
+    config['palettes']['nuunamnir']['alert1'] = theme_data['colors']['alert1']
+    config['palettes']['nuunamnir']['alert2'] = theme_data['colors']['alert2']
+    config['palettes']['nuunamnir']['alert3'] = theme_data['colors']['alert3']
+    config['palettes']['nuunamnir']['grey1'] = theme_data['colors']['grey1']
+    config['palettes']['nuunamnir']['grey2'] = theme_data['colors']['grey2']
+    config['palettes']['nuunamnir']['grey3'] = theme_data['colors']['grey3']
+    with io.open(os.path.join(target_directory_path, "starship.toml"), "w", encoding='utf-8') as output_handle:
+        output_handle.write(tomlkit.dumps(config))
 
 
 def _patch_dunst(
@@ -66,4 +80,5 @@ if __name__ == "__main__":
         theme_data["dpi_width"] = 96
         theme_data["dpi_height"] = 96
         theme_data["bar_scaling"] = 1.25
-    _patch_dunst(theme_data)
+    # _patch_dunst(theme_data)
+    _patch_starship(theme_data)

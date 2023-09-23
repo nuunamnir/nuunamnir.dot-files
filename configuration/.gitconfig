@@ -1,0 +1,8 @@
+[init]
+	defaultBranch = main
+[color]
+	ui = true
+[color "status"]
+	untracked = "#537b9f"
+	changed = "#977f5a"
+	added = "#6a8b68"

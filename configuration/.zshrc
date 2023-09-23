@@ -10,5 +10,6 @@ alias yay-update-all='export TMPFILE="$(mktemp)"; \
 	&& sudo mv $TMPFILE /etc/pacman.d/mirrorlist \
 	&& yay-drop-caches \
 	&& yay -Syyu --noconfirm'
+alias code='code --enable-proposed-api ms-python.python --enable-proposed-api ms-toolsai.jupyter --enable-proposed-api GitHub.copilot'
 
 eval "$(starship init zsh)"

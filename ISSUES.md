@@ -3,21 +3,22 @@ A list of issues and ideas.
 
 ## GTK
 * automatically update gtk
-* gtk color theme - dark/bright ( partially resolved, added the setting - but is not dynamically set)
-* gtk add font size (might not be necessary, could be a bug of [VSC](https://github.com/microsoft/vscode/issues/151803))
+* gtk color theme - dark/bright (partially resolved, added the setting - but is not dynamically set)
+
 
 ## Keyboard
 * show of function keys are enabled
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
+* add git colors to obey theme
+* add .dir_colors to obey theme
+* refactor theme generator
 * mouse cursor scaling not working on qtile
 * show battery state on mobile computers
 * integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
 * show which bluetooth devices are connected (and if available their remaining battery charge)
-* configure dunst (notification service)
-* configure starship (shell prompt)
 * share edid / document how to generate
 * share icc / document how to generate
 * install script
@@ -26,6 +27,9 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~configure starship (shell prompt)~~ (resolved by adding a patch script)
+* ~~gtk add font size (might not be necessary, could be a bug of [VSC](https://github.com/microsoft/vscode/issues/151803))~~ (resolved by changing the setting Windows > Title Bar Style to custom)
+* ~~configure dunst (notification service)~~ (resolved by adding a patch script)
 * ~~OS keyring for VSC~~ (resolved by adding "password-store":"gnome" to VSC runtime arguments)
 * ~~qtile issue when reloading config (failed to reschedule)~~ (resolved by rewriting the sunlight service)
 * ~~allow for light and dark theme~~
