@@ -73,7 +73,7 @@ if SYS_ID == 9190538989478: # stationary computer
     pass
 elif SYS_ID == 74780420245850: # mobile computer
     SYS_VARIABLES['font_scaling'] = 0.45
-    SYS_VARIABLES['font_scaling_kitty'] = 0.25
+    SYS_VARIABLES['font_scaling_kitty'] = 0.65
     SYS_VARIABLES['bar_scaling'] = 1.0
     SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']
 elif SYS_ID == 8796756979213: # virtual machine
