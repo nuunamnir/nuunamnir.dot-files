@@ -72,9 +72,9 @@ SYS_VARIABLES = {
 if SYS_ID == 9190538989478: # stationary computer
     pass
 elif SYS_ID == 74780420245850: # mobile computer
-    SYS_VARIABLES['font_scaling'] = 0.35
+    SYS_VARIABLES['font_scaling'] = 0.45
     SYS_VARIABLES['font_scaling_kitty'] = 0.25
-    SYS_VARIABLES['bar_scaling'] = 0.8
+    SYS_VARIABLES['bar_scaling'] = 1.0
     SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']
 elif SYS_ID == 8796756979213: # virtual machine
     SYS_VARIABLES['font_scaling'] = 0.75
@@ -270,7 +270,7 @@ def mean(numbers):
     return float(sum(numbers)) / max(len(numbers), 1)
 
 xresources_config['Xft.dpi:'] = str(int(round(mean(dpi_diagonal_collector))))
-xresources_config['Xcursor.size:'] = str(int(round(mean(dpi_diagonal_collector) / 12)))
+xresources_config['Xcursor.size:'] = str(int(round(mean(dpi_diagonal_collector) / 6)))
 with io.open(xresources_path, 'w', encoding='utf-8') as output_handle:
     for key in xresources_config.keys():
         output_handle.write(' '.join([key, xresources_config[key]]) + '\n')
