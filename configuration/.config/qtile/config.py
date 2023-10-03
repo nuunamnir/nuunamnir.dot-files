@@ -43,6 +43,9 @@ from libqtile.utils import guess_terminal, logger
 
 import screeninfo
 
+import debug
+debugger = debug.Debugger()
+
 import parse_sensors
 import parse_xset
 import parse_sun
@@ -54,6 +57,7 @@ devices = {
         'F8:4E:17:4C:D8:D2': '󰋎',
         'CC:98:8B:99:F4:E5': '󰋎',
         '08:3A:88:D8:BE:86': '󰓃',
+        'DD:F8:A4:C5:FE:56': '󰍽',
     }
 
 import update_kitty
@@ -63,6 +67,7 @@ import patch
 logger.setLevel(logging.WARNING)
 
 SYS_ID = uuid.getnode()
+debugger.log(f'sys-id = {SYS_ID}')
 SYS_VARIABLES = {
     'font_scaling': 0.75,
     'font_scaling_kitty': 0.55, 
@@ -72,9 +77,9 @@ SYS_VARIABLES = {
 if SYS_ID == 9190538989478: # stationary computer
     pass
 elif SYS_ID == 74780420245850: # mobile computer
-    SYS_VARIABLES['font_scaling'] = 0.45
-    SYS_VARIABLES['font_scaling_kitty'] = 0.65
-    SYS_VARIABLES['bar_scaling'] = 1.0
+    SYS_VARIABLES['font_scaling'] = 0.35
+    SYS_VARIABLES['font_scaling_kitty'] = 0.25
+    SYS_VARIABLES['bar_scaling'] = 0.7
     SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']
 elif SYS_ID == 8796756979213: # virtual machine
     SYS_VARIABLES['font_scaling'] = 0.75
@@ -82,7 +87,9 @@ elif SYS_ID == 8796756979213: # virtual machine
     SYS_VARIABLES['bar_scaling'] = 1.25
 else:
     pass
-
+debugger.log(f'font-scaling = {SYS_VARIABLES["font_scaling"]}')
+debugger.log(f'font-scaling-kitty = {SYS_VARIABLES["font_scaling_kitty"]}')
+debugger.log(f'bar-scaling = {SYS_VARIABLES["bar_scaling"]}')
 
 try:
     QTILE_THEME_MODE, QTILE_THEME_MODE_LOCK, sunrise, now, sunset, tzinfo = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sunlight.pickle')), 'rb'))
@@ -93,6 +100,12 @@ except:
     now = datetime.datetime.now(tz=tzinfo)
     sunrise = datetime.datetime.now(tz=tzinfo).replace(hour=6, minute=0)
     sunset = datetime.datetime.now(tz=tzinfo).replace(hour=18, minute=0)
+debugger.log(f'tzinfo = {str(tzinfo)}')
+debugger.log(f'qtile-theme-mode = {QTILE_THEME_MODE}')
+debugger.log(f'qtile-theme-mode-lock = {QTILE_THEME_MODE_LOCK}')
+debugger.log(f'now = {now.isoformat()}')
+debugger.log(f'sunrise = {sunrise.isoformat()}')
+debugger.log(f'sunset = {sunset.isoformat()}')
 
 
 # window manager theming
@@ -111,6 +124,10 @@ if not os.path.exists(theme_path):
     # os.environ['QTILE_THEME_MODE'] = THEME_MODE
     THEME = f'{THEME_MODE}_{THEME_NAME}'
     theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
+
+debugger.log(f'theme-name = {THEME_NAME}')
+debugger.log(f'theme-mode = {THEME_MODE}')
+debugger.log(f'theme = {THEME}')
 
 with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
     theme_data = json.load(input_handle)
@@ -196,6 +213,7 @@ for i, monitor in enumerate(monitors):
         theme_data['fonts']['console_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
         theme_data["dpi_width"] = dpi_width
         theme_data["dpi_height"] = dpi_height
+        theme_data["dpi_diagonal"] = dpi_diagonal
         theme_data["bar_scaling"] = SYS_VARIABLES['bar_scaling']
 
     b = bar.Bar(
@@ -253,10 +271,22 @@ for i, monitor in enumerate(monitors):
         margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
         background=theme_data['colors']['transparent'],
     )
+    debugger.log(f'monitor = {str(i)}')
+    debugger.log(f'monitor-width = {str(monitor.width)}')
+    debugger.log(f'monitor-height = {str(monitor.height)}')
+    debugger.log(f'monitor-width-mm = {str(monitor.width_mm)}')
+    debugger.log(f'monitor-height-mm = {str(monitor.height_mm)}')
+    debugger.log(f'dpi-width = {str(dpi_width)}')
+    debugger.log(f'dpi-height = {str(dpi_height)}')
+    debugger.log(f'dpi-diagonal = {str(dpi_diagonal)}')
+    debugger.log(f'font-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])))}')
+    debugger.log(f'bar-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])))}')
     screens.append(Screen(top=b, bottom=status_bar))
 
 kitty = update_kitty.Kitty(input_path=os.path.join('~', '.config', 'kitty'), wm_theme=theme_data)
 kitty.save(output_path=os.path.join('~', '.config', 'kitty'))
+
+debugger.log(json.dumps(theme_data, indent=4))
 
 xresources_config = {}
 xresources_path = os.path.expanduser(os.path.join('~', '.Xresources'))
@@ -269,11 +299,14 @@ with io.open(xresources_path, 'r', encoding='utf-8') as input_handle:
 def mean(numbers):
     return float(sum(numbers)) / max(len(numbers), 1)
 
-xresources_config['Xft.dpi:'] = str(int(round(mean(dpi_diagonal_collector))))
-xresources_config['Xcursor.size:'] = str(int(round(mean(dpi_diagonal_collector) / 6)))
+xresources_config['Xft.dpi:'] = str(int(round(theme_data['dpi_diagonal'])))
+xresources_config['Xcursor.size:'] = str(int(round(theme_data['dpi_diagonal'] / 6)))
 with io.open(xresources_path, 'w', encoding='utf-8') as output_handle:
     for key in xresources_config.keys():
         output_handle.write(' '.join([key, xresources_config[key]]) + '\n')
+
+debugger.log(f'xft-dpi = {str(xresources_config["Xft.dpi:"])}')
+debugger.log(f'xcursor-size = {str(xresources_config["Xcursor.size:"])}')
 
 
 groups = []
@@ -297,6 +330,7 @@ def _():
     kitty.update()
     patch._patch_dunst(theme_data)
     patch._patch_starship(theme_data)
+    patch._patch_gtk(theme_data)
 
 
 @hook.subscribe.startup_complete

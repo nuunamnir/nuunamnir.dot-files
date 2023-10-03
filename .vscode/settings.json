@@ -1,4 +1,4 @@
 {
     "python.formatting.provider": "black",
-    "window.zoomLevel": 2
+    "window.zoomLevel": 1
 }

@@ -20,6 +20,16 @@ def _patch_starship(theme_data, target_directory_path=os.path.expanduser(os.path
         output_handle.write(tomlkit.dumps(config))
 
 
+def _patch_gtk(theme_data, target_directory_path=os.path.expanduser(os.path.join("~", ".config", "gtk-3.0"))):
+    config = configparser.ConfigParser()
+    config.read(os.path.join(target_directory_path, "settings.ini"))
+    config["Settings"]["gtk-cursor-theme-size"] = str(int(round(theme_data['dpi_diagonal'] / 6)))
+    with io.open(
+        os.path.join(target_directory_path, "settings.ini"), "w", encoding="utf-8"
+    ) as output_handle:
+        config.write(output_handle)
+
+
 def _patch_dunst(
     theme_data,
     target_directory_path=os.path.expanduser(os.path.join("~", ".config", "dunst")),

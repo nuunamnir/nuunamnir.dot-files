@@ -7,7 +7,6 @@ A list of issues and ideas.
 
 
 ## Keyboard
-* show of function keys are enabled
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
@@ -27,6 +26,8 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~add a theme debug log~~ (resolved by adding a simple debugger class)
+* ~~show of function keys are enabled~~ (cannot be resolved, Fn keys is handled by keyboard controller and is not exposed to the os)
 * ~~configure starship (shell prompt)~~ (resolved by adding a patch script)
 * ~~gtk add font size (might not be necessary, could be a bug of [VSC](https://github.com/microsoft/vscode/issues/151803))~~ (resolved by changing the setting Windows > Title Bar Style to custom)
 * ~~configure dunst (notification service)~~ (resolved by adding a patch script)
