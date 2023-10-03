@@ -69,9 +69,9 @@ logger.setLevel(logging.WARNING)
 SYS_ID = uuid.getnode()
 debugger.log(f'sys-id = {SYS_ID}')
 SYS_VARIABLES = {
-    'font_scaling': 0.75,
-    'font_scaling_kitty': 0.55, 
-    'bar_scaling': 1.25,
+    'font_scaling': 0.7,
+    'font_scaling_kitty': 0.5, 
+    'bar_scaling': 1.1,
     'system_temperature': ['asusec-isa-', 'T_Sensor']
 }
 if SYS_ID == 9190538989478: # stationary computer

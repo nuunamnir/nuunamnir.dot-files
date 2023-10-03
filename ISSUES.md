@@ -2,14 +2,15 @@
 A list of issues and ideas.
 
 ## GTK
-* automatically update gtk
 * gtk color theme - dark/bright (partially resolved, added the setting - but is not dynamically set)
-
+* show hidden files in file manager
 
 ## Keyboard
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
+* recalibrate monitors (full brightness on mobile computer)
+* fix cursor size on qtile
 * add git colors to obey theme
 * add .dir_colors to obey theme
 * refactor theme generator
@@ -26,6 +27,7 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~automatically update gtk~~ (resolved by adding a patch script)
 * ~~add a theme debug log~~ (resolved by adding a simple debugger class)
 * ~~show of function keys are enabled~~ (cannot be resolved, Fn keys is handled by keyboard controller and is not exposed to the os)
 * ~~configure starship (shell prompt)~~ (resolved by adding a patch script)
