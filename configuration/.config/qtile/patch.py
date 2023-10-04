@@ -24,6 +24,7 @@ def _patch_gtk(theme_data, target_directory_path=os.path.expanduser(os.path.join
     config = configparser.ConfigParser()
     config.read(os.path.join(target_directory_path, "settings.ini"))
     config["Settings"]["gtk-cursor-theme-size"] = str(int(round(theme_data['dpi_diagonal'] / 6)))
+    config["Settings"]["gtk-application-prefer-dark-theme"] = "true" if theme_data["mode"] == "dark" else "false"
     with io.open(
         os.path.join(target_directory_path, "settings.ini"), "w", encoding="utf-8"
     ) as output_handle:

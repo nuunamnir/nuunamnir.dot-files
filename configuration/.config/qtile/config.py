@@ -133,6 +133,11 @@ with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
     theme_data = json.load(input_handle)
 theme_data['colors']['transparent'] = '#FFFFFF00'
 
+if THEME_MODE == 'light':
+    theme_data['mode'] = 'light'
+else:
+    theme_data['mode'] = 'dark' 
+
 auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
 auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance'))
 try:
