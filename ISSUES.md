@@ -1,15 +1,11 @@
 # Issues and Ideas
 A list of issues and ideas.
 
-## GTK
-* gtk color theme - dark/bright (partially resolved, added the setting - but is not dynamically set)
-* show hidden files in file manager
-
 ## Keyboard
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
-* recalibrate monitors (full brightness on mobile computer)
+
 * fix cursor size on qtile
 * add git colors to obey theme
 * add .dir_colors to obey theme
@@ -21,12 +17,15 @@ A list of issues and ideas.
 * show which bluetooth devices are connected (and if available their remaining battery charge)
 * share edid / document how to generate
 * share icc / document how to generate
+* recalibrate monitors (full brightness on mobile computer)
 * install script
 * handle monitors being plugged in or plugged out while qtile is running
 * show prompt on focused screen
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~gtk color theme - dark/bright~~ (resolved, added a patch function for gtk setting)
+* ~~show hidden files in file manager (seems to be a [bug](https://github.com/electron/electron/issues/34706)~~ - workaround implemented)
 * ~~automatically update gtk~~ (resolved by adding a patch script)
 * ~~add a theme debug log~~ (resolved by adding a simple debugger class)
 * ~~show of function keys are enabled~~ (cannot be resolved, Fn keys is handled by keyboard controller and is not exposed to the os)

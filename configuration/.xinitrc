@@ -40,11 +40,10 @@ if [ "$HOSTNAME" = "assur" ]; then
     dispwin -d 2 -i ~/.config/icc_profiles/Samsung.icc 
 fi
 
-# xrandr --newmode "3840x2160_60.00"  712.75  3840 4160 4576 5312  2160 2163 2168 2237 -hsync +vsync
-# xrandr --addmode HDMI-0 "3840x2160_60.00"
-# xrandr --output HDMI-0 --mode "3840x2160_60.00"
+# workaround to make hidden fules show up in gtk file chooser
+dconf write /org/gtk/settings/file-chooser/show-hidden true
+gsettings set org.gtk.Settings.FileChooser show-hidden true
 
 numlockx on &
-# ~/repositories/nuunamnir.environment-services/venv/bin/python -m uvicorn serve:app --host 0.0.0.0 --port 2107 --app-dir ~/repositories/nuunamnir.environment-services/src/ &
 python ~/.config/qtile/sunlight.py &
 qtile start
