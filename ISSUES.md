@@ -16,14 +16,14 @@ A list of issues and ideas.
 * show which output device is used for audio (define a default)
 * show which bluetooth devices are connected (and if available their remaining battery charge)
 * share edid / document how to generate
-* share icc / document how to generate
-* recalibrate monitors (full brightness on mobile computer)
 * install script
 * handle monitors being plugged in or plugged out while qtile is running
 * show prompt on focused screen
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~recalibrate monitors (full brightness on mobile computer)~~ (performed recalibration)
+* ~~share icc / document how to generate~~ (resolved by adding a README.md to the icc_profiles directory)
 * ~~gtk color theme - dark/bright~~ (resolved, added a patch function for gtk setting)
 * ~~show hidden files in file manager (seems to be a [bug](https://github.com/electron/electron/issues/34706)~~ - workaround implemented)
 * ~~automatically update gtk~~ (resolved by adding a patch script)
