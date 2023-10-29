@@ -1,10 +1,10 @@
 [global]
 monitor = 0
 follow = none
-width = 1776
+width = 656
 height = 300
 origin = top-right
-offset = 55x188
+offset = 20x88
 scale = 1
 notification_limit = 20
 progress_bar = true
@@ -22,10 +22,10 @@ horizontal_padding = 8
 text_icon_padding = 0
 frame_width = 0
 frame_color = "#aaaaaa"
-gap_size = 13
+gap_size = 5
 separator_color = frame
 sort = yes
-font = FiraMono Nerd Font Mono 10
+font = FiraMono Nerd Font Mono 15
 line_height = 0
 markup = full
 format = "<b>%s</b>\n%b"
@@ -62,20 +62,20 @@ mouse_right_click = close_all
 per_monitor_dpi = false
 
 [urgency_low]
-background = "#537b9f"
-foreground = "#002947"
+background = "#fbe9bc"
+foreground = "#ac9c72"
 timeout = 10
-frame_color = "#002947"
+frame_color = "#fbe9bc"
 
 [urgency_normal]
-background = "#537b9f"
-foreground = "#bfe7ff"
+background = "#fbe9bc"
+foreground = "#0c1116"
 timeout = 10
-frame_color = "#002947"
+frame_color = "#111111"
 
 [urgency_critical]
-background = "#00e7ff"
-foreground = "#002947"
-frame_color = "#002947"
+background = "#4b2417"
+foreground = "#0c1116"
+frame_color = "#111111"
 timeout = 0
 

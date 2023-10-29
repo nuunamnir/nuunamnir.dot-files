@@ -170,7 +170,7 @@ for asset in os.listdir(auto_template_assets_path):
         os.path.join(auto_template_assets_path, asset), "r", encoding="utf-8"
     ) as input_handle:
         data = input_handle.read()
-    data = data.replace("#100001", theme_data["colors"]["grey1"])
+    data = data.replace("#100001", theme_data["colors"]["background"])
     with io.open(
         os.path.join(auto_assets_path, asset), "w", encoding="utf-8"
     ) as output_handle:
@@ -221,7 +221,7 @@ for i, monitor in enumerate(monitors):
 
     layouts[i] = [
         layout.Columns(
-            border_normal=theme_data["colors"]["grey1"],
+            border_normal=theme_data["colors"]["background"],
             border_focus=theme_data["colors"]["bright-white"],
             border_focus_stack=theme_data["colors"]["white"],
             border_width=1,
@@ -252,7 +252,7 @@ for i, monitor in enumerate(monitors):
         font=theme_data["fonts"]["standard"],
         fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
-        background=theme_data["colors"]["grey1"],
+        background=theme_data["colors"]["background"],
     )
     extension_defaults = widget_defaults.copy()
 
@@ -288,20 +288,20 @@ for i, monitor in enumerate(monitors):
                 background=theme_data["colors"]["transparent"],
             ),
             widget.GroupBox(
-                active=theme_data["colors"]["white"],
-                block_highlight_text_color=theme_data["colors"]["black"],
-                this_current_screen_border=theme_data["colors"]["bright-white"],
+                active=theme_data["colors"]["highlight-00"],
+                block_highlight_text_color=theme_data["colors"]["highlight"],
+                this_current_screen_border=theme_data["colors"]["background-00"],
                 highlight_method="block",
                 rounded=True,
                 hide_unused=False,
                 visible_groups=groups_by_screen[i],
-                this_screen_border=theme_data["colors"]["grey1"],
-                other_current_screen_border=theme_data["colors"]["grey3"],
-                other_screen_border=theme_data["colors"]["grey3"],
-                background=theme_data["colors"]["grey1"],
-                inactive=theme_data["colors"]["white"],
-                urgent_border=theme_data["colors"]["grey3"],
-                urgent_text=theme_data["colors"]["grey2"],
+                this_screen_border=theme_data["colors"]["background"],
+                other_current_screen_border=theme_data["colors"]["background-02"],
+                other_screen_border=theme_data["colors"]["background-02"],
+                background=theme_data["colors"]["background"],
+                inactive=theme_data["colors"]["background-00"],
+                urgent_border=theme_data["colors"]["background-02"],
+                urgent_text=theme_data["colors"]["highlight-00"],
             ),
             widget.Image(
                 padding=0,
@@ -331,17 +331,18 @@ for i, monitor in enumerate(monitors):
                 background=theme_data["colors"]["transparent"],
             ),
             widget.Prompt(
-                background=theme_data["colors"]["grey1"],
-                cursor_color=theme_data["colors"]["white"],
+                background=theme_data["colors"]["background"],
+                foreground=theme_data["colors"]["foreground"],
+                cursor_color=theme_data["colors"]["background-02"],
                 prompt=" ",
-                fmt='<span color="' + theme_data["colors"]["black"] + '"></span> {}',
-                cursor=False,
+                fmt='<span color="' + theme_data["colors"]["background-02"] + '"></span> {}',
+                cursor=True,
                 rounded=True,
             ),
             widget.WindowName(
                 fmt='<span rise="8pt">{}</span>',
-                background=theme_data["colors"]["grey1"],
-                foreground=theme_data["colors"]["white"],
+                background=theme_data["colors"]["background"],
+                foreground=theme_data["colors"]["foreground"],
             ),
             widget.Image(
                 padding=0,
@@ -373,8 +374,8 @@ for i, monitor in enumerate(monitors):
             widget.Clock(
                 fmt='<span rise="8pt">{}</span>',
                 format="%Y-%m-%d %a %H:%M:%S",
-                background=theme_data["colors"]["grey1"],
-                foreground=theme_data["colors"]["white"],
+                background=theme_data["colors"]["background"],
+                foreground=theme_data["colors"]["foreground"],
             ),
             widget.Image(
                 padding=0,
@@ -417,13 +418,13 @@ for i, monitor in enumerate(monitors):
             ),
             parse_bluetooth.BluetoothState(
                 devices=devices,
-                fmt='<span color="' + theme_data["colors"]["white"] + '">{}</span>',
+                fmt='<span color="' + theme_data["colors"]["foreground"] + '">{}</span>',
             ),
             parse_battery.BatteryState(
                 fmt='<span color="'
-                + theme_data["colors"]["black"]
+                + theme_data["colors"]["background-02"]
                 + '">󱐋</span> <span color="'
-                + theme_data["colors"]["white"]
+                + theme_data["colors"]["foreground"]
                 + '">{}</span>'
             ),
             widget.Image(
@@ -456,14 +457,14 @@ for i, monitor in enumerate(monitors):
             parse_sensors.Sensors(
                 *SYS_VARIABLES["system_temperature"],
                 fmt='<span color="'
-                + theme_data["colors"]["black"]
+                + theme_data["colors"]["background-02"]
                 + '"></span> <span rise="-2pt">{}° C</span>',
                 update_inverval=10,
-                foreground=theme_data["colors"]["white"],
+                foreground=theme_data["colors"]["foreground"],
             ),
             parse_xset.InputState(
                 fmt='<span color="'
-                + theme_data["colors"]["bright-white"]
+                + theme_data["colors"]["background-02"]
                 + '">{}</span>',
                 update_inverval=0.5,
             ),
@@ -496,7 +497,7 @@ for i, monitor in enumerate(monitors):
             ),
             parse_sun.SunState(
                 fmt='<span color="'
-                + theme_data["colors"]["bright-white"]
+                + theme_data["colors"]["foreground"]
                 + '">{}</span>'
             ),
             widget.Image(
@@ -780,8 +781,8 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
     ],
-    border_normal=theme_data["colors"]["grey1"],
-    border_focus=theme_data["colors"]["grey2"],
+    border_normal=theme_data["colors"]["background"],
+    border_focus=theme_data["colors"]["highlight-00"],
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"
