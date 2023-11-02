@@ -6,12 +6,12 @@ add_newline = true
 palette = 'nuunamnir'
 
 [palettes.nuunamnir]
-alert1 = "#00e7ff"
-alert2 = "#dcb4ff"
-alert3 = "#00fbff"
-grey1 = "#537b9f"
-grey2 = "#7d7199"
-grey3 = "#348190"
+alert1 = "#002331"
+alert2 = "#2c1929"
+alert3 = "#2d1c0d"
+grey1 = "#d3c297"
+grey2 = "#bfaf84"
+grey3 = "#ac9c72"
 
 [cmd_duration]
 show_milliseconds = true
@@ -21,10 +21,10 @@ format = '[$duration](grey1)'
 symbol = " "
 
 [git_branch]
-style = "bright-purple"
+style = "purple"
 
 [git_status]
-style = "bright-red"
+style = "red"
 
 [python]
 symbol = " "

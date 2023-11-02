@@ -44,6 +44,7 @@ from libqtile.utils import guess_terminal, logger
 import screeninfo
 
 import debug
+
 debugger = debug.Debugger()
 
 import parse_sensors
@@ -51,14 +52,15 @@ import parse_xset
 import parse_sun
 import parse_battery
 import parse_bluetooth
+
 # list bluetooth devices that should be monitored
 devices = {
-        'DD:F8:A4:C5:FE:55': '󰍽',
-        'F8:4E:17:4C:D8:D2': '󰋎',
-        'CC:98:8B:99:F4:E5': '󰋎',
-        '08:3A:88:D8:BE:86': '󰓃',
-        'DD:F8:A4:C5:FE:56': '󰍽',
-    }
+    "DD:F8:A4:C5:FE:55": "󰍽",
+    "F8:4E:17:4C:D8:D2": "󰋎",
+    "CC:98:8B:99:F4:E5": "󰋎",
+    "08:3A:88:D8:BE:86": "󰓃",
+    "DD:F8:A4:C5:FE:56": "󰍽",
+}
 
 import update_kitty
 import patch
@@ -67,24 +69,24 @@ import patch
 logger.setLevel(logging.WARNING)
 
 SYS_ID = uuid.getnode()
-debugger.log(f'sys-id = {SYS_ID}')
+debugger.log(f"sys-id = {SYS_ID}")
 SYS_VARIABLES = {
-    'font_scaling': 0.7,
-    'font_scaling_kitty': 0.5, 
-    'bar_scaling': 1.1,
-    'system_temperature': ['asusec-isa-', 'T_Sensor']
+    "font_scaling": 0.7,
+    "font_scaling_kitty": 0.5,
+    "bar_scaling": 1.1,
+    "system_temperature": ["asusec-isa-", "T_Sensor"],
 }
-if SYS_ID == 9190538989478: # stationary computer
+if SYS_ID == 9190538989478:  # stationary computer
     pass
-elif SYS_ID == 74780420245850: # mobile computer
-    SYS_VARIABLES['font_scaling'] = 0.35
-    SYS_VARIABLES['font_scaling_kitty'] = 0.25
-    SYS_VARIABLES['bar_scaling'] = 0.7
-    SYS_VARIABLES['system_temperature'] = ['acpitz-acpi-', 'temp1']
-elif SYS_ID == 8796756979213: # virtual machine
-    SYS_VARIABLES['font_scaling'] = 0.75
-    SYS_VARIABLES['font_scaling_kitty'] = 0.75
-    SYS_VARIABLES['bar_scaling'] = 1.25
+elif SYS_ID == 74780420245850:  # mobile computer
+    SYS_VARIABLES["font_scaling"] = 0.35
+    SYS_VARIABLES["font_scaling_kitty"] = 0.25
+    SYS_VARIABLES["bar_scaling"] = 0.7
+    SYS_VARIABLES["system_temperature"] = ["acpitz-acpi-", "temp1"]
+elif SYS_ID == 8796756979213:  # virtual machine
+    SYS_VARIABLES["font_scaling"] = 0.75
+    SYS_VARIABLES["font_scaling_kitty"] = 0.75
+    SYS_VARIABLES["bar_scaling"] = 1.25
 else:
     pass
 debugger.log(f'font-scaling = {SYS_VARIABLES["font_scaling"]}')
@@ -92,73 +94,98 @@ debugger.log(f'font-scaling-kitty = {SYS_VARIABLES["font_scaling_kitty"]}')
 debugger.log(f'bar-scaling = {SYS_VARIABLES["bar_scaling"]}')
 
 try:
-    QTILE_THEME_MODE, QTILE_THEME_MODE_LOCK, sunrise, now, sunset, tzinfo = pickle.load(open(os.path.expanduser(os.path.join('~', '.config', 'qtile', 'sunlight.pickle')), 'rb'))
+    QTILE_THEME_MODE, QTILE_THEME_MODE_LOCK, sunrise, now, sunset, tzinfo = pickle.load(
+        open(
+            os.path.expanduser(
+                os.path.join("~", ".config", "qtile", "sunlight.pickle")
+            ),
+            "rb",
+        )
+    )
 except:
-    tzinfo = zoneinfo.ZoneInfo('UTC')
-    QTILE_THEME_MODE = 'dark'
+    tzinfo = zoneinfo.ZoneInfo("UTC")
+    QTILE_THEME_MODE = "dark"
     QTILE_THEME_MODE_LOCK = False
     now = datetime.datetime.now(tz=tzinfo)
     sunrise = datetime.datetime.now(tz=tzinfo).replace(hour=6, minute=0)
     sunset = datetime.datetime.now(tz=tzinfo).replace(hour=18, minute=0)
-debugger.log(f'tzinfo = {str(tzinfo)}')
-debugger.log(f'qtile-theme-mode = {QTILE_THEME_MODE}')
-debugger.log(f'qtile-theme-mode-lock = {QTILE_THEME_MODE_LOCK}')
-debugger.log(f'now = {now.isoformat()}')
-debugger.log(f'sunrise = {sunrise.isoformat()}')
-debugger.log(f'sunset = {sunset.isoformat()}')
+debugger.log(f"tzinfo = {str(tzinfo)}")
+debugger.log(f"qtile-theme-mode = {QTILE_THEME_MODE}")
+debugger.log(f"qtile-theme-mode-lock = {QTILE_THEME_MODE_LOCK}")
+debugger.log(f"now = {now.isoformat()}")
+debugger.log(f"sunrise = {sunrise.isoformat()}")
+debugger.log(f"sunset = {sunset.isoformat()}")
 
 
 # window manager theming
-THEME_NAME = 'default'
+THEME_NAME = "default"
 THEME_MODE = QTILE_THEME_MODE
 # os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
-THEME = f'{THEME_MODE}_{THEME_NAME}'
-logger.info(f'trying to apply {THEME}')
+THEME = f"{THEME_MODE}_{THEME_NAME}"
+logger.info(f"trying to apply {THEME}")
 
-theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
+theme_path = os.path.expanduser(
+    os.path.join(
+        "~", ".config", "qtile", "assets", "themes", THEME_NAME, THEME, "theme.json"
+    )
+)
 if not os.path.exists(theme_path):
-    logger.warning(f'{THEME} not available, applying default')
-    THEME_NAME = 'default'
+    logger.warning(f"{THEME} not available, applying default")
+    THEME_NAME = "default"
     THEME_MODE = QTILE_THEME_MODE
     # os.environ['QTILE_THEME_MODE'] = THEME_MODE
-    THEME = f'{THEME_MODE}_{THEME_NAME}'
-    theme_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'theme.json'))
+    THEME = f"{THEME_MODE}_{THEME_NAME}"
+    theme_path = os.path.expanduser(
+        os.path.join(
+            "~", ".config", "qtile", "assets", "themes", THEME_NAME, THEME, "theme.json"
+        )
+    )
 
-debugger.log(f'theme-name = {THEME_NAME}')
-debugger.log(f'theme-mode = {THEME_MODE}')
-debugger.log(f'theme = {THEME}')
+debugger.log(f"theme-name = {THEME_NAME}")
+debugger.log(f"theme-mode = {THEME_MODE}")
+debugger.log(f"theme = {THEME}")
 
-with io.open(theme_path, 'r', encoding='utf-8') as input_handle:
+with io.open(theme_path, "r", encoding="utf-8") as input_handle:
     theme_data = json.load(input_handle)
-theme_data['colors']['transparent'] = '#FFFFFF00'
+theme_data["colors"]["transparent"] = "#FFFFFF00"
 
-if THEME_MODE == 'light':
-    theme_data['mode'] = 'light'
+if THEME_MODE == "light":
+    theme_data["mode"] = "light"
 else:
-    theme_data['mode'] = 'dark' 
+    theme_data["mode"] = "dark"
 
-auto_template_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_template'))
-auto_assets_path = os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance'))
+auto_template_assets_path = os.path.expanduser(
+    os.path.join("~", ".config", "qtile", "assets", "auto_template")
+)
+auto_assets_path = os.path.expanduser(
+    os.path.join("~", ".config", "qtile", "assets", "auto_instance")
+)
 try:
     os.makedirs(auto_assets_path)
 except FileExistsError:
     pass
 for asset in os.listdir(auto_template_assets_path):
-    with io.open(os.path.join(auto_template_assets_path, asset), 'r', encoding='utf-8') as input_handle:
+    with io.open(
+        os.path.join(auto_template_assets_path, asset), "r", encoding="utf-8"
+    ) as input_handle:
         data = input_handle.read()
-    data = data.replace('#100001', theme_data['colors']['grey1'])
-    with io.open(os.path.join(auto_assets_path, asset), 'w', encoding='utf-8') as output_handle:
+    data = data.replace("#100001", theme_data["colors"]["background"])
+    with io.open(
+        os.path.join(auto_assets_path, asset), "w", encoding="utf-8"
+    ) as output_handle:
         output_handle.write(data)
 
 
 monitors = screeninfo.get_monitors()[::-1]
 
+
 def divide_chunks(l, n):
     for i in range(0, len(l), n):
-        yield l[i:i + n]
+        yield l[i : i + n]
 
-group_names = '12345678'
+
+group_names = "12345678"
 chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
 groups_by_screen = collections.defaultdict(list)
 for i, chunk in enumerate(chunks):
@@ -168,10 +195,10 @@ for i, chunk in enumerate(chunks):
 screens = []
 dpi_diagonal_collector = []
 
-layouts = {} 
+layouts = {}
 for i, monitor in enumerate(monitors):
-    diagonal_mm = (monitor.width_mm ** 2 + monitor.height_mm ** 2) ** 0.5
-    diagonal = (monitor.width ** 2 + monitor.height ** 2) ** 0.5
+    diagonal_mm = (monitor.width_mm**2 + monitor.height_mm**2) ** 0.5
+    diagonal = (monitor.width**2 + monitor.height**2) ** 0.5
 
     diagonal_in = diagonal_mm / 25.4
     try:
@@ -182,7 +209,7 @@ for i, monitor in enumerate(monitors):
 
     width_in = monitor.width_mm / 25.4
     height_in = monitor.height_mm / 25.4
-    
+
     try:
         dpi_width = monitor.width / width_in
     except ZeroDivisionError:
@@ -194,108 +221,334 @@ for i, monitor in enumerate(monitors):
 
     layouts[i] = [
         layout.Columns(
-            border_normal=theme_data['colors']['grey1'],
-            border_focus=theme_data['colors']['bright-white'],
-            border_focus_stack=theme_data['colors']['white'],
+            border_normal=theme_data["colors"]["background"],
+            border_focus=theme_data["colors"]["bright-white"],
+            border_focus_stack=theme_data["colors"]["white"],
             border_width=1,
-            margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
-            margin_on_single=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
+            margin=[
+                0,
+                int(round(dpi_width / 2.54) * 0.5),
+                int(round(dpi_height / 2.54) * 0.5),
+                int(round(dpi_width / 2.54) * 0.5),
+            ],
+            margin_on_single=[
+                0,
+                int(round(dpi_width / 2.54) * 0.5),
+                int(round(dpi_height / 2.54) * 0.5),
+                int(round(dpi_width / 2.54) * 0.5),
+            ],
         ),
         layout.Max(
-            margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
+            margin=[
+                0,
+                int(round(dpi_width / 2.54) * 0.5),
+                int(round(dpi_height / 2.54) * 0.5),
+                int(round(dpi_width / 2.54) * 0.5),
+            ],
         ),
     ]
 
     widget_defaults = dict(
-        font=theme_data['fonts']['standard'],
-        fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'])),
+        font=theme_data["fonts"]["standard"],
+        fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
-        background=theme_data['colors']['grey1'],
+        background=theme_data["colors"]["background"],
     )
     extension_defaults = widget_defaults.copy()
 
     if i == 0:
-        theme_data['fonts']['console_size'] = str(int(round(dpi_height / 2.54 * SYS_VARIABLES['font_scaling'] * SYS_VARIABLES['font_scaling_kitty'])))
+        theme_data["fonts"]["console_size"] = str(
+            int(
+                round(
+                    dpi_height
+                    / 2.54
+                    * SYS_VARIABLES["font_scaling"]
+                    * SYS_VARIABLES["font_scaling_kitty"]
+                )
+            )
+        )
         theme_data["dpi_width"] = dpi_width
         theme_data["dpi_height"] = dpi_height
         theme_data["dpi_diagonal"] = dpi_diagonal
-        theme_data["bar_scaling"] = SYS_VARIABLES['bar_scaling']
+        theme_data["bar_scaling"] = SYS_VARIABLES["bar_scaling"]
 
     b = bar.Bar(
         [
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
             widget.GroupBox(
-                active=theme_data['colors']['white'],
-                block_highlight_text_color=theme_data['colors']['black'],
-                this_current_screen_border=theme_data['colors']['bright-white'],
-                highlight_method='block',
+                active=theme_data["colors"]["highlight-00"],
+                block_highlight_text_color=theme_data["colors"]["highlight"],
+                this_current_screen_border=theme_data["colors"]["background-00"],
+                highlight_method="block",
                 rounded=True,
                 hide_unused=False,
                 visible_groups=groups_by_screen[i],
-                this_screen_border=theme_data['colors']['grey1'],
-                other_current_screen_border=theme_data['colors']['grey3'],
-                other_screen_border=theme_data['colors']['grey3'],
-                background=theme_data['colors']['grey1'],
-                inactive=theme_data['colors']['white'],
-                urgent_border=theme_data['colors']['grey3'],
-                urgent_text=theme_data['colors']['grey2'],
+                this_screen_border=theme_data["colors"]["background"],
+                other_current_screen_border=theme_data["colors"]["background-02"],
+                other_screen_border=theme_data["colors"]["background-02"],
+                background=theme_data["colors"]["background"],
+                inactive=theme_data["colors"]["background-00"],
+                urgent_border=theme_data["colors"]["background-02"],
+                urgent_text=theme_data["colors"]["highlight-00"],
             ),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
-            widget.Spacer(background=theme_data['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
-            widget.Prompt(background=theme_data['colors']['grey1'], cursor_color=theme_data['colors']['white'], prompt=' ', fmt='<span color="' + theme_data['colors']['black'] + '"></span> {}', cursor=False, rounded=True),
-            widget.WindowName(fmt='<span rise="8pt">{}</span>', background=theme_data['colors']['grey1'], foreground=theme_data['colors']['white']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
-            widget.Spacer(background=theme_data['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
-            widget.Clock(fmt='<span rise="8pt">{}</span>', format='%Y-%m-%d %a %H:%M:%S', background=theme_data['colors']['grey1'], foreground=theme_data['colors']['white']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Spacer(background=theme_data["colors"]["transparent"]),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Prompt(
+                background=theme_data["colors"]["background"],
+                foreground=theme_data["colors"]["foreground"],
+                cursor_color=theme_data["colors"]["background-02"],
+                prompt=" ",
+                fmt='<span color="' + theme_data["colors"]["background-02"] + '"></span> {}',
+                cursor=True,
+                rounded=True,
+            ),
+            widget.WindowName(
+                fmt='<span rise="8pt">{}</span>',
+                background=theme_data["colors"]["background"],
+                foreground=theme_data["colors"]["foreground"],
+            ),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Spacer(background=theme_data["colors"]["transparent"]),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Clock(
+                fmt='<span rise="8pt">{}</span>',
+                format="%Y-%m-%d %a %H:%M:%S",
+                background=theme_data["colors"]["background"],
+                foreground=theme_data["colors"]["foreground"],
+            ),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
         ],
-        size=int(round(dpi_height / 2.54 * SYS_VARIABLES['bar_scaling'])),
-        margin=[int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
-        background=theme_data['colors']['transparent'],
+        size=int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])),
+        margin=[
+            int(round(dpi_height / 2.54) * 0.5),
+            int(round(dpi_width / 2.54) * 0.5),
+            int(round(dpi_height / 2.54) * 0.5),
+            int(round(dpi_width / 2.54) * 0.5),
+        ],
+        background=theme_data["colors"]["transparent"],
     )
     # b.window.window.set_property('QTILE_BAR', 1, 'CARDINAL', 32)
     status_bar = bar.Bar(
         [
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
-            parse_bluetooth.BluetoothState(devices=devices, fmt='<span color="' + theme_data['colors']['white'] + '">{}</span>'),
-            parse_battery.BatteryState(fmt='<span color="' + theme_data['colors']['black'] + '">󱐋</span> <span color="' + theme_data['colors']['white'] + '">{}</span>'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
-            widget.Spacer(background=theme_data['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
-            parse_sensors.Sensors(*SYS_VARIABLES['system_temperature'], fmt='<span color="' + theme_data['colors']['black'] + '"></span> <span rise="-2pt">{}° C</span>', update_inverval=10, foreground=theme_data['colors']['white']),
-            parse_xset.InputState(fmt='<span color="' + theme_data['colors']['bright-white'] + '">{}</span>', update_inverval=0.5),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
-            widget.Spacer(background=theme_data['colors']['transparent']),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_left.svg'), background=theme_data['colors']['transparent']),
-            parse_sun.SunState(fmt='<span color="' + theme_data['colors']['bright-white'] + '">{}</span>'),
-            widget.Image(padding=0, margin=0, filename=os.path.join('~', '.config', 'qtile', 'assets', 'auto_instance', 'end_cap_right.svg'), background=theme_data['colors']['transparent']),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            parse_bluetooth.BluetoothState(
+                devices=devices,
+                fmt='<span color="' + theme_data["colors"]["foreground"] + '">{}</span>',
+            ),
+            parse_battery.BatteryState(
+                fmt='<span color="'
+                + theme_data["colors"]["background-02"]
+                + '">󱐋</span> <span color="'
+                + theme_data["colors"]["foreground"]
+                + '">{}</span>'
+            ),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Spacer(background=theme_data["colors"]["transparent"]),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            parse_sensors.Sensors(
+                *SYS_VARIABLES["system_temperature"],
+                fmt='<span color="'
+                + theme_data["colors"]["background-02"]
+                + '"></span> <span rise="-2pt">{}° C</span>',
+                update_inverval=10,
+                foreground=theme_data["colors"]["foreground"],
+            ),
+            parse_xset.InputState(
+                fmt='<span color="'
+                + theme_data["colors"]["background-02"]
+                + '">{}</span>',
+                update_inverval=0.5,
+            ),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Spacer(background=theme_data["colors"]["transparent"]),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            parse_sun.SunState(
+                fmt='<span color="'
+                + theme_data["colors"]["foreground"]
+                + '">{}</span>'
+            ),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
         ],
-        size=int(round(dpi_height / 2.54 * SYS_VARIABLES['bar_scaling'])),
-        margin=[0, int(round(dpi_width / 2.54) * 0.5), int(round(dpi_height / 2.54) * 0.5), int(round(dpi_width / 2.54) * 0.5)],
-        background=theme_data['colors']['transparent'],
+        size=int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])),
+        margin=[
+            0,
+            int(round(dpi_width / 2.54) * 0.5),
+            int(round(dpi_height / 2.54) * 0.5),
+            int(round(dpi_width / 2.54) * 0.5),
+        ],
+        background=theme_data["colors"]["transparent"],
     )
-    debugger.log(f'monitor = {str(i)}')
-    debugger.log(f'monitor-width = {str(monitor.width)}')
-    debugger.log(f'monitor-height = {str(monitor.height)}')
-    debugger.log(f'monitor-width-mm = {str(monitor.width_mm)}')
-    debugger.log(f'monitor-height-mm = {str(monitor.height_mm)}')
-    debugger.log(f'dpi-width = {str(dpi_width)}')
-    debugger.log(f'dpi-height = {str(dpi_height)}')
-    debugger.log(f'dpi-diagonal = {str(dpi_diagonal)}')
-    debugger.log(f'font-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])))}')
-    debugger.log(f'bar-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])))}')
+    debugger.log(f"monitor = {str(i)}")
+    debugger.log(f"monitor-width = {str(monitor.width)}")
+    debugger.log(f"monitor-height = {str(monitor.height)}")
+    debugger.log(f"monitor-width-mm = {str(monitor.width_mm)}")
+    debugger.log(f"monitor-height-mm = {str(monitor.height_mm)}")
+    debugger.log(f"dpi-width = {str(dpi_width)}")
+    debugger.log(f"dpi-height = {str(dpi_height)}")
+    debugger.log(f"dpi-diagonal = {str(dpi_diagonal)}")
+    debugger.log(
+        f'font-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])))}'
+    )
+    debugger.log(
+        f'bar-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])))}'
+    )
     screens.append(Screen(top=b, bottom=status_bar))
 
-kitty = update_kitty.Kitty(input_path=os.path.join('~', '.config', 'kitty'), wm_theme=theme_data)
-kitty.save(output_path=os.path.join('~', '.config', 'kitty'))
+kitty = update_kitty.Kitty(
+    input_path=os.path.join("~", ".config", "kitty"), wm_theme=theme_data
+)
+kitty.save(output_path=os.path.join("~", ".config", "kitty"))
 
 debugger.log(json.dumps(theme_data, indent=4))
 
 xresources_config = {}
-xresources_path = os.path.expanduser(os.path.join('~', '.Xresources'))
-with io.open(xresources_path, 'r', encoding='utf-8') as input_handle:
+xresources_path = os.path.expanduser(os.path.join("~", ".Xresources"))
+with io.open(xresources_path, "r", encoding="utf-8") as input_handle:
     for line in input_handle:
         k, v = line.rstrip().split()
         xresources_config[k] = v
@@ -304,11 +557,12 @@ with io.open(xresources_path, 'r', encoding='utf-8') as input_handle:
 def mean(numbers):
     return float(sum(numbers)) / max(len(numbers), 1)
 
-xresources_config['Xft.dpi:'] = str(int(round(theme_data['dpi_diagonal'])))
-xresources_config['Xcursor.size:'] = str(int(round(theme_data['dpi_diagonal'] / 6)))
-with io.open(xresources_path, 'w', encoding='utf-8') as output_handle:
+
+xresources_config["Xft.dpi:"] = str(int(round(theme_data["dpi_diagonal"])))
+xresources_config["Xcursor.size:"] = str(int(round(theme_data["dpi_diagonal"] / 6)))
+with io.open(xresources_path, "w", encoding="utf-8") as output_handle:
     for key in xresources_config.keys():
-        output_handle.write(' '.join([key, xresources_config[key]]) + '\n')
+        output_handle.write(" ".join([key, xresources_config[key]]) + "\n")
 
 debugger.log(f'xft-dpi = {str(xresources_config["Xft.dpi:"])}')
 debugger.log(f'xcursor-size = {str(xresources_config["Xcursor.size:"])}')
@@ -323,15 +577,32 @@ for i, chunk in enumerate(chunks):
 
 @hook.subscribe.startup
 def _():
-    subprocess.Popen(args=['picom'])
-    if theme_data['wallpaper'] == 'stretched' or theme_data['wallpaper'] == 'centered':
-        wallpaper_mode = '--bg-fill'
-    elif theme_data['wallpaper'] == 'tiled':
-        wallpaper_mode = '--bg-tile'
+    subprocess.Popen(args=["picom"])
+    if theme_data["wallpaper"] == "stretched" or theme_data["wallpaper"] == "centered":
+        wallpaper_mode = "--bg-fill"
+    elif theme_data["wallpaper"] == "tiled":
+        wallpaper_mode = "--bg-tile"
     else:
         raise ValueError
 
-    subprocess.Popen(args=['feh', wallpaper_mode, os.path.expanduser(os.path.join('~', '.config', 'qtile', 'assets', 'themes', THEME_NAME, THEME, 'wallpaper.png'))])
+    subprocess.Popen(
+        args=[
+            "feh",
+            wallpaper_mode,
+            os.path.expanduser(
+                os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "themes",
+                    THEME_NAME,
+                    THEME,
+                    "wallpaper.png",
+                )
+            ),
+        ]
+    )
     kitty.update()
     patch._patch_dunst(theme_data)
     patch._patch_starship(theme_data)
@@ -342,40 +613,48 @@ def _():
 def send_to_second_screen():
     chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
     for i, chunk in enumerate(chunks):
-        #qtile.groups_map[chunk[0]].cmd_toscreen(i, toggle=False)
+        # qtile.groups_map[chunk[0]].cmd_toscreen(i, toggle=False)
         qtile.groups_map[chunk[0]].cmd_toscreen(i)
         # logger.warning(f'{chunk[0]}, {i}')
- 
+
+
 mod = "mod4"
 
 terminal = guess_terminal()
+
 
 @lazy.function
 def spawn_prompt_on_active_screen(qtile):
     qtile.current_screen.cmd_spawn()
 
+
 @lazy.function
 def backlight(qtile, direction, steps=20):
-    with open('/sys/class/backlight/intel_backlight/max_brightness', 'r') as input_handle:
+    with open(
+        "/sys/class/backlight/intel_backlight/max_brightness", "r"
+    ) as input_handle:
         max_brightness = int(input_handle.read().strip())
 
-    with open('/sys/class/backlight/intel_backlight/brightness', 'r') as input_handle:
+    with open("/sys/class/backlight/intel_backlight/brightness", "r") as input_handle:
         current_brightness = int(input_handle.read().strip())
-    
-    if direction == 'inc':    
-        current_brightness = min(max_brightness, current_brightness + max_brightness / steps)
-    elif direction == 'dec':
+
+    if direction == "inc":
+        current_brightness = min(
+            max_brightness, current_brightness + max_brightness / steps
+        )
+    elif direction == "dec":
         current_brightness = max(0, current_brightness - max_brightness / steps)
     else:
-        raise ValueError(f'direction: {direction}')
+        raise ValueError(f"direction: {direction}")
 
     new_brightness = str(int(round(current_brightness)))
-    with open('/sys/class/backlight/intel_backlight/brightness', 'w') as output_handle:
+    with open("/sys/class/backlight/intel_backlight/brightness", "w") as output_handle:
         output_handle.write(new_brightness)
 
+
 keys = [
-    Key([], 'XF86MonBrightnessUp', backlight('inc')),
-    Key([], 'XF86MonBrightnessDown', backlight('dec')),
+    Key([], "XF86MonBrightnessUp", backlight("inc")),
+    Key([], "XF86MonBrightnessDown", backlight("dec")),
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
@@ -407,8 +686,12 @@ keys = [
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle window floating"),
-    Key([mod, "control"], "f", lazy.window.toggle_fullscreen(), desc="Toggle window fullscreen"),
-    
+    Key(
+        [mod, "control"],
+        "f",
+        lazy.window.toggle_fullscreen(),
+        desc="Toggle window fullscreen",
+    ),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -422,12 +705,22 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod, 'shift'], "Tab", lazy.hide_show_bar('bottom'), desc="Toggle bottom bar visibility"),
+    Key(
+        [mod, "shift"],
+        "Tab",
+        lazy.hide_show_bar("bottom"),
+        desc="Toggle bottom bar visibility",
+    ),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod, 'shift'], "r", spawn_prompt_on_active_screen(), desc="Spawn a command using a prompt widget"),
+    Key(
+        [mod, "shift"],
+        "r",
+        spawn_prompt_on_active_screen(),
+        desc="Spawn a command using a prompt widget",
+    ),
 ]
 
 for i in groups:
@@ -488,8 +781,8 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
     ],
-    border_normal=theme_data['colors']['grey1'],
-    border_focus=theme_data['colors']['grey2'],
+    border_normal=theme_data["colors"]["background"],
+    border_focus=theme_data["colors"]["highlight-00"],
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"

@@ -5,7 +5,8 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
-
+* refactor qtile config
+* update debug to remove old log files
 * fix cursor size on qtile
 * add git colors to obey theme
 * add .dir_colors to obey theme
@@ -14,6 +15,7 @@ A list of issues and ideas.
 * show battery state on mobile computers
 * integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
+    * add mute key
 * show which bluetooth devices are connected (and if available their remaining battery charge)
 * share edid / document how to generate
 * install script

@@ -1,1 +1,35 @@
-{"colors": {"base-color": "#b0d7ff", "grey1": "#537b9f", "grey2": "#7d7199", "grey3": "#348190", "alert1": "#00e7ff", "alert2": "#dcb4ff", "alert3": "#00fbff", "black": "#bfe7ff", "bright-black": "#b1d8ff", "white": "#002947", "bright-white": "#002947", "red": "#ffc3c4", "bright-red": "#ac7474", "yellow": "#ebcfa7", "bright-yellow": "#977f5a", "green": "#b9dcb6", "bright-green": "#6a8b68", "cyan": "#95e0e2", "bright-cyan": "#428e91", "blue": "#b0d7ff", "bright-blue": "#5f86ab", "purple": "#eac8f0", "bright-purple": "#97789d"}, "fonts": {"standard": "FiraMono Nerd Font Mono", "console": "FiraMono Nerd Font Mono", "features": "FiraMonoNFM-Regular +cv16 +ss02"}, "wallpaper": "stretched"}
+{
+    "colors": {
+        "background": "#fbe9bc",
+        "foreground": "#0c1116",
+        "highlight": "#4b2417",
+        "background-00": "#d3c297",
+        "background-01": "#bfaf84",
+        "background-02": "#ac9c72",
+        "highlight-00": "#002331",
+        "highlight-01": "#2c1929",
+        "highlight-02": "#2d1c0d",
+        "bright-red": "#4b2417",
+        "red": "#e6b09e",
+        "bright-green": "#003724",
+        "green": "#90c8af",
+        "bright-blue": "#1e2e51",
+        "blue": "#afbbe7",
+        "bright-cyan": "#003647",
+        "cyan": "#7fc7da",
+        "bright-magenta": "#4a2039",
+        "magenta": "#e1adc9",
+        "bright-yellow": "#313009",
+        "yellow": "#c2be90",
+        "bright-white": "#111111",
+        "white": "#9d9d9d",
+        "bright-black": "#eaeaea",
+        "black": "#ffffff"
+    },
+    "fonts": {
+        "standard": "FiraMono Nerd Font Mono",
+        "console": "FiraMono Nerd Font Mono",
+        "variants": "FiraMonoNFM-Regular +cv16 +ss02"
+    },
+    "wallpaper": "stretched"
+}

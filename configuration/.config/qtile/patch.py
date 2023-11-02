@@ -10,12 +10,12 @@ import subprocess
 def _patch_starship(theme_data, target_directory_path=os.path.expanduser(os.path.join("~", ".config"))):
     with io.open(os.path.join(target_directory_path, "starship.toml"), "r", encoding='utf-8') as input_handle:
         config = tomlkit.parse(input_handle.read())
-    config['palettes']['nuunamnir']['alert1'] = theme_data['colors']['alert1']
-    config['palettes']['nuunamnir']['alert2'] = theme_data['colors']['alert2']
-    config['palettes']['nuunamnir']['alert3'] = theme_data['colors']['alert3']
-    config['palettes']['nuunamnir']['grey1'] = theme_data['colors']['grey1']
-    config['palettes']['nuunamnir']['grey2'] = theme_data['colors']['grey2']
-    config['palettes']['nuunamnir']['grey3'] = theme_data['colors']['grey3']
+    config['palettes']['nuunamnir']['alert1'] = theme_data['colors']['highlight-00']
+    config['palettes']['nuunamnir']['alert2'] = theme_data['colors']['highlight-01']
+    config['palettes']['nuunamnir']['alert3'] = theme_data['colors']['highlight-02']
+    config['palettes']['nuunamnir']['grey1'] = theme_data['colors']['background-00']
+    config['palettes']['nuunamnir']['grey2'] = theme_data['colors']['background-01']
+    config['palettes']['nuunamnir']['grey3'] = theme_data['colors']['background-02']
     with io.open(os.path.join(target_directory_path, "starship.toml"), "w", encoding='utf-8') as output_handle:
         output_handle.write(tomlkit.dumps(config))
 
@@ -52,19 +52,19 @@ def _patch_dunst(
     )
     config["global"]["corner_radius"] = "0"
 
-    config["urgency_critical"]["background"] = f"\"{theme_data['colors']['alert1']}\""
-    config["urgency_critical"]["foreground"] = f"\"{theme_data['colors']['white']}\""
+    config["urgency_critical"]["background"] = f"\"{theme_data['colors']['highlight']}\""
+    config["urgency_critical"]["foreground"] = f"\"{theme_data['colors']['foreground']}\""
     config["urgency_critical"][
         "frame_color"
     ] = f"\"{theme_data['colors']['bright-white']}\""
-    config["urgency_normal"]["background"] = f"\"{theme_data['colors']['grey1']}\""
-    config["urgency_normal"]["foreground"] = f"\"{theme_data['colors']['black']}\""
+    config["urgency_normal"]["background"] = f"\"{theme_data['colors']['background']}\""
+    config["urgency_normal"]["foreground"] = f"\"{theme_data['colors']['foreground']}\""
     config["urgency_normal"][
         "frame_color"
     ] = f"\"{theme_data['colors']['bright-white']}\""
-    config["urgency_low"]["background"] = f"\"{theme_data['colors']['grey1']}\""
-    config["urgency_low"]["foreground"] = f"\"{theme_data['colors']['white']}\""
-    config["urgency_low"]["frame_color"] = f"\"{theme_data['colors']['bright-white']}\""
+    config["urgency_low"]["background"] = f"\"{theme_data['colors']['background']}\""
+    config["urgency_low"]["foreground"] = f"\"{theme_data['colors']['background-02']}\""
+    config["urgency_low"]["frame_color"] = f"\"{theme_data['colors']['background']}\""
     with io.open(
         os.path.join(target_directory_path, "dunstrc"), "w", encoding="utf-8"
     ) as output_handle:

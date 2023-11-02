@@ -18,31 +18,31 @@ class Kitty:
                     self.kitty_configuration[line_pieces[0]] = ' '.join(line_pieces[1:])
         
         self.kitty_configuration['font_family'] = wm_theme['fonts']['console']
-        self.kitty_configuration['font_features'] = wm_theme['fonts']['features']
+        self.kitty_configuration['font_features'] = wm_theme['fonts']['variants']
         self.kitty_configuration['font_size'] = wm_theme['fonts']['console_size']
 
         self.kitty_theme = {
-            'background': wm_theme['colors']['base-color'], 
-            'foreground': wm_theme['colors']['white'],
-            'cursor': wm_theme['colors']['white'],
-            'selection_background': wm_theme['colors']['grey1'],
-            'selection_foreground': wm_theme['colors']['bright-black'],
-            'color8': wm_theme['colors']['bright-black'],
-            'color9': wm_theme['colors']['bright-red'],
-            'color10': wm_theme['colors']['bright-green'],
-            'color11': wm_theme['colors']['bright-yellow'],
-            'color12': wm_theme['colors']['bright-blue'],
-            'color13': wm_theme['colors']['bright-purple'],
-            'color14': wm_theme['colors']['bright-cyan'],
-            'color15': wm_theme['colors']['bright-white'],
-            'color0': wm_theme['colors']['black'],
-            'color1': wm_theme['colors']['red'],
-            'color2': wm_theme['colors']['green'],
-            'color3': wm_theme['colors']['yellow'],
-            'color4': wm_theme['colors']['blue'],
-            'color5': wm_theme['colors']['purple'],
-            'color6': wm_theme['colors']['cyan'],
-            'color7': wm_theme['colors']['white'],
+            'background': wm_theme['colors']['background'], 
+            'foreground': wm_theme['colors']['foreground'],
+            'cursor': wm_theme['colors']['foreground'],
+            'selection_background': wm_theme['colors']['background-02'],
+            'selection_foreground': wm_theme['colors']['foreground'],
+            'color8': wm_theme['colors']['black'],
+            'color9': wm_theme['colors']['red'],
+            'color10': wm_theme['colors']['green'],
+            'color11': wm_theme['colors']['yellow'],
+            'color12': wm_theme['colors']['blue'],
+            'color13': wm_theme['colors']['magenta'],
+            'color14': wm_theme['colors']['cyan'],
+            'color15': wm_theme['colors']['white'],
+            'color0': wm_theme['colors']['bright-black'],
+            'color1': wm_theme['colors']['bright-red'],
+            'color2': wm_theme['colors']['bright-green'],
+            'color3': wm_theme['colors']['bright-yellow'],
+            'color4': wm_theme['colors']['bright-blue'],
+            'color5': wm_theme['colors']['bright-magenta'],
+            'color6': wm_theme['colors']['bright-cyan'],
+            'color7': wm_theme['colors']['bright-white'],
         }
 
     def save(self, output_path):
