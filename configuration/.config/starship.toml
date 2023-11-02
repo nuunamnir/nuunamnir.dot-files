@@ -21,10 +21,10 @@ format = '[$duration](grey1)'
 symbol = " "
 
 [git_branch]
-style = "bright-purple"
+style = "purple"
 
 [git_status]
-style = "bright-red"
+style = "red"
 
 [python]
 symbol = " "
