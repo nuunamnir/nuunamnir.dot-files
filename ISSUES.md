@@ -5,7 +5,7 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
-* refactor qtile config
+* bluetooth headset does not connect if pavucontrol/firefox is not started beforehand
 * update debug to remove old log files
 * fix cursor size on qtile
 * add git colors to obey theme
@@ -24,6 +24,7 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~refactor qtile config~~ (updated [theme generator script](https://github.com/nuunamnir/nuunamnir.qtile-theme-generator))
 * ~~recalibrate monitors (full brightness on mobile computer)~~ (performed recalibration)
 * ~~share icc / document how to generate~~ (resolved by adding a README.md to the icc_profiles directory)
 * ~~gtk color theme - dark/bright~~ (resolved, added a patch function for gtk setting)

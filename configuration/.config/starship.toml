@@ -6,12 +6,12 @@ add_newline = true
 palette = 'nuunamnir'
 
 [palettes.nuunamnir]
-alert1 = "#bdddd6"
-alert2 = "#cbd7ed"
-alert3 = "#eecfd6"
-grey1 = "#222630"
-grey2 = "#30343f"
-grey3 = "#3f434f"
+alert1 = "#002331"
+alert2 = "#2c1929"
+alert3 = "#2d1c0d"
+grey1 = "#d3c297"
+grey2 = "#bfaf84"
+grey3 = "#ac9c72"
 
 [cmd_duration]
 show_milliseconds = true
