@@ -12,7 +12,6 @@ A list of issues and ideas.
 * add .dir_colors to obey theme
 * refactor theme generator
 * mouse cursor scaling not working on qtile
-* show battery state on mobile computers
 * integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
     * add mute key
@@ -24,6 +23,7 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~show battery state on mobile computers~~ (added widget)
 * ~~refactor qtile config~~ (updated [theme generator script](https://github.com/nuunamnir/nuunamnir.qtile-theme-generator))
 * ~~recalibrate monitors (full brightness on mobile computer)~~ (performed recalibration)
 * ~~share icc / document how to generate~~ (resolved by adding a README.md to the icc_profiles directory)
