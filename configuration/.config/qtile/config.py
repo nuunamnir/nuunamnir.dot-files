@@ -624,11 +624,6 @@ terminal = guess_terminal()
 
 
 @lazy.function
-def spawn_prompt_on_active_screen(qtile):
-    qtile.current_screen.cmd_spawn()
-
-
-@lazy.function
 def backlight(qtile, direction, steps=20):
     with open(
         "/sys/class/backlight/intel_backlight/max_brightness", "r"
@@ -714,11 +709,11 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("rofi -show run"), desc="Spawn a command using rofi."),
     Key(
         [mod, "shift"],
         "r",
-        spawn_prompt_on_active_screen(),
+        lazy.spawncmd(),
         desc="Spawn a command using a prompt widget",
     ),
 ]
