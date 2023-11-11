@@ -1,0 +1,61 @@
+* {
+  font: "FiraMono Nerd Font Mono 15";
+  background-color: #fbe9bc;
+  text-color: #0c1116;
+}
+
+window {
+  font: "FiraMono Nerd Font Mono 15";
+  /* transparency: "real"; */
+  background-color: #fbe9bc;
+  text-color: #0c1116;
+  border-radius: 8px;
+  border-color: #002331;
+}
+
+inputbar {
+  children:   [ entry ];
+}
+
+entry {
+    font:   inherit;
+
+    placeholder         : "Search";
+    placeholder-color   : #d3c297;
+}
+
+element {
+    padding:            8px 16px;
+    spacing:            16px;
+    background-color:   #fbe9bc;
+}
+
+listview {
+  lines:      10;
+  columns:    1;
+
+  scrollbar: false;
+  fixed-height:   true;
+  border: 0;
+}
+
+element normal.normal {
+    background-color: #fbe9bc;
+    text-color:       #d3c297;
+}
+
+element.alternate.normal {
+    background-color: #fbe9bc;
+    text-color:       #d3c297;
+}
+
+element selected normal, element selected active {
+    background-color:   #fbe9bc;
+    text-color:         #0c1116;
+}
+
+message {
+    border:             2px 0 0;
+    border-color:       #fbe9bc;
+    background-color:   #fbe9bc;
+}

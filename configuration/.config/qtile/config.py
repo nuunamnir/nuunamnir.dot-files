@@ -607,6 +607,7 @@ def _():
     patch._patch_dunst(theme_data)
     patch._patch_starship(theme_data)
     patch._patch_gtk(theme_data)
+    patch._patch_rofi(theme_data)
 
 
 @hook.subscribe.startup_complete
