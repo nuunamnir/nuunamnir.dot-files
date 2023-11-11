@@ -7,15 +7,13 @@ A list of issues and ideas.
 ## Other
 * understand timeshift
 * add firefox to config handling
-* add rofi to config handling
 * problem with permissions on mirrorlist
 * bluetooth headset does not connect if pavucontrol/firefox is not started beforehand
 * update debug to remove old log files
 * fix cursor size on qtile
 * add git colors to obey theme
 * add .dir_colors to obey theme
-* refactor qtile config
-    
+* refactor qtile config    
 * mouse cursor scaling not working on qtile
 * integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
@@ -24,10 +22,11 @@ A list of issues and ideas.
 * share edid / document how to generate
 * install script
 * handle monitors being plugged in or plugged out while qtile is running
-* show prompt on focused screen
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~add rofi to config handling~~ (resolved by adding rofi to patch.py)
+* ~~show prompt on focused screen~~ (resolved by switching from prompt widget to rofi)
 * ~~show battery state on mobile computers~~ (added widget)
 * ~~refactor theme generator~~ (updated [theme generator script](https://github.com/nuunamnir/nuunamnir.qtile-theme-generator))
 * ~~recalibrate monitors (full brightness on mobile computer)~~ (performed recalibration)
