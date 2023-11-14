@@ -7,6 +7,52 @@ import configparser
 import subprocess
 
 
+def _patch_rofi(theme_data, target_directory_path=os.path.expanduser(os.path.join("~", ".config", "rofi"))):
+    config = dict()
+    with io.open(os.path.join(target_directory_path, "nuunamnir.rasi"), "r", encoding='utf-8') as input_handle:
+        state = 'element'
+        element = None
+        for line in input_handle:
+            raw_line = line.strip()
+            if raw_line == '':
+                continue
+            elif raw_line.startswith('/*'):
+                state = f'comment_{state}'
+                
+            if state.startswith('comment'):
+                if raw_line.endswith('*/'):
+                    state = state.split('_')[1]
+                continue
+
+            if state == 'element':
+                line_pieces = raw_line.split()
+                element = ' '.join(line_pieces[:-1])
+                config[element] = dict()
+                state = 'property'
+            elif state  == 'property':
+                if raw_line == '}':
+                    element = None
+                    state = 'element'
+                    continue
+                try:
+                    property_name, property_value = raw_line.split(':')
+                    config[element][property_name.strip()] = property_value.strip()
+                except ValueError:
+                    continue
+
+    for color in theme_data['colors']:
+        config['*'][f'C-{color}'] = f"{theme_data['colors'][color]};"
+
+    config['*']['font'] = f"\"{theme_data['fonts']['console']} {theme_data['fonts']['console_size']}\";"
+
+    with io.open(os.path.join(target_directory_path, "nuunamnir.rasi"), "w", encoding='utf-8') as output_handle:
+        for element in config:
+            output_handle.write(f'{element} {{\n')
+            for property_name in config[element]:
+                output_handle.write(f'    {property_name}: {config[element][property_name]}\n')
+            output_handle.write(f'}}\n')
+
+
 def _patch_starship(theme_data, target_directory_path=os.path.expanduser(os.path.join("~", ".config"))):
     with io.open(os.path.join(target_directory_path, "starship.toml"), "r", encoding='utf-8') as input_handle:
         config = tomlkit.parse(input_handle.read())
@@ -92,4 +138,5 @@ if __name__ == "__main__":
         theme_data["dpi_height"] = 96
         theme_data["bar_scaling"] = 1.25
     # _patch_dunst(theme_data)
-    _patch_starship(theme_data)
+    # _patch_starship(theme_data)
+    _patch_rofi(theme_data)

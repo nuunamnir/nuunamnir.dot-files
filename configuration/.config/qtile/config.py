@@ -607,6 +607,7 @@ def _():
     patch._patch_dunst(theme_data)
     patch._patch_starship(theme_data)
     patch._patch_gtk(theme_data)
+    patch._patch_rofi(theme_data)
 
 
 @hook.subscribe.startup_complete
@@ -621,11 +622,6 @@ def send_to_second_screen():
 mod = "mod4"
 
 terminal = guess_terminal()
-
-
-@lazy.function
-def spawn_prompt_on_active_screen(qtile):
-    qtile.current_screen.cmd_spawn()
 
 
 @lazy.function
@@ -714,11 +710,11 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("rofi -show run"), desc="Spawn a command using rofi."),
     Key(
         [mod, "shift"],
         "r",
-        spawn_prompt_on_active_screen(),
+        lazy.spawncmd(),
         desc="Spawn a command using a prompt widget",
     ),
 ]

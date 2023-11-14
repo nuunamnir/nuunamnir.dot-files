@@ -1,0 +1,127 @@
+* {
+    font: "FiraMono Nerd Font Mono 15";
+    C-background: #fbe9bc;
+    C-foreground: #0c1116;
+    C-highlight: #4b2417;
+    C-background-00: #d3c297;
+    C-background-01: #bfaf84;
+    C-background-02: #ac9c72;
+    C-highlight-00: #002331;
+    C-highlight-01: #2c1929;
+    C-highlight-02: #2d1c0d;
+    C-bright-red: #4b2417;
+    C-red: #e6b09e;
+    C-bright-green: #003724;
+    C-green: #90c8af;
+    C-bright-blue: #1e2e51;
+    C-blue: #afbbe7;
+    C-bright-cyan: #003647;
+    C-cyan: #7fc7da;
+    C-bright-magenta: #4a2039;
+    C-magenta: #e1adc9;
+    C-bright-yellow: #313009;
+    C-yellow: #c2be90;
+    C-bright-white: #111111;
+    C-white: #9d9d9d;
+    C-bright-black: #eaeaea;
+    C-black: #ffffff;
+    C-transparent: #FFFFFF00;
+    background-color: var(C-background);
+}
+window {
+    padding: 20;
+}
+mainbox {
+    padding: 20;
+}
+message {
+    text-color: var(C-highlight);
+    padding: 5px;
+}
+element {
+    padding: 3px 1px 3px 12px;
+    orientation: horizontal;
+    children: [ element-text ];
+}
+element normal.normal {
+    text-color: inherit;
+}
+element normal.active {
+    text-color: var(C-foreground);
+}
+element normal.urgent {
+    text-color: var(C-highlight);
+}
+element selected.normal {
+    text-color: var(C-foreground);
+    background-color: var(C-background-00);
+    border-radius: 50%;
+}
+element selected.active {
+    text-color: var(C-foreground);
+    background-color: var(C-background-00);
+    border-radius: 50%;
+}
+element selected.urgent {
+    text-color: var(C-highlight);
+    background-color: var(C-background);
+    border-radius: 50%;
+}
+element-text {
+    background-color: transparent;
+    cursor: inherit;
+    highlight: inherit;
+    text-color: var(C-background-02);
+}
+listview {
+    font: inherit;
+    padding: 2px 0 2px 0;
+    scrollbar: true;
+    spacing: 2px;
+    fixed-height: true;
+}
+textbox {
+    font: inherit;
+    border-bottom: 2px solid;
+    border-color: var(C-background);
+}
+scrollbar {
+    width: 8px;
+    padding: 1 1 1 8px;
+    handle-width: 2px;
+    handle-color: var(C-background-02);
+}
+inputbar {
+    font: inherit;
+    children: [ "prompt","textbox-prompt-colon","entry","case-indicator" ];
+    text-color: var(C-foreground);
+    padding: 1px;
+    spacing: 0px;
+    margin: 0px 0px 10px 0px;
+}
+prompt {
+    font: inherit;
+    text-color: var(C-background-02);
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    spacing: 0;
+}
+textbox-prompt-colon {
+    font: inherit;
+    str: "";
+    text-color: var(C-foreground);
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    expand: false;
+}
+entry {
+    placeholder: "";
+    placeholder-color: var(C-background-02);
+    text-color: var(C-foreground);
+    text-align: center;
+    horizontal-align: 0.488;
+    vertical-align: 0.1;
+    spacing: 1;
+    cursor: text;
+    blink: false;
+}
