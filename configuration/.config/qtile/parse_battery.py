@@ -1,7 +1,4 @@
-import subprocess
-import json
 import typing
-import re
 
 import libqtile.widget.base
 from libqtile.utils import logger
@@ -41,7 +38,7 @@ class BatteryState(libqtile.widget.base.ThreadPoolText):
                 return f'{charge_now / charge_full * 100:.2f} %{status_icon}' 
             else:
                 return f' '
-        except Exception as e:
+        except Exception:
             logger.debug(f'no battery found')
         return f'󱐥'
 

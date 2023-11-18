@@ -1,17 +1,11 @@
 import subprocess
-import json
 import typing
-import re
 import os
-import io
-import requests
 import datetime
 import zoneinfo
 import pickle
 
-from libqtile import qtile
 import libqtile.widget.base
-from libqtile.utils import logger
 
 
 

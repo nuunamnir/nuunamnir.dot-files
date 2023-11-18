@@ -1,0 +1,29 @@
+{
+    "default": {
+        "description": "default configuration",
+        "options": {
+            "font-scaling": 0.7,
+            "font-scaling-console": 0.5,
+            "bar-scaling": 1.1
+        }
+    },
+    "9190538989478": {
+        "description": "configuration for stationary computer"
+    },
+    "74780420245850": {
+        "description": "configuration for mobile computer",
+        "options": {
+            "font-scaling": 0.35,
+            "font-scaling-console": 0.25,
+            "bar-scaling": 0.7
+        }
+    },
+    "8796756979213": {
+        "description": "configuration for virtual machine",
+        "options": {
+            "font-scaling": 0.75,
+            "font-scaling-console": 0.75,
+            "bar-scaling": 1.25
+        }
+    }
+}

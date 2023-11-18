@@ -41,8 +41,11 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal, logger
 
+logger.setLevel(logging.WARNING)
+
 import screeninfo
 
+import utils
 import debug
 
 debugger = debug.Debugger()
@@ -51,47 +54,24 @@ import parse_sensors
 import parse_xset
 import parse_sun
 import parse_battery
-import parse_bluetooth
 
-# list bluetooth devices that should be monitored
-devices = {
-    "DD:F8:A4:C5:FE:55": "󰍽",
-    "F8:4E:17:4C:D8:D2": "󰋎",
-    "CC:98:8B:99:F4:E5": "󰋎",
-    "08:3A:88:D8:BE:86": "󰓃",
-    "DD:F8:A4:C5:FE:56": "󰍽",
-}
+import widgets.bluetooth
+import widgets.logitech
 
 import update_kitty
 import patch
 
 
-logger.setLevel(logging.WARNING)
-
+SYS_VARIABLES = utils.load_system_variables()
 SYS_ID = uuid.getnode()
 debugger.log(f"sys-id = {SYS_ID}")
-SYS_VARIABLES = {
-    "font_scaling": 0.7,
-    "font_scaling_kitty": 0.5,
-    "bar_scaling": 1.1,
-    "system_temperature": ["asusec-isa-", "T_Sensor"],
-}
 if SYS_ID == 9190538989478:  # stationary computer
-    pass
+    SYS_VARIABLES["system_temperature"] = ["asusec-isa-", "T_Sensor"]
 elif SYS_ID == 74780420245850:  # mobile computer
-    SYS_VARIABLES["font_scaling"] = 0.35
-    SYS_VARIABLES["font_scaling_kitty"] = 0.25
-    SYS_VARIABLES["bar_scaling"] = 0.7
     SYS_VARIABLES["system_temperature"] = ["acpitz-acpi-", "temp1"]
-elif SYS_ID == 8796756979213:  # virtual machine
-    SYS_VARIABLES["font_scaling"] = 0.75
-    SYS_VARIABLES["font_scaling_kitty"] = 0.75
-    SYS_VARIABLES["bar_scaling"] = 1.25
-else:
-    pass
-debugger.log(f'font-scaling = {SYS_VARIABLES["font_scaling"]}')
-debugger.log(f'font-scaling-kitty = {SYS_VARIABLES["font_scaling_kitty"]}')
-debugger.log(f'bar-scaling = {SYS_VARIABLES["bar_scaling"]}')
+debugger.log(f'font-scaling = {SYS_VARIABLES["font-scaling"]}')
+debugger.log(f'font-scaling-kitty = {SYS_VARIABLES["font-scaling-console"]}')
+debugger.log(f'bar-scaling = {SYS_VARIABLES["bar-scaling"]}')
 
 try:
     QTILE_THEME_MODE, QTILE_THEME_MODE_LOCK, sunrise, now, sunset, tzinfo = pickle.load(
@@ -250,7 +230,7 @@ for i, monitor in enumerate(monitors):
 
     widget_defaults = dict(
         font=theme_data["fonts"]["standard"],
-        fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])),
+        fontsize=int(round(dpi_height / 2.54 * SYS_VARIABLES["font-scaling"])),
         # padding=int(round(dpi_diagonal / 2.54 * 0.125)),
         background=theme_data["colors"]["background"],
     )
@@ -262,15 +242,15 @@ for i, monitor in enumerate(monitors):
                 round(
                     dpi_height
                     / 2.54
-                    * SYS_VARIABLES["font_scaling"]
-                    * SYS_VARIABLES["font_scaling_kitty"]
+                    * SYS_VARIABLES["font-scaling"]
+                    * SYS_VARIABLES["font-scaling-console"]
                 )
             )
         )
         theme_data["dpi_width"] = dpi_width
         theme_data["dpi_height"] = dpi_height
         theme_data["dpi_diagonal"] = dpi_diagonal
-        theme_data["bar_scaling"] = SYS_VARIABLES["bar_scaling"]
+        theme_data["bar-scaling"] = SYS_VARIABLES["bar-scaling"]
 
     b = bar.Bar(
         [
@@ -335,7 +315,9 @@ for i, monitor in enumerate(monitors):
                 foreground=theme_data["colors"]["foreground"],
                 cursor_color=theme_data["colors"]["background-02"],
                 prompt=" ",
-                fmt='<span color="' + theme_data["colors"]["background-02"] + '"></span> {}',
+                fmt='<span color="'
+                + theme_data["colors"]["background-02"]
+                + '"></span> {}',
                 cursor=True,
                 rounded=True,
             ),
@@ -391,7 +373,7 @@ for i, monitor in enumerate(monitors):
                 background=theme_data["colors"]["transparent"],
             ),
         ],
-        size=int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])),
+        size=int(round(dpi_height / 2.54 * SYS_VARIABLES["bar-scaling"])),
         margin=[
             int(round(dpi_height / 2.54) * 0.5),
             int(round(dpi_width / 2.54) * 0.5),
@@ -416,9 +398,21 @@ for i, monitor in enumerate(monitors):
                 ),
                 background=theme_data["colors"]["transparent"],
             ),
-            parse_bluetooth.BluetoothState(
-                devices=devices,
-                fmt='<span color="' + theme_data["colors"]["foreground"] + '">{}</span>',
+            widgets.logitech.Logitech(
+                fmt='{}',
+                foreground=theme_data["colors"]["foreground"],
+                background=theme_data["colors"]["background"],
+                indicator_foreground=theme_data["colors"]["background-02"],
+                indicator_highlight=theme_data["colors"]["highlight"],
+                indicator_background=theme_data["colors"]["background-00"],
+            ),
+            widgets.bluetooth.Bluetooth(
+                fmt='{}',
+                foreground=theme_data["colors"]["foreground"],
+                background=theme_data["colors"]["background"],
+                indicator_foreground=theme_data["colors"]["background-02"],
+                indicator_highlight=theme_data["colors"]["highlight"],
+                indicator_background=theme_data["colors"]["background-00"],
             ),
             parse_battery.BatteryState(
                 fmt='<span color="'
@@ -496,9 +490,7 @@ for i, monitor in enumerate(monitors):
                 background=theme_data["colors"]["transparent"],
             ),
             parse_sun.SunState(
-                fmt='<span color="'
-                + theme_data["colors"]["foreground"]
-                + '">{}</span>'
+                fmt='<span color="' + theme_data["colors"]["foreground"] + '">{}</span>'
             ),
             widget.Image(
                 padding=0,
@@ -514,7 +506,7 @@ for i, monitor in enumerate(monitors):
                 background=theme_data["colors"]["transparent"],
             ),
         ],
-        size=int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])),
+        size=int(round(dpi_height / 2.54 * SYS_VARIABLES["bar-scaling"])),
         margin=[
             0,
             int(round(dpi_width / 2.54) * 0.5),
@@ -532,10 +524,10 @@ for i, monitor in enumerate(monitors):
     debugger.log(f"dpi-height = {str(dpi_height)}")
     debugger.log(f"dpi-diagonal = {str(dpi_diagonal)}")
     debugger.log(
-        f'font-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["font_scaling"])))}'
+        f'font-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["font-scaling"])))}'
     )
     debugger.log(
-        f'bar-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["bar_scaling"])))}'
+        f'bar-size = {str(int(round(dpi_height / 2.54 * SYS_VARIABLES["bar-scaling"])))}'
     )
     screens.append(Screen(top=b, bottom=status_bar))
 

@@ -18,13 +18,13 @@ A list of issues and ideas.
 * integrating Visual Studio Code into config management
 * show which output device is used for audio (define a default)
     * add mute key
-* show which bluetooth devices are connected (and if available their remaining battery charge)
 * share edid / document how to generate
 * install script
 * handle monitors being plugged in or plugged out while qtile is running
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~show which bluetooth devices are connected (and if available their remaining battery charge)~~ (resolved by adding the battery attribute to bluetooth widget; implemented a Logitech widget based on [solaar](https://pwr-solaar.github.io/Solaar/) - new installations required udev rule copy)
 * ~~add rofi to config handling~~ (resolved by adding rofi to patch.py)
 * ~~show prompt on focused screen~~ (resolved by switching from prompt widget to rofi)
 * ~~show battery state on mobile computers~~ (added widget)
