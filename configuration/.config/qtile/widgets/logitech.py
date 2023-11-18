@@ -78,6 +78,7 @@ class Logitech(libqtile.widget.base.ThreadPoolText):
                         else:
                             battery_str = f' <span foreground="{self.indicator_foreground}" background="{self.indicator_background}">🭶</span>'
                         connected_devices.append(self._devices[address] + battery_str)
+                    device.close()
         except ImportError:
             pass
         return (
