@@ -9,7 +9,6 @@ A list of issues and ideas.
 * add firefox to config handling
 * problem with permissions on mirrorlist
 * bluetooth headset does not connect if pavucontrol/firefox is not started beforehand
-* update debug to remove old log files
 * fix cursor size on qtile
 * add git colors to obey theme
 * add .dir_colors to obey theme
@@ -24,6 +23,7 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~update debug to remove old log files~~ (resolved by adding the possibility to only retain n newest log files)
 * ~~show which bluetooth devices are connected (and if available their remaining battery charge)~~ (resolved by adding the battery attribute to bluetooth widget; implemented a Logitech widget based on [solaar](https://pwr-solaar.github.io/Solaar/) - new installations required udev rule copy)
 * ~~add rofi to config handling~~ (resolved by adding rofi to patch.py)
 * ~~show prompt on focused screen~~ (resolved by switching from prompt widget to rofi)

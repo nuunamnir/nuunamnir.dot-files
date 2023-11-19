@@ -405,6 +405,7 @@ for i, monitor in enumerate(monitors):
                 indicator_foreground=theme_data["colors"]["background-02"],
                 indicator_highlight=theme_data["colors"]["highlight"],
                 indicator_background=theme_data["colors"]["background-00"],
+                update_interval=5,
             ),
             widgets.bluetooth.Bluetooth(
                 fmt='{}',
