@@ -57,6 +57,7 @@ import parse_battery
 
 import widgets.bluetooth
 import widgets.logitech
+import widgets.audio
 
 import patch
 
@@ -489,6 +490,36 @@ for i, monitor in enumerate(monitors):
                 ),
                 background=theme_data["colors"]["transparent"],
             ),
+            widgets.audio.Audio(
+                fmt='<span color="' + theme_data["colors"]["foreground"] + '">{}</span>',
+            ),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_right.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
+            widget.Spacer(background=theme_data["colors"]["transparent"]),
+            widget.Image(
+                padding=0,
+                margin=0,
+                filename=os.path.join(
+                    "~",
+                    ".config",
+                    "qtile",
+                    "assets",
+                    "auto_instance",
+                    "end_cap_left.svg",
+                ),
+                background=theme_data["colors"]["transparent"],
+            ),
             parse_sun.SunState(
                 fmt='<span color="' + theme_data["colors"]["foreground"] + '">{}</span>'
             ),
@@ -638,6 +669,10 @@ def backlight(qtile, direction, steps=20):
 keys = [
     Key([], "XF86MonBrightnessUp", backlight("inc")),
     Key([], "XF86MonBrightnessDown", backlight("dec")),
+
+    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Mute/Unmute Volume"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc="Lower Volume by 5%"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="Raise Volume by 5%"), 
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows

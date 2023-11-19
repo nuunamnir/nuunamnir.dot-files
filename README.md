@@ -16,6 +16,7 @@
 
 ## Dependencies
 * OS: [Arch Linux](https://www.archlinux.org/)
+* AUR Helper: [yay](https://github.com/Jguer/yay)
 * WM: [Qtile](https://www.qtile.org/) + [picom](https://github.com/yshui/picom)
 * Notifications: [dunst](https://github.com/dunst-project/dunst)
 * Launcher: [rofi](https://github.com/davatorium/rofi)
