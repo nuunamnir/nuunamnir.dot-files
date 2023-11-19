@@ -3,16 +3,32 @@
 ## Table of Content
 * [Table of Content](#table-of-content)
 * [Screenshots](#screenshots)
-* [Conventions](#conventions)
+* [Highlights](#highlights)
+* [Dependencies](#dependencies)
+* [Getting Started](#getting-started)
 
 ## Screenshots
+
+## Highlights
+* wallpaper dependent automated theme generation and application to "all" dependencies
+* time and location dependent theme switcher for qtile
+* periphery battery status widget (supports Bluetooth and Logitech Unified Receiver)
+
+## Dependencies
+* OS: [Arch Linux](https://www.archlinux.org/)
+* WM: [Qtile](https://www.qtile.org/) + [picom](https://github.com/yshui/picom)
+* Notifications: [dunst](https://github.com/dunst-project/dunst)
+* Launcher: [rofi](https://github.com/davatorium/rofi)
+* Shell: [zsh](https://www.zsh.org) + [starship](https://www.starship.rs/)
+* Terminal: [kitty](https://sw.kovidgoyal.net/kitty/)
+* Dotfiles: [nuunamnir.dot-files](https://github.com/nuunamnir/nuunamnir.dot-files)
 
 ## Getting Started
 > No one size fits all and only change is permanent.
 
 It needs to be understood that this repository is primarily meant for me, i.e., it is optimized to address my needs and solve my problems. It might not run on your machine (it might not even run on mine). However, it might contains some information that can be used as a starting point for others to solve their problems.
 
-## Installation on a New Machine
+### Installation on a New Machine
 1. Get the latest Arch Linux image from a trusted [source](https://archlinux.org/download/).
 1. Boot into the live environment.
     * Set the correct keyboard layout:
