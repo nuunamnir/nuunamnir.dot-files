@@ -58,7 +58,6 @@ import parse_battery
 import widgets.bluetooth
 import widgets.logitech
 
-import update_kitty
 import patch
 
 
@@ -70,7 +69,7 @@ if SYS_ID == 9190538989478:  # stationary computer
 elif SYS_ID == 74780420245850:  # mobile computer
     SYS_VARIABLES["system_temperature"] = ["acpitz-acpi-", "temp1"]
 debugger.log(f'font-scaling = {SYS_VARIABLES["font-scaling"]}')
-debugger.log(f'font-scaling-kitty = {SYS_VARIABLES["font-scaling-console"]}')
+debugger.log(f'font-scaling-console = {SYS_VARIABLES["font-scaling-console"]}')
 debugger.log(f'bar-scaling = {SYS_VARIABLES["bar-scaling"]}')
 
 try:
@@ -532,11 +531,6 @@ for i, monitor in enumerate(monitors):
     )
     screens.append(Screen(top=b, bottom=status_bar))
 
-kitty = update_kitty.Kitty(
-    input_path=os.path.join("~", ".config", "kitty"), wm_theme=theme_data
-)
-kitty.save(output_path=os.path.join("~", ".config", "kitty"))
-
 debugger.log(json.dumps(theme_data, indent=4))
 
 xresources_config = {}
@@ -596,7 +590,7 @@ def _():
             ),
         ]
     )
-    kitty.update()
+    patch._patch_kitty(theme_data)
     patch._patch_dunst(theme_data)
     patch._patch_starship(theme_data)
     patch._patch_gtk(theme_data)
