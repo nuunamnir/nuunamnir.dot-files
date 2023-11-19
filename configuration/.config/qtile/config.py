@@ -607,7 +607,7 @@ def send_to_second_screen():
     chunks = divide_chunks(group_names, math.ceil(len(group_names) / len(monitors)))
     for i, chunk in enumerate(chunks):
         # qtile.groups_map[chunk[0]].cmd_toscreen(i, toggle=False)
-        qtile.groups_map[chunk[0]].cmd_toscreen(i)
+        qtile.groups_map[chunk[0]].toscreen(i)
         # logger.warning(f'{chunk[0]}, {i}')
 
 

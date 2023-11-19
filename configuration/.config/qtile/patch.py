@@ -88,7 +88,7 @@ def _patch_dunst(
     config["global"]["frame_width"] = "0"
     offset_x = int(round(theme_data["dpi_width"] / 2.54) * 0.5)
     offset_y = 2 * int(round(theme_data["dpi_height"] / 2.54) * 0.5) + int(
-        round(theme_data["dpi_height"] / 2.54 * theme_data["bar_scaling"])
+        round(theme_data["dpi_height"] / 2.54 * theme_data["bar-scaling"])
     )
     config["global"]["offset"] = f"{offset_x}x{offset_y}"
     config["global"]["width"] = str(int(round(theme_data["dpi_width"] / 2.54) * 16))
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         theme_data["fonts"]["console_size"] = 18
         theme_data["dpi_width"] = 96
         theme_data["dpi_height"] = 96
-        theme_data["bar_scaling"] = 1.25
+        theme_data["bar-scaling"] = 1.25
     # _patch_dunst(theme_data)
     # _patch_starship(theme_data)
     _patch_rofi(theme_data)
