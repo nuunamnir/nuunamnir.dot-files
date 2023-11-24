@@ -128,7 +128,12 @@ debugger.log(f"theme = {THEME}")
 
 with io.open(theme_path, "r", encoding="utf-8") as input_handle:
     theme_data = json.load(input_handle)
+
 theme_data["colors"]["transparent"] = "#FFFFFF00"
+
+theme_data["fonts"]["font-scaling"] = SYS_VARIABLES["font-scaling"]
+theme_data["fonts"]["font-scaling-console"] = SYS_VARIABLES["font-scaling-console"]
+theme_data["fonts"]["font-scaling-launcher"] = SYS_VARIABLES["font-scaling-launcher"]
 
 if THEME_MODE == "light":
     theme_data["mode"] = "light"
@@ -237,16 +242,6 @@ for i, monitor in enumerate(monitors):
     extension_defaults = widget_defaults.copy()
 
     if i == 0:
-        theme_data["fonts"]["console_size"] = str(
-            int(
-                round(
-                    dpi_height
-                    / 2.54
-                    * SYS_VARIABLES["font-scaling"]
-                    * SYS_VARIABLES["font-scaling-console"]
-                )
-            )
-        )
         theme_data["dpi_width"] = dpi_width
         theme_data["dpi_height"] = dpi_height
         theme_data["dpi_diagonal"] = dpi_diagonal

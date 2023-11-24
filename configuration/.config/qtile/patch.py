@@ -28,7 +28,7 @@ def _patch_kitty(
 
     kitty_configuration["font_family"] = theme_data["fonts"]["console"]
     kitty_configuration["font_features"] = theme_data["fonts"]["variants"]
-    kitty_configuration["font_size"] = theme_data["fonts"]["console_size"]
+    kitty_configuration["font_size"] = str(theme_data["dpi_height"] / 2.54 * theme_data['fonts']['font-scaling-console'])
 
     kitty_theme = {
         "background": theme_data["colors"]["background"],
@@ -118,9 +118,10 @@ def _patch_rofi(
     for color in theme_data["colors"]:
         config["*"][f"C-{color}"] = f"{theme_data['colors'][color]};"
 
+    font_size = str(theme_data["dpi_height"] / 2.54 * theme_data['fonts']['font-scaling-launcher'])
     config["*"][
         "font"
-    ] = f"\"{theme_data['fonts']['console']} {theme_data['fonts']['console_size']}\";"
+    ] = f"\"{theme_data['fonts']['console']} {font_size}\";"
 
     with io.open(
         os.path.join(target_directory_path, "nuunamnir.rasi"), "w", encoding="utf-8"
@@ -177,9 +178,11 @@ def _patch_dunst(
 ):
     config = configparser.ConfigParser()
     config.read(os.path.join(target_directory_path, "dunstrc"))
+
+    font_size = str(theme_data["dpi_height"] / 2.54 * theme_data['fonts']['font-scaling-console'])
     config["global"][
         "font"
-    ] = f'{theme_data["fonts"]["console"]} {theme_data["fonts"]["console_size"]}'
+    ] = f'{theme_data["fonts"]["console"]} {font_size}'
     config["global"]["frame_width"] = "0"
     offset_x = int(round(theme_data["dpi_width"] / 2.54) * 0.5)
     offset_y = 2 * int(round(theme_data["dpi_height"] / 2.54) * 0.5) + int(

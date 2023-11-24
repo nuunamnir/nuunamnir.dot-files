@@ -4,6 +4,7 @@
         "options": {
             "font-scaling": 0.7,
             "font-scaling-console": 0.5,
+            "font-scaling-launcher": 0.09,
             "bar-scaling": 1.1
         }
     },
@@ -14,7 +15,8 @@
         "description": "configuration for mobile computer",
         "options": {
             "font-scaling": 0.35,
-            "font-scaling-console": 0.25,
+            "font-scaling-console": 0.09,
+            "font-scaling-launcher": 0.25,
             "bar-scaling": 0.7
         }
     },
