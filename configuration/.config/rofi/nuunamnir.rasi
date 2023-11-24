@@ -1,5 +1,5 @@
 * {
-    font: "FiraMono Nerd Font Mono 40";
+    font: "FiraMono Nerd Font Mono 10";
     C-background: #141822;
     C-foreground: #fbf3db;
     C-highlight: #c5baa6;
