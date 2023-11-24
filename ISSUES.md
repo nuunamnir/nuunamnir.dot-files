@@ -5,6 +5,10 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
+* fix broken kitty configuration
+* automatically update system time depending on location
+* bluetooth widget should be hidden when not used
+* show internet status
 * understand timeshift
 * add firefox to config handling
 * problem with permissions on mirrorlist
@@ -23,6 +27,7 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~handle different systems not based on node but on hostname~~ (resolved by replacing uuid.getnode by os.uname)
 * ~~update debug to remove old log files~~ (resolved by adding the possibility to only retain n newest log files)
 * ~~show which bluetooth devices are connected (and if available their remaining battery charge)~~ (resolved by adding the battery attribute to bluetooth widget; implemented a Logitech widget based on [solaar](https://pwr-solaar.github.io/Solaar/) - new installations required udev rule copy)
 * ~~add rofi to config handling~~ (resolved by adding rofi to patch.py)

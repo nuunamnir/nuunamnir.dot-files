@@ -63,11 +63,11 @@ import patch
 
 
 SYS_VARIABLES = utils.load_system_variables()
-SYS_ID = uuid.getnode()
+SYS_ID = os.uname().nodename
 debugger.log(f"sys-id = {SYS_ID}")
-if SYS_ID == 9190538989478:  # stationary computer
+if SYS_ID == 'assur':  # stationary computer
     SYS_VARIABLES["system_temperature"] = ["asusec-isa-", "T_Sensor"]
-elif SYS_ID == 74780420245850:  # mobile computer
+elif SYS_ID == 'nippur':  # mobile computer
     SYS_VARIABLES["system_temperature"] = ["acpitz-acpi-", "temp1"]
 debugger.log(f'font-scaling = {SYS_VARIABLES["font-scaling"]}')
 debugger.log(f'font-scaling-console = {SYS_VARIABLES["font-scaling-console"]}')

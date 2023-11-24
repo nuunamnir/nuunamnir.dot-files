@@ -21,7 +21,7 @@ def load_system_variables(
     for option in system_configurations["default"]["options"]:
         system_variables[option] = system_configurations["default"]["options"][option]
 
-    system_id = uuid.getnode()
+    system_id = os.uname().nodename
     try:
         for option in system_configurations[system_id]["options"]:
             system_variables[option] = system_configurations[system_id]["options"][
