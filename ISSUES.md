@@ -5,7 +5,8 @@ A list of issues and ideas.
 * some keyboard shortcut switches keyboard layout - needs to fixed
 
 ## Other
-* automatically update system time depending on location
+* use nvidia PRIME (to save battery?)
+* automatically update system time depending on location, add timezone update to sunlight.py
 * bluetooth widget should be hidden when not used
 * show internet status
 * understand timeshift
@@ -26,6 +27,8 @@ A list of issues and ideas.
 * open app on screen from which the command was issued
 
 ## Resolved
+* ~~Inkscape icons do not scale according to DPI~~ (resolved by changing the preference setting icon scale)
+* ~~Firefox does not scale according to DPI~~ (resolved by changing about:config layout.css.devPixelsPerPx property to 0.8)
 * ~~fix broken kitty configuration~~ (resolved by fixing console font scaling factor - kitty does not like font_size > 32)
 * ~~handle different systems not based on node but on hostname~~ (resolved by replacing uuid.getnode by os.uname)
 * ~~update debug to remove old log files~~ (resolved by adding the possibility to only retain n newest log files)

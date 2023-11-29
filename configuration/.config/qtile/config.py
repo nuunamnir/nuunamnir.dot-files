@@ -98,7 +98,7 @@ debugger.log(f"sunset = {sunset.isoformat()}")
 
 
 # window manager theming
-THEME_NAME = "default"
+THEME_NAME = "goldenhour"
 THEME_MODE = QTILE_THEME_MODE
 # os.environ['QTILE_THEME_MODE'] = THEME_MODE
 
@@ -401,6 +401,8 @@ for i, monitor in enumerate(monitors):
                 indicator_highlight=theme_data["colors"]["highlight"],
                 indicator_background=theme_data["colors"]["background-00"],
                 update_interval=5,
+                padding=0,
+                margin=0,
             ),
             widgets.bluetooth.Bluetooth(
                 fmt='{}',
@@ -409,13 +411,16 @@ for i, monitor in enumerate(monitors):
                 indicator_foreground=theme_data["colors"]["background-02"],
                 indicator_highlight=theme_data["colors"]["highlight"],
                 indicator_background=theme_data["colors"]["background-00"],
+                padding=0,
+                margin=0,
             ),
             parse_battery.BatteryState(
                 fmt='<span color="'
                 + theme_data["colors"]["background-02"]
                 + '">󱐋</span> <span color="'
                 + theme_data["colors"]["foreground"]
-                + '">{}</span>'
+                + '">{}</span>',
+                margin=0,
             ),
             widget.Image(
                 padding=0,

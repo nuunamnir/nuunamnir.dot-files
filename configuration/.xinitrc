@@ -41,6 +41,9 @@ if [ "$HOSTNAME" = "assur" ]; then
     dispwin -d 2 -i ~/.config/icc_profiles/Samsung.icc 
 fi
 
+# xrandr --setprovideroutputsource modesetting NVIDIA-0
+# xrandr --auto
+
 # workaround to make hidden fules show up in gtk file chooser
 dconf write /org/gtk/settings/file-chooser/show-hidden true
 gsettings set org.gtk.Settings.FileChooser show-hidden true

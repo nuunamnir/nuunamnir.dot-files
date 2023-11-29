@@ -1,0 +1,35 @@
+{
+    "colors": {
+        "background": "#f9e9d6",
+        "foreground": "#000000",
+        "highlight": "#2f1a11",
+        "background-00": "#cbbcaa",
+        "background-01": "#b5a795",
+        "background-02": "#9f9280",
+        "highlight-00": "#121406",
+        "highlight-01": "#021617",
+        "highlight-02": "#14121b",
+        "bright-red": "#2f1a11",
+        "red": "#c2a499",
+        "bright-green": "#08241a",
+        "green": "#92b1a4",
+        "bright-blue": "#1a1e31",
+        "blue": "#a6a9c2",
+        "bright-cyan": "#00232c",
+        "cyan": "#8db0bc",
+        "bright-magenta": "#2e1823",
+        "magenta": "#c0a2b0",
+        "bright-yellow": "#20200b",
+        "yellow": "#adac93",
+        "bright-white": "#000000",
+        "white": "#969696",
+        "bright-black": "#ebebeb",
+        "black": "#ffffff"
+    },
+    "fonts": {
+        "standard": "FiraMono Nerd Font Mono",
+        "console": "FiraMono Nerd Font Mono",
+        "variants": "FiraMonoNFM-Regular +cv16 +ss02"
+    },
+    "wallpaper": "stretched"
+}
