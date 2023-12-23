@@ -3,8 +3,8 @@
         "description": "default configuration",
         "options": {
             "font-scaling": 0.7,
-            "font-scaling-console": 0.5,
-            "font-scaling-launcher": 0.09,
+            "font-scaling-console": 0.4,
+            "font-scaling-launcher": 0.4,
             "bar-scaling": 1.1
         }
     },
