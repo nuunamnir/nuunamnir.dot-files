@@ -56,7 +56,7 @@ import parse_sun
 import parse_battery
 
 import widgets.bluetooth
-import widgets.logitech
+#import widgets.logitech
 import widgets.audio
 
 import patch
@@ -393,17 +393,17 @@ for i, monitor in enumerate(monitors):
                 ),
                 background=theme_data["colors"]["transparent"],
             ),
-            widgets.logitech.Logitech(
-                fmt='{}',
-                foreground=theme_data["colors"]["foreground"],
-                background=theme_data["colors"]["background"],
-                indicator_foreground=theme_data["colors"]["background-02"],
-                indicator_highlight=theme_data["colors"]["highlight"],
-                indicator_background=theme_data["colors"]["background-00"],
-                update_interval=5,
-                padding=0,
-                margin=0,
-            ),
+            # widgets.logitech.Logitech(
+            #     fmt='{}',
+            #     foreground=theme_data["colors"]["foreground"],
+            #     background=theme_data["colors"]["background"],
+            #     indicator_foreground=theme_data["colors"]["background-02"],
+            #     indicator_highlight=theme_data["colors"]["highlight"],
+            #     indicator_background=theme_data["colors"]["background-00"],
+            #     update_interval=5,
+            #     padding=0,
+            #     margin=0,
+            # ),
             widgets.bluetooth.Bluetooth(
                 fmt='{}',
                 foreground=theme_data["colors"]["foreground"],

@@ -62,20 +62,20 @@ mouse_right_click = close_all
 per_monitor_dpi = false
 
 [urgency_low]
-background = "#180a04"
-foreground = "#463a36"
+background = "#f9e9d6"
+foreground = "#9f9280"
 timeout = 10
-frame_color = "#180a04"
+frame_color = "#f9e9d6"
 
 [urgency_normal]
-background = "#180a04"
-foreground = "#f9e8c0"
+background = "#f9e9d6"
+foreground = "#000000"
 timeout = 10
-frame_color = "#e9e9e9"
+frame_color = "#000000"
 
 [urgency_critical]
-background = "#d79d60"
-foreground = "#f9e8c0"
-frame_color = "#e9e9e9"
+background = "#2f1a11"
+foreground = "#000000"
+frame_color = "#000000"
 timeout = 0
 
