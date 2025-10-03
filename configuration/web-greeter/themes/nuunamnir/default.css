@@ -1,0 +1,108 @@
+html, body {
+    margin: 0;
+    padding: 0;
+
+    font-family: "Iosevka Nerd Font", "sans-serif";
+    font-size: 1.25vh;
+    color: #a4a4a4;
+
+    background-color: #636363;
+    background: url(wallpaper-dark-4k.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+p {
+    margin: 0;
+    padding: 8px 4px 8px 4px;
+}
+
+div#status_bar, div#input_bar, div#message_bar {
+    background-color: #636363;
+}
+
+div#input_bar {
+    padding: 12px;
+    font-size: 1.3vh;
+}
+
+div#message_bar {
+    visibility: hidden;
+}
+
+div {
+    margin: 0;
+    padding: 0.3vh 0.3vw 0.3vh 0.3vw;
+}
+
+input[type="text"] + label::before {
+    content: " ";
+    color: #a4a4a4;
+    padding-right: 0.5vw;
+}
+
+input[type="password"] + label::before {
+    content: "󰟵  ";
+    color: #a4a4a4;
+    padding-right: 0.5vw;
+}
+
+form {
+    display: flex;
+}
+
+label {
+    order: 1;
+}
+
+input {
+    order: 2;
+}
+
+input#user_input {
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+    font-family: "Iosevka Nerd Font", "sans-serif";
+    font-size: 1.25vh;
+    font-size: 1.3vh;
+    color: #d3d3d3;
+    caret-color: #d3d3d3;
+
+    background-color: #636363;
+}
+
+input#user_input:focus {
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+}
+
+::placeholder {
+    color: #a4a4a4;
+    opacity: 1;
+    font-family: "Iosevka Nerd Font", "sans-serif";
+}
+
+p#message {
+    font-family: "Iosevka Nerd Font", "sans-serif";
+    font-size: 1.25vh;
+    color: #d3d3d3;
+}
+
+.error_message {
+    color: #fb8087 !important;
+}
+
+.info_message {
+    color: #a5aa49 !important;
+}
+
+p#time {
+    text-align: right;
+    color: #d3d3d3;
+}
