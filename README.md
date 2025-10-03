@@ -21,28 +21,37 @@ This is the collection of scripts and configuration files to set up my working e
 
 ## Color Scheme
 
-| Color | Function | kitty | sRGB Decimal | sRGB Hexadecimal |
-| --- | --- | --- | --- | --- |
-| ![color001](assets/color001.png) | black | color0 | `0`, `0`, `0` | `#000000` |
-| ![color002](assets/color002.png) | background | background, selection_foreground | `25`, `25`, `25` | `#191919` |
-| ![color003](assets/color003.png) | grey | color8 | `118`, `118`, `118` | `#767676` |
-| ![color004](assets/color004.png) | foreground | foreground, selection_background | `193`, `193`, `193` | `#c1c1c1` |
-| ![color005](assets/color005.png) | white | cursor, color7, color15 | `210`, `210`, `210` | `#d2d2d2` |
-| ![color006](assets/color006.png) | negative | color1 | `171`, `92`, `86` | `#ab5c56` |
-| ![color007](assets/color007.png) | negative_alternative1 |  | `166`, `99`, `48` | `#a66330` |
-| ![color008](assets/color008.png) | negative_alternative2 | color9 | `163`, `92`, `126` | `#a35c7e` |
-| ![color010](assets/color010.png) | positive | color2 | `95`, `130`, `63` | `#5f823f` |
-| ![color011](assets/color011.png) | positive_alternative1 | color10 | `53`, `135`, `98` | `#358762` |
-| ![color012](assets/color012.png) | positive_alternative2 |  | `130`, `120`, `33` | `#827821` |
-| ![color014](assets/color014.png) | neutral | color4 | `94`, `115`, `179` | `#5e73b3` |
-| ![color015](assets/color015.png) | neutral_alternative1 |  | `126`, `104`, `172` | `#7e68ac` |
-| ![color016](assets/color016.png) | neutral_alternative2 | color12 | `55`, `125`, `171` | `#377dab` |
-| ![color018](assets/color018.png) | effect1 | color6 | `0`, `133`, `150` | `#008596` |
-| ![color022](assets/color022.png) | effect2 | color3 | `159`, `105`, `33` | `#9f6921` |
-| ![color026](assets/color026.png) | effect3 | color5 | `143`, `98`, `159` | `#8f629f` |
-| ![color042](assets/color042.png) | effect1_muted | color14 | `110`, `210`, `229` | `#6ed2e5` |
-| ![color046](assets/color046.png) | effect2_muted | color11 | `244`, `178`, `99` | `#f4b263` |
-| ![color050](assets/color050.png) | effect3_muted | color13 | `222`, `172`, `239` | `#9bd28f` |
+The color scheme is designed to correlated lightness and chroma with perceptual saliency, allowing to assign certain meanings to the hue. More information of how these colors were selected can be found [here](https://www.github.com/nuunamnir/nuunamnir.color-scheme).
+
+| Name            | sRGB String    | sRGB Numeric          | Patch |
+|-----------------|---------------------|----------------| ----- |
+| pastel_red      | `#c29b9b            ` | `(0.761, 0.608, 0.608)` | ![#c29b9b](assets/c29b9b.png) |
+| negative        | `#fb8087            ` | `(0.984, 0.502, 0.529)` | ![#fb8087](assets/fb8087.png) |
+| red             | `#dc9192            ` | `(0.863, 0.569, 0.573)` | ![#dc9192](assets/dc9192.png) |
+| background      | `#ebebeb            ` | `(0.922, 0.922, 0.922)` | ![#ebebeb](assets/ebebeb.png) |
+| light_muted     | `#d3d3d3            ` | `(0.827, 0.827, 0.827)` | ![#d3d3d3](assets/d3d3d3.png) |
+| light_grey      | `#bcbcbc            ` | `(0.737, 0.737, 0.737)` | ![#bcbcbc](assets/bcbcbc.png) |
+| cursor          | `#636363            ` | `(0.388, 0.388, 0.388)` | ![#636363](assets/636363.png) |
+| dark_grey       | `#8e8e8e            ` | `(0.557, 0.557, 0.557)` | ![#8e8e8e](assets/8e8e8e.png) |
+| foreground      | `#787878            ` | `(0.471, 0.471, 0.471)` | ![#787878](assets/787878.png) |
+| dark_muted      | `#787878            ` | `(0.471, 0.471, 0.471)` | ![#787878](assets/787878.png) |
+| grey            | `#a4a4a4            ` | `(0.643, 0.643, 0.643)` | ![#a4a4a4](assets/a4a4a4.png) |
+| pastel_yellow   | `#b4a289            ` | `(0.706, 0.635, 0.537)` | ![#b4a289](assets/b4a289.png) |
+| yellow          | `#bfa06e            ` | `(0.749, 0.627, 0.431)` | ![#bfa06e](assets/bfa06e.png) |
+| effect_pastel   | `#a7a68a            ` | `(0.655, 0.651, 0.541)` | ![#a7a68a](assets/a7a68a.png) |
+| neutral         | `#a5aa49            ` | `(0.647, 0.667, 0.286)` | ![#a5aa49](assets/a5aa49.png) |
+| effect_bright   | `#eef18c            ` | `(0.933, 0.945, 0.549)` | ![#eef18c](assets/eef18c.png) |
+| effect_muted    | `#a7a86f            ` | `(0.655, 0.659, 0.435)` | ![#a7a86f](assets/a7a86f.png) |
+| effect_dark     | `#606900            ` | `(0.376, 0.412, 0.000)` | ![#606900](assets/606900.png) |
+| positive        | `#6ab669            ` | `(0.416, 0.714, 0.412)` | ![#6ab669](assets/6ab669.png) |
+| green           | `#84af81            ` | `(0.518, 0.686, 0.506)` | ![#84af81](assets/84af81.png) |
+| pastel_green    | `#95aa93            ` | `(0.584, 0.667, 0.576)` | ![#95aa93](assets/95aa93.png) |
+| cyan            | `#4bb4b7            ` | `(0.294, 0.706, 0.718)` | ![#4bb4b7](assets/4bb4b7.png) |
+| pastel_cyan     | `#80adae            ` | `(0.502, 0.678, 0.682)` | ![#80adae](assets/80adae.png) |
+| pastel_blue     | `#90a7bf            ` | `(0.565, 0.655, 0.749)` | ![#90a7bf](assets/90a7bf.png) |
+| blue            | `#73aadb            ` | `(0.451, 0.667, 0.859)` | ![#73aadb](assets/73aadb.png) |
+| magenta         | `#c097c8            ` | `(0.753, 0.592, 0.784)` | ![#c097c8](assets/c097c8.png) |
+| pastel_magenta  | `#b39eb6            ` | `(0.702, 0.620, 0.714)` | ![#b39eb6](assets/b39eb6.png) |
 
 ## OS Installation
 
