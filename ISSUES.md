@@ -3,7 +3,7 @@
 ## Miscellaneous
 
 - [ ] Add representative screenshots to `README.md`
-- [ ] Fix installation script
+- [x] Fix installation script
 - [ ] Add missing dependencies (OS packages) to installation instructions/dependencies list
 - [ ] Integrate wallpaper generation script
 - [ ] Add screen lock feature
