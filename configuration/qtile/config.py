@@ -46,6 +46,7 @@ import widgets.location
 import widgets.power_supply
 import widgets.service_state
 import widgets.updates
+import widgets.audio
 
 try:
     configuration = json.load(open(os.path.expanduser("~/.config/nuunamnir.json")))
@@ -410,6 +411,25 @@ screens = [
                             * configuration["font"]["size"]
                         )
                     ),
+                ),
+                widgets.audio.WidgetAudio(
+                    r=r,
+                    warning_color=configuration["colors"][theme]["neutral"],
+                    fontsize=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    ),
+                    update_interval=1,
+                ),
+                widget.Spacer(
+                    length=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    )
                 ),
                 widgets.bluetooth.WidgetBluetooth(
                     r=r,

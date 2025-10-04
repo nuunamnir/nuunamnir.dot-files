@@ -16,9 +16,9 @@
 
 ## Background Service
 
-- [ ] Monitor and display audio levles (`qtile` widget)
+- [x] Monitor and display audio levles (`qtile` widget)
 - [ ] Monitor screen recording/streaming status (`qtile` widget) and wallpaper change
 
 ## Bugs
 
-- Prevent monitor energy saving when running video in `qutebrowser`
+- [ ] Prevent monitor energy saving when running video in `qutebrowser`
