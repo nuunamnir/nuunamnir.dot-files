@@ -9,7 +9,7 @@ import pyaudio
 
 
 class WidgetAudio(libqtile.widget.base.ThreadPoolText):
-    def __init__(self, r, device_index=29, warning_color="#ff0000", **config):
+    def __init__(self, r, warning_color="#ff0000", **config):
         libqtile.widget.base.ThreadPoolText.__init__(self, **config)
         self.r = r
 
@@ -18,7 +18,8 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
         self.NUM_BARS = 16
 
         self.p = pyaudio.PyAudio()
-        self.info = self.p.get_device_info_by_index(device_index)
+        self.info = self.p.get_default_input_device_info()
+        device_index = self.info.get("index", None)
         self.stream = None
         if self.info["maxInputChannels"] > 0:
             self.RATE = int(self.info["defaultSampleRate"])
@@ -66,9 +67,13 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
                 for i in range(self.NUM_BARS):
                     start_freq = bin_edges[i]
                     end_freq = bin_edges[i + 1]
+                    
                     indices = numpy.where((self.freq >= start_freq) & (self.freq < end_freq))[0]
                     if len(indices) > 0:
-                        bar_heights[i] = numpy.mean(self.spectrum[indices])
+                        try:
+                            bar_heights[i] = numpy.mean(self.spectrum[indices])
+                        except IndexError:
+                            bar_heights[i] = 0
                     else:
                         bar_heights[i] = 0
 
