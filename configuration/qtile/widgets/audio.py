@@ -23,8 +23,7 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
         self.stream = None
         if self.info["maxInputChannels"] > 0:
             self.RATE = int(self.info["defaultSampleRate"])
-            self.WIDTH = 2
-            self.stream = self.p.open(format=self.p.get_format_from_width(self.WIDTH),
+            self.stream = self.p.open(format=pyaudio.paInt16,
                 input_device_index=device_index,
                 channels=1,
                 rate=self.RATE,
@@ -80,9 +79,9 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
                 max_height = numpy.max(bar_heights)
                 if max_height > 0:
                     bar_heights = bar_heights / max_height
-                discretized_heights = (bar_heights * 9).astype(int)
+                discretized_heights = (bar_heights * 8).astype(int)
                 discretized_heights = numpy.clip(discretized_heights, 1, 8)
-                unicode_blocks = [chr(0x2581 + h) if h > 0 else ' ' for h in discretized_heights[:self.NUM_BARS // 2]]
+                unicode_blocks = [chr(0x2581 + h) if h > 0 else ' ' for h in discretized_heights]
                 output = f"<span letter_spacing='1024'>{''.join(unicode_blocks)}</span>"
 
         if measurement["muted"] or measurement.get("volume", 0) <= 1:

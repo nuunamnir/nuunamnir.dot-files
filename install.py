@@ -145,6 +145,9 @@ if __name__ == "__main__":
         ),
     }
     install_files(files_paths, "xorg")
+    source_folder_path = os.path.join(configuration_folder_path, "icc")
+    destination_folder_path = os.path.join(os.path.expanduser("~"), ".config", "icc")
+    install_folder(source_folder_path, destination_folder_path, "icc")
 
     # install vim configuration
     source_file_path = os.path.join(configuration_folder_path, "vim", ".vimrc")
