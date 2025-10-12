@@ -3,7 +3,7 @@ html, body {
     padding: 0;
 
     font-family: "Iosevka Nerd Font", "sans-serif";
-    font-size: 1.25vh;
+    font-size: 1.125vh;
     color: #a4a4a4;
 
     background-color: #636363;
@@ -24,8 +24,8 @@ div#status_bar, div#input_bar, div#message_bar {
 }
 
 div#input_bar {
-    padding: 12px;
-    font-size: 1.3vh;
+    padding: 0 12px 12px 12px;
+    font-size: 1.125vh;
 }
 
 div#message_bar {
@@ -40,13 +40,13 @@ div {
 input[type="text"] + label::before {
     content: " ";
     color: #a4a4a4;
-    padding-right: 0.5vw;
+    padding-right: 0.275vw;
 }
 
 input[type="password"] + label::before {
     content: "󰟵  ";
     color: #a4a4a4;
-    padding-right: 0.5vw;
+    padding-right: 0.275vw;
 }
 
 form {
@@ -67,8 +67,7 @@ input#user_input {
     box-shadow: none;
     outline: none;
     font-family: "Iosevka Nerd Font", "sans-serif";
-    font-size: 1.25vh;
-    font-size: 1.3vh;
+    font-size: 1.125vh;
     color: #d3d3d3;
     caret-color: #d3d3d3;
 
@@ -90,7 +89,7 @@ input#user_input:focus {
 
 p#message {
     font-family: "Iosevka Nerd Font", "sans-serif";
-    font-size: 1.25vh;
+    font-size: 1.125vh;
     color: #d3d3d3;
 }
 

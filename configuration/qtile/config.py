@@ -28,7 +28,7 @@ import json
 import os
 
 from libqtile import bar, hook, layout, qtile, widget
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+from libqtile.config import Click, Drag, Group, ScratchPad, DropDown, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
@@ -125,6 +125,9 @@ keys = [
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle mute"),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc="Lower volume"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="Raise volume"),
+
+    Key([], "F1", lazy.group["kitty"].dropdown_toggle("vim"), desc="Toggle vim scratchpad"),
+    Key([], "F2", lazy.group["kitty"].dropdown_toggle("pulsemixer"), desc="Toggle pulsemixer scratchpad"),
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -155,6 +158,30 @@ for m, _ in enumerate(configuration["monitors"]):
         )
     ]
 
+
+groups += [
+    ScratchPad("kitty", [
+        DropDown(
+            "vim",
+            f"{terminal} -e vim",
+            width=0.8,
+            height=0.8,
+            x=0.1,
+            y=0.1,
+            on_focus_lost_hide=True,
+            warp_pointer=False,
+        ),
+        DropDown(
+            "pulsemixer",
+            f"{terminal} -e pulsemixer",
+            width=0.8,
+            height=0.8,
+            x=0.1, y=0.1,
+            on_focus_lost_hide=True,
+            warp_pointer=False,
+        ),
+    ]),
+]
 
 @hook.subscribe.startup_complete
 def send_to_screens():
