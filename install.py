@@ -166,6 +166,11 @@ if __name__ == "__main__":
     destination_folder_path = os.path.join(os.path.expanduser("~"), ".config", "qtile")
     install_folder(source_folder_path, destination_folder_path, "qtile")
 
+    # install picom configuration
+    source_folder_path = os.path.join(configuration_folder_path, "picom")
+    destination_folder_path = os.path.join(os.path.expanduser("~"), ".config", "picom")
+    install_folder(source_folder_path, destination_folder_path, "picom")
+
     # install tmux configuration
     source_folder_path = os.path.join(configuration_folder_path, "tmux")
     destination_folder_path = os.path.join(os.path.expanduser("~"), ".config", "tmux")
