@@ -3,7 +3,11 @@ import json
 import libqtile.widget.base
 import libqtile.log_utils
 
-import sounddevice
+try:
+    import sounddevice
+except ImportError:
+    pass
+
 import numpy
 import pyaudio
 
