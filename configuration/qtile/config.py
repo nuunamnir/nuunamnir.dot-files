@@ -35,7 +35,8 @@ from libqtile.utils import guess_terminal
 try:
     import redis
 
-    r = redis.Redis(host=os.environ.get("NBS_REDIS_HOST", "localhost"), port=int(os.environ.get("NBS_REDIS_PORT", 6379)), db=int(os.environ.get("NBS_REDIS_DB", 1)))
+    pool = redis.ConnectionPool(host=os.environ.get("NBS_REDIS_HOST", "localhost"), port=int(os.environ.get("NBS_REDIS_PORT", 6379)), db=int(os.environ.get("NBS_REDIS_DB", 1)))
+    r = redis.Redis(connection_pool=pool)
 except ImportError:
     r = None
 except redis.exceptions.ConnectionError:
@@ -47,6 +48,7 @@ import widgets.power_supply
 import widgets.service_state
 import widgets.updates
 import widgets.audio
+import widgets.stream_state
 
 try:
     configuration = json.load(open(os.path.expanduser("~/.config/nuunamnir.json")))
@@ -117,7 +119,7 @@ keys = [
         lazy.window.toggle_floating(),
         desc="Toggle floating on the focused window",
     ),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([mod, "control"], "r", lazy.restart(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Spawn a command using rofi"),
@@ -182,6 +184,7 @@ groups += [
         ),
     ]),
 ]
+
 
 @hook.subscribe.startup_complete
 def send_to_screens():
@@ -341,6 +344,26 @@ screens = [
                             * configuration["font"]["size"]
                         )
                     ),
+                ),
+                widget.Spacer(
+                    length=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    )
+                ),
+                widgets.stream_state.WidgetStreamState(
+                    r=r,
+                    notification_color=configuration["colors"][theme]["neutral"],
+                    warning_color=configuration["colors"][theme]["negative"],
+                    fontsize=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    ),
+                    update_interval=1,
                 ),
                 widget.Spacer(
                     length=int(

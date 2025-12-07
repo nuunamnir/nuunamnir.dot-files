@@ -13,12 +13,12 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 Plug 'sheerun/vim-polyglot'
 Plug 'https://github.com/github/copilot.vim'
+Plug 'https://github.com/vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
-
 
 " some color theme configurations
 highlight VertSplit cterm=None
-
 
 " disable vi fallback compatibility
 set nocompatible
@@ -40,15 +40,28 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
 augroup END
 
-
 set encoding=utf-8
 syntax on
+
+set noru
+set noshowmode
+set noshowcmd
+set shortmess+=F
+let g:airline_theme = 'base16'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_statusline_ontop = 1
+ 
+function! NerdTreeInit()
+ if argc() > 0 || exists('s:std_in') | NERDTreeFind |  wincmd p | else | NERDTreeToggle | wincmd p |  endif
+endfunction
+
+autocmd VimEnter * call NerdTreeInit()
 
 " nerdtree configuration
 nmap <C-f> :NERDTreeFind<CR>
 " open nerdtree with the tree expanded to the opened file and focus opened
 " file
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() > 0 || exists('s:std_in') | NERDTreeFind |  wincmd p | else | NERDTreeToggle | wincmd p |  endif
+"autocmd VimEnter * if argc() > 0 || exists('s:std_in') | NERDTreeFind |  wincmd p | else | NERDTreeToggle | wincmd p |  endif
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif

@@ -70,8 +70,8 @@ def patch_kitty(configuration):
         # black = 0/8
         # red = 1/9
         # green = 2/10
-        # yellow = 3/11
-        # blue = 4/12
+        # yellow = 4/12 3/11
+        # blue = 3/11 4/12
         # magenta = 5/13
         # cyan = 6/14
         # white = 7/15
@@ -87,8 +87,8 @@ def patch_kitty(configuration):
         "color8": configuration["colors"][theme]["foreground"],
         "color9": configuration["colors"][theme]["pastel_red"],
         "color10": configuration["colors"][theme]["pastel_green"],
-        "color11": configuration["colors"][theme]["pastel_blue"],
-        "color12": configuration["colors"][theme]["pastel_yellow"],
+        "color11": configuration["colors"][theme]["pastel_yellow"],
+        "color12": configuration["colors"][theme]["pastel_blue"],
         "color13": configuration["colors"][theme]["pastel_magenta"],
         "color14": configuration["colors"][theme]["pastel_cyan"],
         "color15": configuration["colors"][theme]["light_muted"],
