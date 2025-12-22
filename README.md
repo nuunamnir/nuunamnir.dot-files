@@ -25,33 +25,33 @@ The color scheme is designed to correlated lightness and chroma with perceptual 
 
 | Name            | sRGB String    | sRGB Numeric          | Patch |
 |-----------------|---------------------|----------------| ----- |
-| pastel_red      | `#c29b9b            ` | `(0.761, 0.608, 0.608)` | ![#c29b9b](assets/c29b9b.png) |
-| negative        | `#fb8087            ` | `(0.984, 0.502, 0.529)` | ![#fb8087](assets/fb8087.png) |
-| red             | `#dc9192            ` | `(0.863, 0.569, 0.573)` | ![#dc9192](assets/dc9192.png) |
-| background      | `#ebebeb            ` | `(0.922, 0.922, 0.922)` | ![#ebebeb](assets/ebebeb.png) |
-| light_muted     | `#d3d3d3            ` | `(0.827, 0.827, 0.827)` | ![#d3d3d3](assets/d3d3d3.png) |
-| light_grey      | `#bcbcbc            ` | `(0.737, 0.737, 0.737)` | ![#bcbcbc](assets/bcbcbc.png) |
-| cursor          | `#636363            ` | `(0.388, 0.388, 0.388)` | ![#636363](assets/636363.png) |
-| dark_grey       | `#8e8e8e            ` | `(0.557, 0.557, 0.557)` | ![#8e8e8e](assets/8e8e8e.png) |
-| foreground      | `#787878            ` | `(0.471, 0.471, 0.471)` | ![#787878](assets/787878.png) |
-| dark_muted      | `#787878            ` | `(0.471, 0.471, 0.471)` | ![#787878](assets/787878.png) |
-| grey            | `#a4a4a4            ` | `(0.643, 0.643, 0.643)` | ![#a4a4a4](assets/a4a4a4.png) |
-| pastel_yellow   | `#b4a289            ` | `(0.706, 0.635, 0.537)` | ![#b4a289](assets/b4a289.png) |
-| yellow          | `#bfa06e            ` | `(0.749, 0.627, 0.431)` | ![#bfa06e](assets/bfa06e.png) |
-| effect_pastel   | `#a7a68a            ` | `(0.655, 0.651, 0.541)` | ![#a7a68a](assets/a7a68a.png) |
-| neutral         | `#a5aa49            ` | `(0.647, 0.667, 0.286)` | ![#a5aa49](assets/a5aa49.png) |
-| effect_bright   | `#eef18c            ` | `(0.933, 0.945, 0.549)` | ![#eef18c](assets/eef18c.png) |
-| effect_muted    | `#a7a86f            ` | `(0.655, 0.659, 0.435)` | ![#a7a86f](assets/a7a86f.png) |
-| effect_dark     | `#606900            ` | `(0.376, 0.412, 0.000)` | ![#606900](assets/606900.png) |
-| positive        | `#6ab669            ` | `(0.416, 0.714, 0.412)` | ![#6ab669](assets/6ab669.png) |
-| green           | `#84af81            ` | `(0.518, 0.686, 0.506)` | ![#84af81](assets/84af81.png) |
-| pastel_green    | `#95aa93            ` | `(0.584, 0.667, 0.576)` | ![#95aa93](assets/95aa93.png) |
-| cyan            | `#4bb4b7            ` | `(0.294, 0.706, 0.718)` | ![#4bb4b7](assets/4bb4b7.png) |
-| pastel_cyan     | `#80adae            ` | `(0.502, 0.678, 0.682)` | ![#80adae](assets/80adae.png) |
-| pastel_blue     | `#90a7bf            ` | `(0.565, 0.655, 0.749)` | ![#90a7bf](assets/90a7bf.png) |
-| blue            | `#73aadb            ` | `(0.451, 0.667, 0.859)` | ![#73aadb](assets/73aadb.png) |
-| magenta         | `#c097c8            ` | `(0.753, 0.592, 0.784)` | ![#c097c8](assets/c097c8.png) |
-| pastel_magenta  | `#b39eb6            ` | `(0.702, 0.620, 0.714)` | ![#b39eb6](assets/b39eb6.png) |
+| cursor          | `#282828            ` | `(0.157, 0.157, 0.157)` | ![#282828](assets/282828.png) |
+| grey            | `#909090            ` | `(0.565, 0.565, 0.565)` | ![#909090](assets/909090.png) |
+| background      | `#e5e5e5            ` | `(0.898, 0.898, 0.898)` | ![#e5e5e5](assets/e5e5e5.png) |
+| foreground      | `#4d4d4d            ` | `(0.302, 0.302, 0.302)` | ![#4d4d4d](assets/4d4d4d.png) |
+| pastel_yellow   | `#69442d            ` | `(0.412, 0.267, 0.176)` | ![#69442d](assets/69442d.png) |
+| yellow          | `#7c3800            ` | `(0.486, 0.220, 0.000)` | ![#7c3800](assets/7c3800.png) |
+| effect_bright   | `#664900            ` | `(0.400, 0.286, 0.000)` | ![#664900](assets/664900.png) |
+| effect_muted    | `#5c4c2e            ` | `(0.361, 0.298, 0.180)` | ![#5c4c2e](assets/5c4c2e.png) |
+| effect_dark     | `#f0c532            ` | `(0.941, 0.773, 0.196)` | ![#f0c532](assets/f0c532.png) |
+| effect_pastel   | `#dec887            ` | `(0.871, 0.784, 0.529)` | ![#dec887](assets/dec887.png) |
+| positive        | `#455600            ` | `(0.271, 0.337, 0.000)` | ![#455600](assets/455600.png) |
+| green           | `#455600            ` | `(0.271, 0.337, 0.000)` | ![#455600](assets/455600.png) |
+| pastel_green    | `#4a522f            ` | `(0.290, 0.322, 0.184)` | ![#4a522f](assets/4a522f.png) |
+| cyan            | `#00644e            ` | `(0.000, 0.392, 0.306)` | ![#00644e](assets/00644e.png) |
+| pastel_cyan     | `#3e5c52            ` | `(0.243, 0.361, 0.322)` | ![#3e5c52](assets/3e5c52.png) |
+| dark_grey       | `#9cd7e2            ` | `(0.612, 0.843, 0.886)` | ![#9cd7e2](assets/9cd7e2.png) |
+| dark_muted      | `#00e4ff            ` | `(0.000, 0.894, 1.000)` | ![#00e4ff](assets/00e4ff.png) |
+| light_grey      | `#425c66            ` | `(0.259, 0.361, 0.400)` | ![#425c66](assets/425c66.png) |
+| neutral         | `#006179            ` | `(0.000, 0.380, 0.475)` | ![#006179](assets/006179.png) |
+| light_muted     | `#006179            ` | `(0.000, 0.380, 0.475)` | ![#006179](assets/006179.png) |
+| pastel_blue     | `#415670            ` | `(0.255, 0.337, 0.439)` | ![#415670](assets/415670.png) |
+| blue            | `#005797            ` | `(0.000, 0.341, 0.592)` | ![#005797](assets/005797.png) |
+| pastel_magenta  | `#51466e            ` | `(0.318, 0.275, 0.431)` | ![#51466e](assets/51466e.png) |
+| magenta         | `#54369c            ` | `(0.329, 0.212, 0.612)` | ![#54369c](assets/54369c.png) |
+| pastel_red      | `#6b3e4d            ` | `(0.420, 0.243, 0.302)` | ![#6b3e4d](assets/6b3e4d.png) |
+| negative        | `#83254c            ` | `(0.514, 0.145, 0.298)` | ![#83254c](assets/83254c.png) |
+| red             | `#83254c            ` | `(0.514, 0.145, 0.298)` | ![#83254c](assets/83254c.png) |
 
 ## OS Installation
 

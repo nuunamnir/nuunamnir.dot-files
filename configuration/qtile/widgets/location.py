@@ -49,7 +49,8 @@ class WidgetLocation(libqtile.widget.base.ThreadPoolText):
             json.dump(configuration, f)
         # execute patch script
         subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
-        subprocess.Popen(args=["pkill", "-SIGUSR1", "qtile"])
+        # subprocess.Popen(args=["pkill", "-SIGUSR1", "qtile"])
+        subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
 
     def poll(self):
         if self.r is None:

@@ -196,8 +196,8 @@ Void = "\uf32e "
 Windows = "\U000f0372 "
 
 [palettes.theme]
-color0 = "#787878"
-color1 = "#636363"
-color2 = "#6ab669"
-color3 = "#fb8087"
-color4 = "#a5aa49"
+color0 = "#cbcbcb"
+color1 = "#e5e5e5"
+color2 = "#c0d958"
+color3 = "#ff9fca"
+color4 = "#5bd9ff"

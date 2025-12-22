@@ -427,6 +427,8 @@ screens = [
                     borderwidth=0,
                     border=configuration["colors"][theme]["neutral"],
                     urgent_border=configuration["colors"][theme]["negative"],
+                    markup_focused="<span foreground='" + configuration["colors"][theme]["background"] + "'>{}</span>",
+                    foreground=configuration["colors"][theme]["grey"],
                     fontsize=int(
                         round(
                             configuration["monitors"][monitor]["scaling_factor"]
@@ -471,7 +473,7 @@ screens = [
                             * configuration["font"]["size"]
                         )
                     ),
-                    update_interval=1,
+                    update_interval=0.1,
                 ),
                 widget.Spacer(
                     length=int(

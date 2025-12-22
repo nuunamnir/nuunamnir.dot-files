@@ -21,4 +21,9 @@
 
 ## Bugs
 
+- [ ] qtile uses additional resources if the configuration is reloaded
 - [ ] Prevent monitor energy saving when running video in `qutebrowser`
+- [x] picom has some strange effect on video and games (initial black screen)
+    - (2025-12-07) resolved by changing the picom backend from `egl` to `glx`
+- [x] x server crashes when theme switches mode
+    - (2025-12-21) resolved by switching from `pkill` to `qtile cmd-obj`

@@ -13,13 +13,13 @@ import pyaudio
 
 
 class WidgetAudio(libqtile.widget.base.ThreadPoolText):
-    def __init__(self, r, warning_color="#ff0000", **config):
+    def __init__(self, r, num_bars=16, warning_color="#ff0000", **config):
         libqtile.widget.base.ThreadPoolText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color
 
-        self.NUM_BARS = 16
+        self.NUM_BARS = num_bars
         self.stream = sounddevice.InputStream(channels=2, samplerate=44100, callback=self.callback_spectrum)
         self.stream.start()
         self.visualization = ' ' * self.NUM_BARS
@@ -43,13 +43,12 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
             compressed_spectrum_left = self.compress_array(spectrum_left, self.NUM_BARS // 2)
             compressed_spectrum_right = self.compress_array(spectrum_right, self.NUM_BARS // 2)
             compressed_spectrum = numpy.concatenate((compressed_spectrum_left[::-1], compressed_spectrum_right))
-            compressed_spectrum /= numpy.max([numpy.max(compressed_spectrum), 8])
+            compressed_spectrum /= numpy.max([numpy.max(compressed_spectrum), 6])
             compressed_spectrum = 0.8 * self.past_values + 0.2 * compressed_spectrum
             self.past_values = compressed_spectrum
             discretized_spectrum = numpy.round(compressed_spectrum * 8).astype(int)
-            if numpy.sum(discretized_spectrum) > 0:
-                unicode_blocks = [chr(0x2581 + h) if h > 0 else ' ' for h in discretized_spectrum]
-                self.visualization = ''.join(unicode_blocks)
+            unicode_blocks = [chr(0x2581 + h) if h > 0 else ' ' for h in discretized_spectrum]
+            self.visualization = ''.join(unicode_blocks)
         except ValueError as e:
             pass
 
@@ -71,11 +70,6 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
         alpha = numpy.clip(int(round(measurement.get("volume", 0) / 100 * 65536)), 6554, 65535)
         return f"<span fgalpha='{alpha}'>{output}</span>"
     
-    def hz_to_mel(self, hz):
-        return 2595 * numpy.log10(1 + hz / 700)
-
-    def mel_to_hz(self, mel):
-        return 700 * (10**(mel / 2595) - 1)
     
     def __del__(self):
         if self.stream is not None:

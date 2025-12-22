@@ -4,9 +4,9 @@ html, body {
 
     font-family: "Iosevka Nerd Font", "sans-serif";
     font-size: 1.125vh;
-    color: #a4a4a4;
+    color: #909090;
 
-    background-color: #636363;
+    background-color: #282828;
     background: url(wallpaper-dark-4k.png) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -20,7 +20,7 @@ p {
 }
 
 div#status_bar, div#input_bar, div#message_bar {
-    background-color: #636363;
+    background-color: #282828;
 }
 
 div#input_bar {
@@ -39,13 +39,13 @@ div {
 
 input[type="text"] + label::before {
     content: " ";
-    color: #a4a4a4;
+    color: #909090;
     padding-right: 0.275vw;
 }
 
 input[type="password"] + label::before {
     content: "󰟵  ";
-    color: #a4a4a4;
+    color: #909090;
     padding-right: 0.275vw;
 }
 
@@ -68,10 +68,10 @@ input#user_input {
     outline: none;
     font-family: "Iosevka Nerd Font", "sans-serif";
     font-size: 1.125vh;
-    color: #d3d3d3;
-    caret-color: #d3d3d3;
+    color: #cbcbcb;
+    caret-color: #cbcbcb;
 
-    background-color: #636363;
+    background-color: #282828;
 }
 
 input#user_input:focus {
@@ -82,7 +82,7 @@ input#user_input:focus {
 }
 
 ::placeholder {
-    color: #a4a4a4;
+    color: #909090;
     opacity: 1;
     font-family: "Iosevka Nerd Font", "sans-serif";
 }
@@ -90,18 +90,18 @@ input#user_input:focus {
 p#message {
     font-family: "Iosevka Nerd Font", "sans-serif";
     font-size: 1.125vh;
-    color: #d3d3d3;
+    color: #cbcbcb;
 }
 
 .error_message {
-    color: #fb8087 !important;
+    color: #ff9fca !important;
 }
 
 .info_message {
-    color: #a5aa49 !important;
+    color: #5bd9ff !important;
 }
 
 p#time {
     text-align: right;
-    color: #d3d3d3;
+    color: #cbcbcb;
 }
