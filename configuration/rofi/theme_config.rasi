@@ -5,6 +5,6 @@
     COLOR2: #ff9fca;
     COLOR3: #cbcbcb;
     COLOR4: #5bd9ff;
-    WIDTH: 3840px;
-    YOFFSET: 62px;
+    WIDTH: 1920px;
+    YOFFSET: 61px;
 }
