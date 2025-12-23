@@ -311,6 +311,37 @@ The local machine is the machine on which you just have installed Arch Linux.
    sudo systemctl restart sshd
    ```
 
+#### Install Display Manager
+
+1. Install display manager and greeter
+   ```bash
+   yay -S lightdm nody-greeter xinit-xsession
+   ```
+2. Configure display manager - in `/etc/lightdm/lightdm.conf` set the following parameter
+   ```
+   greeter-session=nody-greeter
+   ```
+3. Enable display manager
+   ```bash
+   systemctl enable --now lightdm.service
+   ```
+
+#### Install Graphical Boot
+
+1. Install graphical boot application
+   ```bash
+   yay -S plymouth
+   ```
+2. Add the hook to `/etc/mkinitcpio.conf`
+   ```
+   HOOKS=(...[systemd] plymouth [encrypt] ...)
+   ```
+   and regenerate the `initramfs`:
+   ```bash
+   mkinitcpio -P
+   ```
+3. Add `splash` to the kernel parameters in `/boot/loader/entries/arch.conf`
+
 #### Install Desktop Environment
 
 1. Install the desktop environment and necessary packages.

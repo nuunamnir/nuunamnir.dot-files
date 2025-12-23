@@ -20,9 +20,9 @@ class WidgetPowerSupply(libqtile.widget.base.ThreadPoolText):
             return ""
         measurement = json.loads(payload.get(b"measurement").decode("utf-8"))
 
-        output = ""
+        output = []
         if measurement["grid"]:
-            output += "󰚥"
+            output.append("󰚥")
         for battery in measurement["batteries"]:
             if measurement["batteries"][battery]["status"] == "Charging":
                 if int(measurement["batteries"][battery]["capacity"]) >= 100:
@@ -70,5 +70,5 @@ class WidgetPowerSupply(libqtile.widget.base.ThreadPoolText):
                     battery = "<span color='{self.warning_color}'>󰁺</span>"
                 else:
                     battery = f"<span color='{self.warning_color}'>󰁺</span>"
-            output += battery
-        return f"{output}"
+            output.append(battery)
+        return f"{' '.join(output)}"
