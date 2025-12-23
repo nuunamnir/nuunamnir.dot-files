@@ -54,6 +54,7 @@ def patch_kitty(configuration):
         "allow_remote_control": "yes",
         "enable_audio_bell": "no",
         "font_size": int(round(configuration["font"]["size"] * 0.714)),
+        "include": "current-theme.conf",
     }
     with open(os.path.expanduser("~/.config/kitty/kitty.conf"), "w") as output_handle:
         for key, value in patched_configuration.items():
