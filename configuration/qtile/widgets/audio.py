@@ -6,10 +6,10 @@ import libqtile.log_utils
 try:
     import sounddevice
 except ImportError:
-    pass
+    libqtile.log_utils.logger.warning("sounddevice module not found. Audio widget will not function.")
+    sounddevice = None
 
 import numpy
-import pyaudio
 
 
 class WidgetAudio(libqtile.widget.base.ThreadPoolText):
@@ -43,7 +43,7 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
             compressed_spectrum_left = self.compress_array(spectrum_left, self.NUM_BARS // 2)
             compressed_spectrum_right = self.compress_array(spectrum_right, self.NUM_BARS // 2)
             compressed_spectrum = numpy.concatenate((compressed_spectrum_left[::-1], compressed_spectrum_right))
-            compressed_spectrum /= numpy.max([numpy.max(compressed_spectrum), 6])
+            compressed_spectrum /= numpy.max([numpy.max(compressed_spectrum), 2])
             compressed_spectrum = 0.8 * self.past_values + 0.2 * compressed_spectrum
             self.past_values = compressed_spectrum
             discretized_spectrum = numpy.round(compressed_spectrum * 8).astype(int)
