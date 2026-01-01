@@ -4,9 +4,9 @@ import libqtile.widget.base
 import libqtile.log_utils
 
 
-class WidgetBluetooth(libqtile.widget.base.ThreadPoolText):
+class WidgetBluetooth(libqtile.widget.base.InLoopPollText):
     def __init__(self, r, icons={}, warning_color="#ff0000", **config):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.icons = icons

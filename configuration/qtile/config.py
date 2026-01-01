@@ -28,14 +28,28 @@ import json
 import os
 
 from libqtile import bar, hook, layout, qtile, widget
-from libqtile.config import Click, Drag, Group, ScratchPad, DropDown, Key, KeyChord, Match, Screen
+from libqtile.config import (
+    Click,
+    Drag,
+    Group,
+    ScratchPad,
+    DropDown,
+    Key,
+    KeyChord,
+    Match,
+    Screen,
+)
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 try:
     import redis
 
-    pool = redis.ConnectionPool(host=os.environ.get("NBS_REDIS_HOST", "localhost"), port=int(os.environ.get("NBS_REDIS_PORT", 6379)), db=int(os.environ.get("NBS_REDIS_DB", 1)))
+    pool = redis.ConnectionPool(
+        host=os.environ.get("NBS_REDIS_HOST", "localhost"),
+        port=int(os.environ.get("NBS_REDIS_PORT", 6379)),
+        db=int(os.environ.get("NBS_REDIS_DB", 1)),
+    )
     r = redis.Redis(connection_pool=pool)
 except ImportError:
     r = None
@@ -121,15 +135,38 @@ keys = [
     ),
     Key([mod, "control"], "r", lazy.restart(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Spawn a command using rofi"),
     Key([mod], "Home", lazy.spawn("xsecurelock"), desc="Lock the screen"),
-    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle mute"),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc="Lower volume"),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="Raise volume"),
-
-    Key([], "F1", lazy.group["kitty"].dropdown_toggle("vim"), desc="Toggle vim scratchpad"),
-    Key([], "F2", lazy.group["kitty"].dropdown_toggle("pulsemixer"), desc="Toggle pulsemixer scratchpad"),
+    Key(
+        [],
+        "XF86AudioMute",
+        lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"),
+        desc="Toggle mute",
+    ),
+    Key(
+        [],
+        "XF86AudioLowerVolume",
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"),
+        desc="Lower volume",
+    ),
+    Key(
+        [],
+        "XF86AudioRaiseVolume",
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"),
+        desc="Raise volume",
+    ),
+    Key(
+        [],
+        "F1",
+        lazy.group["kitty"].dropdown_toggle("vim"),
+        desc="Toggle vim scratchpad",
+    ),
+    Key(
+        [],
+        "F2",
+        lazy.group["kitty"].dropdown_toggle("pulsemixer"),
+        desc="Toggle pulsemixer scratchpad",
+    ),
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -162,27 +199,31 @@ for m, _ in enumerate(configuration["monitors"]):
 
 
 groups += [
-    ScratchPad("kitty", [
-        DropDown(
-            "vim",
-            f"{terminal} -e vim",
-            width=0.8,
-            height=0.8,
-            x=0.1,
-            y=0.1,
-            on_focus_lost_hide=True,
-            warp_pointer=False,
-        ),
-        DropDown(
-            "pulsemixer",
-            f"{terminal} -e pulsemixer",
-            width=0.8,
-            height=0.8,
-            x=0.1, y=0.1,
-            on_focus_lost_hide=True,
-            warp_pointer=False,
-        ),
-    ]),
+    ScratchPad(
+        "kitty",
+        [
+            DropDown(
+                "vim",
+                f"{terminal} -e vim",
+                width=0.8,
+                height=0.8,
+                x=0.1,
+                y=0.1,
+                on_focus_lost_hide=True,
+                warp_pointer=False,
+            ),
+            DropDown(
+                "pulsemixer",
+                f"{terminal} -e pulsemixer",
+                width=0.8,
+                height=0.8,
+                x=0.1,
+                y=0.1,
+                on_focus_lost_hide=True,
+                warp_pointer=False,
+            ),
+        ],
+    ),
 ]
 
 
@@ -319,6 +360,13 @@ layouts = [
 widget_defaults = dict(
     foreground=configuration["colors"][theme]["foreground"],
     font=configuration["font"]["family"],
+    padding=int(
+        round(
+            configuration["monitors"][monitor]["scaling_factor"]
+            * configuration["font"]["size"]
+            / 4
+        )
+    ),
 )
 extension_defaults = widget_defaults.copy()
 
@@ -398,7 +446,9 @@ screens = [
                     active=configuration["colors"][theme]["foreground"],
                     inactive=configuration["colors"][theme]["grey"],
                     # highlight_color="#999900",
-                    this_current_screen_border=configuration["colors"][theme]["neutral"],
+                    this_current_screen_border=configuration["colors"][theme][
+                        "neutral"
+                    ],
                     # this_screen_border="#ff00ff",
                     # other_current_screen_border="#990000",
                     # other_screen_border="#000099",
@@ -427,7 +477,9 @@ screens = [
                     borderwidth=0,
                     border=configuration["colors"][theme]["neutral"],
                     urgent_border=configuration["colors"][theme]["negative"],
-                    markup_focused="<span foreground='" + configuration["colors"][theme]["background"] + "'>{}</span>",
+                    markup_focused="<span foreground='"
+                    + configuration["colors"][theme]["background"]
+                    + "'>{}</span>",
                     foreground=configuration["colors"][theme]["grey"],
                     fontsize=int(
                         round(

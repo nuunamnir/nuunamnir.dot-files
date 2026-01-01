@@ -6,7 +6,7 @@ import libqtile.log_utils
 import libqtile.widget.base
 
 
-class WidgetStreamState(libqtile.widget.base.ThreadPoolText):
+class WidgetStreamState(libqtile.widget.base.InLoopPollText):
     def __init__(
         self,
         r,
@@ -15,7 +15,7 @@ class WidgetStreamState(libqtile.widget.base.ThreadPoolText):
         configuration_file_path=os.path.expanduser(os.path.join("~", ".config", "nuunamnir.json")),
         **config,
     ):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color

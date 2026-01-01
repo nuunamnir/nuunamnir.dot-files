@@ -7,9 +7,9 @@ import libqtile.log_utils
 import libqtile.widget.base
 
 
-class WidgetLocation(libqtile.widget.base.ThreadPoolText):
+class WidgetLocation(libqtile.widget.base.BackgroundPoll):
     def __init__(self, r, notification_color="#ff0000", configuration_file_path=os.path.expanduser(os.path.join("~", ".config", "nuunamnir.json")), **config):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.BackgroundPoll.__init__(self, **config)
         self.r = r
         self.configuration_file_path = configuration_file_path
 

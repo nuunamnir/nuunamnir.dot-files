@@ -12,9 +12,9 @@ except ImportError:
 import numpy
 
 
-class WidgetAudio(libqtile.widget.base.ThreadPoolText):
+class WidgetAudio(libqtile.widget.base.InLoopPollText):
     def __init__(self, r, num_bars=16, warning_color="#ff0000", **config):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color
