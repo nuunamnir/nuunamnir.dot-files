@@ -91,4 +91,4 @@ class WidgetLocation(libqtile.widget.base.InLoopPollText):
         if now < sunrise_ts or now > sunset_ts:
             return f"<span color='{self.notification_color}'> {sunrise}</span>  {sunset}{mode_icon}"
         else:
-            return f" {sunrise} <span color='{self.notification_color}'> {sunset}</span>{mode_icon}"
+            return f" {sunrise} <span color='{self.notification_color}'> {sunset}</span>{mode_icon} "

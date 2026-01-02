@@ -49,7 +49,10 @@ try:
         host=os.environ.get("NBS_REDIS_HOST", "localhost"),
         port=int(os.environ.get("NBS_REDIS_PORT", 6379)),
         db=int(os.environ.get("NBS_REDIS_DB", 1)),
-    )
+        socket_connect_timeout=0.5,  # connect phase
+        socket_timeout=0.5,          # read/write phase
+        health_check_interval=30,  
+        )
     r = redis.Redis(connection_pool=pool)
 except ImportError:
     r = None
@@ -63,6 +66,7 @@ import widgets.service_state
 import widgets.updates
 import widgets.audio
 import widgets.stream_state
+import widgets.vpn
 
 try:
     configuration = json.load(open(os.path.expanduser("~/.config/nuunamnir.json")))
@@ -603,6 +607,33 @@ screens = [
                         )
                     ),
                     update_interval=1,
+                ),
+                widget.Spacer(
+                    length=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    )
+                ),
+                widgets.vpn.WidgetVPN(
+                    r=r,
+                    warning_color=configuration["colors"][theme]["neutral"],
+                    fontsize=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    ),
+                    update_interval=1,
+                ),
+                widget.Spacer(
+                    length=int(
+                        round(
+                            configuration["monitors"][monitor]["scaling_factor"]
+                            * configuration["font"]["size"]
+                        )
+                    )
                 ),
                 widget.Clock(
                     format="%Y-%m-%d %a %H:%M:%S",

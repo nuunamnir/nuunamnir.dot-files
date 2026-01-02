@@ -50,7 +50,6 @@ class WidgetStreamState(libqtile.widget.base.InLoopPollText):
                     json.dump(configuration, f, indent=4)
                 # execute patch script
                 subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
-                subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
         else:
             output = "󱗝"
             if self.urgency != "normal":
@@ -63,6 +62,5 @@ class WidgetStreamState(libqtile.widget.base.InLoopPollText):
                     json.dump(configuration, f, indent=4)
                 # execute patch script
                 subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
-                subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
 
         return f"{output}"

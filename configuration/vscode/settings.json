@@ -2080,5 +2080,6 @@
         "editorGutter.commentRangeForeground": "#cbcbcb",
         "debugExceptionWidget.background": "#282828",
         "debugExceptionWidget.border": "#5c4c2e"
-    }
+    },
+    "editor.fontFamily": "'Iosevka Nerd Font', 'Droid Sans Mono', 'monospace', monospace"
 }
