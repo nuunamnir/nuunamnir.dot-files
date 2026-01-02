@@ -7,9 +7,9 @@ import libqtile.log_utils
 import libqtile.widget.base
 
 
-class WidgetLocation(libqtile.widget.base.BackgroundPoll):
+class WidgetLocation(libqtile.widget.base.InLoopPollText):
     def __init__(self, r, notification_color="#ff0000", configuration_file_path=os.path.expanduser(os.path.join("~", ".config", "nuunamnir.json")), **config):
-        libqtile.widget.base.BackgroundPoll.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
         self.configuration_file_path = configuration_file_path
 
@@ -50,7 +50,6 @@ class WidgetLocation(libqtile.widget.base.BackgroundPoll):
         # execute patch script
         subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
         # subprocess.Popen(args=["pkill", "-SIGUSR1", "qtile"])
-        subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
 
     def poll(self):
         if self.r is None:
