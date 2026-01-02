@@ -102,6 +102,11 @@ if __name__ == "__main__":
     )
     install_file(source_file_path, destination_file_path, "qutebrowser")
 
+    #install mpv configuration
+    source_folder_path = os.path.join(configuration_folder_path, "mpv")
+    destination_folder_path = os.path.join(os.path.expanduser("~"), ".config", "mpv")
+    install_folder(source_folder_path, destination_folder_path, "mpv")
+
     # install Visual Studio Code configuration
     source_folder_path = os.path.join(configuration_folder_path, "vscode")
     destination_folder_path = os.path.join(

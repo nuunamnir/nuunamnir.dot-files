@@ -246,7 +246,7 @@ c.colors.downloads.stop.bg = configuration["colors"][configuration["state"]["the
 
 ## Background color of an error message.
 ## Type: QssColor
-# c.colors.messages.error.bg = 'red'
+c.colors.messages.error.bg = configuration["colors"][configuration["state"]["theme"]]["negative"]
 
 ## Border color of an error message.
 ## Type: QssColor
@@ -473,7 +473,7 @@ c.colors.tabs.selected.even.bg = configuration["colors"][configuration["state"][
 
 ## Foreground color of selected even tabs.
 ## Type: QtColor
-c.colors.tabs.selected.even.fg = configuration["colors"][configuration["state"]["theme"]]["foreground"]
+c.colors.tabs.selected.even.fg = configuration["colors"][configuration["state"]["theme"]]["background"]
 
 ## Background color of selected odd tabs.
 ## Type: QtColor
@@ -481,7 +481,7 @@ c.colors.tabs.selected.odd.bg = configuration["colors"][configuration["state"]["
 
 ## Foreground color of selected odd tabs.
 ## Type: QtColor
-c.colors.tabs.selected.odd.fg = configuration["colors"][configuration["state"]["theme"]]["foreground"]
+c.colors.tabs.selected.odd.fg = configuration["colors"][configuration["state"]["theme"]]["background"]
 
 ## Background color of tooltips. If set to null, the Qt default is used.
 ## Type: QssColor
@@ -2213,6 +2213,11 @@ c.tabs.padding = {'top': padding_size, 'bottom': padding_size, 'left': padding_s
 # c.zoom.text_only = False
 
 ## Bindings for normal mode
+config.set('content.autoplay', False)
+config.set('content.media.video_capture', True)
+config.set('content.media.audio_capture', True)
+config.bind(',M', 'hint links spawn mpv {hint-url}')
+config.bind(',m', 'hint links spawn mpv --fs {hint-url}')
 # config.bind("'", 'mode-enter jump_mark')
 # config.bind('+', 'zoom-in')
 # config.bind('-', 'zoom-out')
