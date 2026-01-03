@@ -26,13 +26,15 @@
 ## Background Service
 
 - [x] Monitor and display audio levles (`qtile` widget)
-- [ ] Monitor screen recording/streaming status (`qtile` widget) and wallpaper change
+- [x] Monitor screen recording/streaming status (`qtile` widget) and wallpaper change
+    - (2026-01-03) implemented widget and updated backend service to also detect running obs
 
 ## Bugs
 
 - [x] qtile uses additional resources if the configuration is reloaded
     - (2025-12-21) seemed to be resolved by switching from `pkill` to `qtile cmd-obj`
-- [ ] Prevent monitor energy saving when running video in `qutebrowser`
+- [x] Prevent monitor energy saving when running video in `qutebrowser`
+    - (2026-01-03) apparently not supported, workaround implemented via `mpv` and keybind `,m`
 - [x] picom has some strange effect on video and games (initial black screen)
     - (2025-12-07) resolved by changing the picom backend from `egl` to `glx`
 - [x] x server(?) crashes when theme switches mode

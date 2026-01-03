@@ -377,12 +377,12 @@ extension_defaults = widget_defaults.copy()
 if configuration["state"]["theme"] == "light":
     if configuration["state"]["urgency"] == "normal":
         logo = configuration["wallpapers"]["light"]
-    elif configuration["state"]["urgency"] == "high":
+    elif configuration["state"]["urgency"] == "urgent":
         logo = configuration["wallpapers"]["light-urgent"]
 else:
     if configuration["state"]["urgency"] == "normal":
         logo = configuration["wallpapers"]["dark"]
-    elif configuration["state"]["urgency"] == "high":
+    elif configuration["state"]["urgency"] == "urgent":
         logo = configuration["wallpapers"]["dark-urgent"]
 screens = [
     Screen(
