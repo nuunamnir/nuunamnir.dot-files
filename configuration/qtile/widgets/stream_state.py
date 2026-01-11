@@ -1,6 +1,5 @@
 import json
 import os
-import subprocess
 
 import libqtile.log_utils
 import libqtile.widget.base

@@ -13,15 +13,23 @@ import numpy
 
 
 class WidgetAudio(libqtile.widget.base.InLoopPollText):
-    def __init__(self, r, num_bars=16, warning_color="#ff0000", **config):
+    def __init__(self, r, num_bars=16, device_id=31, warning_color="#ff0000", **config):
         libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color
 
+        self.device_id = device_id
+
         self.NUM_BARS = num_bars
-        self.stream = sounddevice.InputStream(channels=2, samplerate=44100, callback=self.callback_spectrum)
-        self.stream.start()
+        try:
+            sounddevice.default.device = self.device_id
+            self.device_properties = sounddevice.query_devices(self.device_id)
+            self.stream = sounddevice.InputStream(channels=2, samplerate=self.device_properties['default_samplerate'], callback=self.callback_spectrum)
+            self.stream.start()
+        except Exception:
+            self.device_properties = None
+            self.stream = None
         self.visualization = ' ' * self.NUM_BARS
         self.past_values = numpy.zeros(self.NUM_BARS, dtype=float)
 
@@ -53,6 +61,17 @@ class WidgetAudio(libqtile.widget.base.InLoopPollText):
             pass
 
     def poll(self):
+        if self.stream is None:
+            try:
+                sounddevice.default.device = self.device_id
+                self.device_properties = sounddevice.query_devices(self.device_id)
+                self.stream = sounddevice.InputStream(channels=2, samplerate=self.device_properties['default_samplerate'], callback=self.callback_spectrum)
+                self.stream.start()
+            except Exception:
+                self.device_properties = None
+                self.stream = None
+                self.visualization = 'ohoh'
+
         if self.r is None:
             return ""
         data = self.r.xrevrange("audio", count=1)
