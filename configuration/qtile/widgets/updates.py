@@ -4,7 +4,7 @@ import libqtile.log_utils
 import libqtile.widget.base
 
 
-class WidgetUpdates(libqtile.widget.base.ThreadPoolText):
+class WidgetUpdates(libqtile.widget.base.InLoopPollText):
     def __init__(
         self,
         r,
@@ -13,7 +13,7 @@ class WidgetUpdates(libqtile.widget.base.ThreadPoolText):
         threshold=32,
         **config,
     ):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color

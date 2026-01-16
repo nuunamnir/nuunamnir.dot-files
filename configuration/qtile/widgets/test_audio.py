@@ -25,7 +25,7 @@ def calculate_spectrum(indata, frames, time, status):
         compressed_spectrum_left = compress_array(spectrum_left, 8)
         compressed_spectrum_right = compress_array(spectrum_right, 8)
         compressed_spectrum = numpy.concatenate((compressed_spectrum_left[::-1], compressed_spectrum_right))
-        compressed_spectrum /= numpy.max([numpy.max(compressed_spectrum), 8])
+        compressed_spectrum /= numpy.max([numpy.max(compressed_spectrum), 2])
         discretized_spectrum = numpy.round(compressed_spectrum * 8).astype(int)
         if numpy.sum(discretized_spectrum) > 0:
             unicode_blocks = [chr(0x2581 + h) if h > 0 else ' ' for h in discretized_spectrum]
@@ -36,7 +36,12 @@ def calculate_spectrum(indata, frames, time, status):
 
 if __name__ == '__main__':
     print("Starting audio stream...")
-    with sounddevice.InputStream(channels=2, samplerate=44100, callback=calculate_spectrum) as stream:
+
+    sounddevice.default.device = 31
+    device_properties = sounddevice.query_devices(sounddevice.default.device)
+    print("Using device:", device_properties['name'])
+    print(device_properties)
+    with sounddevice.InputStream(channels=2, samplerate=device_properties['default_samplerate'], callback=calculate_spectrum) as stream:
         print(stream)
         try:
             while True:

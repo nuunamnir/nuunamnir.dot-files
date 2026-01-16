@@ -54,7 +54,7 @@ def patch_kitty(configuration):
         "allow_remote_control": "yes",
         "enable_audio_bell": "no",
         "font_size": int(round(configuration["font"]["size"] * 0.714)),
-        # "include": "current-theme.conf", # run `kitten themes nuunamnir`
+        #"include": "current-theme.conf",
     }
     with open(os.path.expanduser("~/.config/kitty/kitty.conf"), "w") as output_handle:
         for key, value in patched_configuration.items():
@@ -190,20 +190,20 @@ def patch_all(configuration):
     patch_dunst(configuration)
 
 
-if __name__ == "__main__":
-    with open(os.path.expanduser("~/.config/nuunamnir.json"), "r") as input_handle:
-        configuration = json.load(input_handle)
-    patch_all(configuration)
+with open(os.path.expanduser("~/.config/nuunamnir.json"), "r") as input_handle:
+    configuration = json.load(input_handle)
+patch_all(configuration)
 
-    subprocess.Popen(
-        args=[
-            "tmux",
-            "source-file",
-            os.path.expanduser(os.path.join("~", ".config", "tmux", "tmux.conf")),
-        ]
-    )
-    subprocess.Popen(args=["kitty", "+kitten", "themes", "--reload-in=all", "nuunamnir"])
-    subprocess.Popen(args=["killall", "dunst"])
-    time.sleep(1)
-    subprocess.Popen(args=["notify-send", "-u", "normal", "Patching", "All configurations reloaded ..."])
-    subprocess.Popen(args=["kill", "-1", "`pgrep qutebrowser`"])
+subprocess.call(args=["killall", "dunst"])
+subprocess.call(
+    args=[
+        "tmux",
+        "source-file",
+        os.path.expanduser(os.path.join("~", ".config", "tmux", "tmux.conf")),
+    ]
+)
+subprocess.call(args=["kitty", "+kitten", "themes", "--reload-in=all", "nuunamnir"])
+subprocess.call(args=["kill", "-1", "`pgrep qutebrowser`"])
+subprocess.call(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_vsc.py")), "--mode", configuration["state"]["theme"], "--input-path", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets"))])
+subprocess.call(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
+subprocess.call(args=["notify-send", "-u", "normal", "Patching", "All configurations reloaded ..."])

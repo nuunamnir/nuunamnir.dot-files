@@ -7,9 +7,9 @@ import libqtile.log_utils
 import libqtile.widget.base
 
 
-class WidgetLocation(libqtile.widget.base.ThreadPoolText):
+class WidgetLocation(libqtile.widget.base.InLoopPollText):
     def __init__(self, r, notification_color="#ff0000", configuration_file_path=os.path.expanduser(os.path.join("~", ".config", "nuunamnir.json")), **config):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
         self.configuration_file_path = configuration_file_path
 
@@ -50,7 +50,6 @@ class WidgetLocation(libqtile.widget.base.ThreadPoolText):
         # execute patch script
         subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
         # subprocess.Popen(args=["pkill", "-SIGUSR1", "qtile"])
-        subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
 
     def poll(self):
         if self.r is None:
@@ -92,4 +91,4 @@ class WidgetLocation(libqtile.widget.base.ThreadPoolText):
         if now < sunrise_ts or now > sunset_ts:
             return f"<span color='{self.notification_color}'> {sunrise}</span>  {sunset}{mode_icon}"
         else:
-            return f" {sunrise} <span color='{self.notification_color}'> {sunset}</span>{mode_icon}"
+            return f" {sunrise} <span color='{self.notification_color}'> {sunset}</span>{mode_icon} "

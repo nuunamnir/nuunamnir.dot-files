@@ -18,19 +18,26 @@
 - [ ] Add plymouth to patch configuration
 - [ ] Automate installation of web-greeter
 - [ ] Automate installation of plymouth
-- [ ] Automatically path README.md on color theme change
+- [ ] Automatically patch README.md on color theme change
+- [x] Create VSC color theme
+    - (2026-01-02) added crude VSC theme color mapping script (does not work well in light mode)
 
 
 ## Background Service
 
 - [x] Monitor and display audio levles (`qtile` widget)
-- [ ] Monitor screen recording/streaming status (`qtile` widget) and wallpaper change
+- [x] Monitor screen recording/streaming status (`qtile` widget) and wallpaper change
+    - (2026-01-03) implemented widget and updated backend service to also detect running obs
 
 ## Bugs
 
-- [ ] qtile uses additional resources if the configuration is reloaded
-- [ ] Prevent monitor energy saving when running video in `qutebrowser`
+- [x] qtile uses additional resources if the configuration is reloaded
+    - (2025-12-21) seemed to be resolved by switching from `pkill` to `qtile cmd-obj`
+- [x] Prevent monitor energy saving when running video in `qutebrowser`
+    - (2026-01-03) apparently not supported, workaround implemented via `mpv` and keybind `,m`
 - [x] picom has some strange effect on video and games (initial black screen)
     - (2025-12-07) resolved by changing the picom backend from `egl` to `glx`
 - [x] x server(?) crashes when theme switches mode
     - (2025-12-21) resolved by switching from `pkill` to `qtile cmd-obj`
+- [x] picom makes gtk gui flicker
+    - (2026-01-01) might be fixed by applying configurations from [https://bbs.archlinux.org/viewtopic.php?id=259288](https://bbs.archlinux.org/viewtopic.php?id=259288)

@@ -1,21 +1,22 @@
 import json
 import os
-import subprocess
 
 import libqtile.log_utils
 import libqtile.widget.base
 
 
-class WidgetStreamState(libqtile.widget.base.ThreadPoolText):
+class WidgetStreamState(libqtile.widget.base.InLoopPollText):
     def __init__(
         self,
         r,
         notification_color="#00ff00",
         warning_color="#ff0000",
-        configuration_file_path=os.path.expanduser(os.path.join("~", ".config", "nuunamnir.json")),
+        configuration_file_path=os.path.expanduser(
+            os.path.join("~", ".config", "nuunamnir.json")
+        ),
         **config,
     ):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color
@@ -23,7 +24,9 @@ class WidgetStreamState(libqtile.widget.base.ThreadPoolText):
 
         self.configuration_file_path = configuration_file_path
 
-        self.urgency = "normal"
+        with open(self.configuration_file_path, "r") as f:
+            configuration = json.load(f)
+        self.urgency = configuration["state"].get("urgency", "normal")
 
     def poll(self):
         if self.r is None:
@@ -35,34 +38,45 @@ class WidgetStreamState(libqtile.widget.base.ThreadPoolText):
             return ""
         measurement = json.loads(payload.get(b"measurement").decode("utf-8"))
         streaming = measurement.get("streaming", True)
+        obs = measurement.get("obs", False)
 
-        
+        if obs:
+            icon = "󱗝"
+        else:
+            icon = "󰅘"
 
         if streaming:
-            output = f"<span color='{self.warning_color}'>󱗝</span>"
+            output = f"<span color='{self.warning_color}'>{icon}</span>"
             if self.urgency != "urgent":
                 with open(self.configuration_file_path, "r") as f:
                     configuration = json.load(f)
 
-                configuration['state']['urgency'] = "urgent"
+                configuration["state"]["urgency"] = "urgent"
                 self.urgency = "urgent"
                 with open(self.configuration_file_path, "w") as f:
                     json.dump(configuration, f, indent=4)
-                # execute patch script
-                subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
-                subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
+                path_to_wallpaper = os.path.expanduser(
+                    configuration["wallpapers"][
+                        f"{'-'.join([configuration['state']['theme'], 'urgent'])}"
+                    ]
+                )
+                for screen in self.qtile.screens:
+                    screen.set_wallpaper(path_to_wallpaper)
+
         else:
-            output = "󱗝"
+            output = f"{icon}"
             if self.urgency != "normal":
                 with open(self.configuration_file_path, "r") as f:
                     configuration = json.load(f)
 
-                configuration['state']['urgency'] = "normal"
+                configuration["state"]["urgency"] = "normal"
                 self.urgency = "normal"
                 with open(self.configuration_file_path, "w") as f:
                     json.dump(configuration, f, indent=4)
-                # execute patch script
-                subprocess.Popen(args=["python", os.path.expanduser(os.path.join("~", ".config", "qtile", "widgets", "patch_configurations.py"))])
-                subprocess.Popen(args=["qtile", "cmd-obj", "-o", "cmd", "-f", "restart"])
+                path_to_wallpaper = os.path.expanduser(
+                    configuration["wallpapers"][configuration["state"]["theme"]]
+                )
+                for screen in self.qtile.screens:
+                    screen.set_wallpaper(path_to_wallpaper)
 
         return f"{output}"

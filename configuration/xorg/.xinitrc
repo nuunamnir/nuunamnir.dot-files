@@ -56,5 +56,5 @@ fi
 xset s 512 512
 xset dpms 512 512 1024
 
-picom -b
+# picom -b
 qtile start

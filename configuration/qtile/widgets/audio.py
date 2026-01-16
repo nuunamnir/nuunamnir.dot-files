@@ -12,18 +12,58 @@ except ImportError:
 import numpy
 
 
-class WidgetAudio(libqtile.widget.base.ThreadPoolText):
-    def __init__(self, r, num_bars=16, warning_color="#ff0000", **config):
-        libqtile.widget.base.ThreadPoolText.__init__(self, **config)
+class WidgetAudio(libqtile.widget.base.InLoopPollText):
+    def __init__(self, r, num_bars=16, device_id=31, warning_color="#ff0000", **config):
+        libqtile.widget.base.InLoopPollText.__init__(self, **config)
         self.r = r
 
         self.warning_color = warning_color
 
+        self.device_id = 0
+
+        self.MAX_DECAY = 32
+
         self.NUM_BARS = num_bars
-        self.stream = sounddevice.InputStream(channels=2, samplerate=44100, callback=self.callback_spectrum)
-        self.stream.start()
+        try:
+            self.device_id = max(device_id, 0)
+            sounddevice.default.device = self.device_id
+            self.device_properties = sounddevice.query_devices(self.device_id)
+            self.stream = sounddevice.InputStream(channels=2, samplerate=self.device_properties['default_samplerate'], callback=self.callback_spectrum)
+            self.stream.start()
+        except Exception:
+            self.device_properties = None
+            self.stream = None
         self.visualization = ' ' * self.NUM_BARS
         self.past_values = numpy.zeros(self.NUM_BARS, dtype=float)
+
+        self.add_callbacks({"Button4": self.device_up, "Button5": self.device_down})
+        self.decay = 0
+
+    def device_up(self):
+        self.decay = self.MAX_DECAY
+        if self.device_id is not None:
+            available_devices = len(sounddevice.query_devices())
+            self.update_device((self.device_id + 1) % available_devices)
+
+    def device_down(self):
+        self.decay = self.MAX_DECAY
+        if self.device_id is not None and self.device_id > 0:
+            available_devices = len(sounddevice.query_devices())
+            self.update_device((self.device_id - 1) % available_devices)
+
+    def update_device(self, device_id):
+        self.device_id = device_id
+        if self.stream is not None:
+            self.stream.stop()
+            self.stream.close()
+        try:
+            sounddevice.default.device = self.device_id
+            self.device_properties = sounddevice.query_devices(self.device_id)
+            self.stream = sounddevice.InputStream(channels=2, samplerate=self.device_properties['default_samplerate'], callback=self.callback_spectrum)
+            self.stream.start()
+        except Exception:
+            self.device_properties = None
+            self.stream = None
 
     def compress_array(self, arr, m):
         n = len(arr)
@@ -49,10 +89,20 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
             discretized_spectrum = numpy.round(compressed_spectrum * 8).astype(int)
             unicode_blocks = [chr(0x2581 + h) if h > 0 else ' ' for h in discretized_spectrum]
             self.visualization = ''.join(unicode_blocks)
-        except ValueError as e:
+        except ValueError:
             pass
 
     def poll(self):
+        if self.stream is None:
+            try:
+                sounddevice.default.device = self.device_id
+                self.device_properties = sounddevice.query_devices(self.device_id)
+                self.stream = sounddevice.InputStream(channels=2, samplerate=self.device_properties['default_samplerate'], callback=self.callback_spectrum)
+                self.stream.start()
+            except Exception:
+                self.device_properties = None
+                self.stream = None
+
         if self.r is None:
             return ""
         data = self.r.xrevrange("audio", count=1)
@@ -68,7 +118,12 @@ class WidgetAudio(libqtile.widget.base.ThreadPoolText):
         if measurement["muted"] or measurement.get("volume", 0) <= 1:
             output = f"<span color='{self.warning_color}'>{output}</span>"
         alpha = numpy.clip(int(round(measurement.get("volume", 0) / 100 * 65536)), 6554, 65535)
-        return f"<span fgalpha='{alpha}'>{output}</span>"
+        output = f"<span alpha='{alpha}'>{output}</span>"
+        if self.decay > 0:
+            self.decay -= 1
+            self.decay = max(self.decay, 0)
+            output = f"<span fgalpha='{max(self.decay * round(65535 / self.MAX_DECAY), 1)}'>{self.device_id}</span>" + output
+        return output
     
     
     def __del__(self):
