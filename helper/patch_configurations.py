@@ -54,7 +54,7 @@ def patch_kitty(configuration):
         "allow_remote_control": "yes",
         "enable_audio_bell": "no",
         "font_size": int(round(configuration["font"]["size"] * 0.714)),
-        "include": "current-theme.conf",
+        # "include": "current-theme.conf", # run `kitten themes nuunamnir`
     }
     with open(os.path.expanduser("~/.config/kitty/kitty.conf"), "w") as output_handle:
         for key, value in patched_configuration.items():
@@ -92,7 +92,7 @@ def patch_kitty(configuration):
         "color12": configuration["colors"][theme]["pastel_blue"],
         "color13": configuration["colors"][theme]["pastel_magenta"],
         "color14": configuration["colors"][theme]["pastel_cyan"],
-        "color15": configuration["colors"][theme]["light_muted"],
+        "color15": configuration["colors"][theme]["grey"],
     }
     with open(
         os.path.expanduser("~/.config/kitty/themes/nuunamnir.conf"), "w"
