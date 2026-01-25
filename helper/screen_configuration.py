@@ -32,3 +32,5 @@ def get():
 
 if __name__ == '__main__':
     monitors = get()
+    for monitor in monitors:
+        print(monitors[monitor])

@@ -1,10 +1,10 @@
 * {
     FONT: "Iosevka Nerd Font 17";
-    COLOR0: #282828;
+    COLOR0: #e5e5e5;
     COLOR1: #909090;
-    COLOR2: #ff9fca;
-    COLOR3: #cbcbcb;
-    COLOR4: #5bd9ff;
+    COLOR2: #83254c;
+    COLOR3: #4d4d4d;
+    COLOR4: #006179;
     WIDTH: 1920px;
     YOFFSET: 61px;
 }

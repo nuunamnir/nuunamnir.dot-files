@@ -1,6 +1,6 @@
 [global]
 monitor = 0
-background = "#282828"
+background = "#e5e5e5"
 frame_width = 0
 font = "Iosevka Nerd Font 10"
 padding = 4
@@ -9,11 +9,11 @@ format = " %s %b"
 offset = 0x66
 origin = top-left
 width = 4096
-foreground = "#cbcbcb"
+foreground = "#4d4d4d"
 separator_height = 0
 gap_size = -2
 gaps = false
-separator_color = "#282828"
+separator_color = "#e5e5e5"
 ignore_newline = true
 stack_duplicates = false
 notification_limit = 0
@@ -24,18 +24,18 @@ progress_bar_frame_width = 0
 [urgency_normal]
 gap_size = -2
 msg_urgency = "normal"
-foreground = "#cbcbcb"
-format = " <span foreground='#5bd9ff'>%s</span>\n  %b"
+foreground = "#4d4d4d"
+format = " <span foreground='#006179'>%s</span>\n  %b"
 
 [urgency_critical]
 gap_size = -2
 msg_urgency = "critical"
-foreground = "#cbcbcb"
-format = " <span foreground='#ff9fca'>%s</span>\n  %b"
+foreground = "#4d4d4d"
+format = " <span foreground='#83254c'>%s</span>\n  %b"
 
 [urgency_low]
 gap_size = -2
 msg_urgency = "low"
-foreground = "#cbcbcb"
+foreground = "#4d4d4d"
 format = " <span foreground='#909090'>%s</span>\n  %b"
 
